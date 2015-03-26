@@ -1,0 +1,123 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/icE6PR19C0Y?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M" frameborder="0" allowfullscreen></iframe></div>
+	  
+	  <p>As I imagine you discovered, port scanning can be brutally slow, yet, in most cases, is not processing intensive. Thus, we can use <kbd data-toggle="collapse" data-target="#threading" aria-expanded="false" aria-controls="threading">threading</kbd> to drastically improve our speed. There are thousands of possible ports. If it is taking 5-15 seconds per port to scan, then you might have a long wait ahead of you without the use of threading.</p>
+	  <div class="collapse" id="threading">
+		  <div class="well">
+			<p><a href="/threading-tutorial-python/" target="blank"><strong>Threading</strong></a> can be a complex topic, but it can be broken down and conceptualized as a methodology where we can tell the computer to do another task if the processor is experiencing idle time. In the case of port scanning, we're spending a lot of time just waiting on the response from the server. While we're waiting, why not do something else? That's what threading is for. If you want to learn more about threading, I have a <a href="/threading-tutorial-python/" target="blank"><strong>threading tutorial here</strong></a>.</p>
+		  </div>
+		</div>
+		
+	<p>So now we mesh the <a href="/threading-tutorial-python/" target="blank"><strong>threading tutorial</strong></a> code with our port scanning code:</p>
+		
+	  <pre  class="prettyprint">
+import threading
+from queue import Queue
+import time
+import socket
+
+# a print_lock is what is used to prevent "double" modification of shared variables.
+# this is used so while one thread is using a variable, others cannot access
+# it. Once done, the thread releases the print_lock.
+# to use it, you want to specify a print_lock per thing you wish to print_lock.
+print_lock = threading.Lock()
+
+
+
+target = 'hackthissite.org'
+#ip = socket.gethostbyname(target)
+
+
+
+
+def portscan(port):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        con = s.connect((target,port))
+        with print_lock:
+            print('port',port)
+        con.close()
+    except:
+        pass
+
+
+# The threader thread pulls an worker from the queue and processes it
+def threader():
+    while True:
+        # gets an worker from the queue
+        worker = q.get()
+
+        # Run the example job with the avail worker in queue (thread)
+        portscan(worker)
+
+        # completed with the job
+        q.task_done()
+
+
+
+        
+
+# Create the queue and threader 
+q = Queue()
+
+# how many threads are we going to allow for
+for x in range(30):
+     t = threading.Thread(target=threader)
+
+     # classifying as a daemon, so they will die when the main dies
+     t.daemon = True
+
+     # begins, must come after daemon definition
+     t.start()
+
+
+start = time.time()
+
+# 100 jobs assigned.
+for worker in range(1,100):
+    q.put(worker)
+
+# wait until the thread terminates.
+q.join()
+
+	  </pre>
+	  
+	  <p>Since this tutorial was a pretty clean meshing of two tutorials, I have just included the lightly-commented code. If you're curious, you can check the embedded video, as things are still explained fairly step-by-step there.</p>
+
+	  
+
+		
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	  
+	
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+

@@ -1,0 +1,150 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  	<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+<div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/sZyAn2TW7GY?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+
+	<body align="left" onload="brython({debug:1, cache:'version'})">
+		<div class="container" align="left" style="height:300px; max-width:750px" >
+			<center><button type="button" class="btn btn-success" id="run" style="height:35px"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span> Run</button></center>
+			
+			<table id="banner" cellpadding=0 cellspacing=0>
+			<tr id="banner_row">
+			
+			</tr>
+			</table>
+			
+
+
+
+			<div id="container" style="max-height:80%">
+			<div id="left-div">
+			<div style="padding: 3px 3px 3px 3px;">
+			
+			
+			</div>
+			  <div id="editor" style="width:100%;"></div>
+			</div>
+
+			<div id="right-div">
+			<div style="padding: 3px 3px 3px 3px;">
+
+
+
+			</div>
+			<div style="width:100%;height:100%;">
+			<textarea id="console"></textarea>
+
+			</div>
+			<p style="font-size:75%">Python 3 embedded console using <a href="http://brython.info/" target="_blank">Brython</a></p>
+			</div>
+			</div>
+
+		</div>
+	</body>
+
+<p>There are many times where a programmer with want to split or search in a body of text for something. Say you are looking for any prices within a body of text. Basically, you are looking for a dollar sign ($), followed by at least 1 number, maybe a decimal point, and maybe more numbers. Sometimes, there will be a decimal point before any numbers, such as with something under a dollar. Try to think of a way that you'd incorporate the very large number of possibilities, it is pretty hard. This is where regular expressions come in.</p>
+
+<p>Regular expressions are used to sift through text-based data to find things. Regular expressions express a pattern of data that is to be located. Regex is its own language, and is basically the same no matter what programming language you are using with it.</p>
+
+<p>In Python 3, the module to use regular expressions is re, and it must be imported to use regular expressions. Re is a part of the standard library, meaning you will not need to do any downloading and installing to use it, it is already there.</p>
+
+<p>Back to our example above, before getting to the video tutorial, let me break down how prices would be discovered in a regex frame of mind:</p>
+
+<p>You'd tell the regular expression module that: You are looking for the string to BEGIN with a dollar sign. Then you are either looking a group of digits, or an immediate period / decimal point. From here, you would keep looking for digits, commas, and periods until you finally reach an ending period before a space (indicating the end of a sentence rather than a decimal point), or just a space. This is exactly how you will structure a real regular expression.</p>
+
+<p>For the video, our task is to locate names and ages of people. The code:</p>
+
+<p>Here is a quick cheat sheet for various rules in regular expressions:</p>
+<strong><p>Identifiers:</p></strong>
+<ul>
+	<li>\d = any number</li>
+	<li>\D = anything but a number</li>
+	<li>\s = space</li>
+	<li>\S = anything but a space</li>
+	<li>\w = any letter</li>
+	<li>\W = anything but a letter</li>
+	<li>. = any character, except for a new line</li>
+	<li>\b = space around whole words</li>
+	<li>\. = period. must use backslash, because . normally means any character.</li>
+</ul>
+<strong><p>Modifiers:</p></strong>
+<ul>
+	<li>{1,3} = for digits, u expect 1-3 counts of digits, or "places"</li>
+	<li>+ = match 1 or more</li>
+	<li>? = match 0 or 1 repetitions.</li>
+	<li>* = match 0 or MORE repetitions</li>
+	<li>$ = matches at the end of string</li>
+	<li>^ = matches start of a string</li>
+	<li>| = matches either/or. Example x|y = will match either x or y</li>
+	<li>[] = range, or "variance"</li>
+	<li>{x} = expect to see this amount of the preceding code.</li>
+	<li>{x,y} = expect to see this x-y amounts of the precedng code</li>
+</ul>
+<strong><p>White Space Charts:</p></strong>
+<ul>
+	<li>\n = new line</li>
+	<li>\s = space</li>
+	<li>\t = tab</li>
+	<li>\e = escape</li>
+	<li>\f = form feed</li>
+	<li>\r = carriage return</li>
+</ul>
+<strong><p>Characters to REMEMBER TO ESCAPE IF USED!</p></strong>
+<ul>
+	<li>. + * ? [ ] $ ^ ( ) { } | \</li>
+</ul>
+<strong><p>Brackets:</p></strong>
+<ul>
+	<li>[] = quant[ia]tative = will find either quantitative, or quantatative.</li>
+	<li>[a-z] = return any lowercase letter a-z</li>
+	<li>[1-5a-qA-Z] = return all numbers 1-5, lowercase letters a-q and uppercase A-Z</li>
+</ul>
+<p>The code:</p>
+
+<p>So, we have the string we intend to search. We see that we have ages that are integers 2-3 numbers in length. We could also expect digits that are just 1, under 10 years old. We probably wont be seeing any digits that are 4 in length, unless we're talking about biblical times or something.</p>
+<pre class="prettyprint">import re
+
+exampleString = '''
+Jessica is 15 years old, and Daniel is 27 years old.
+Edward is 97 years old, and his grandfather, Oscar, is 102. 
+'''
+</pre>
+<p>Now we define the regular expression, using a simple findall method to find all examples of the pattern we specify as the first parameter within the string we specify as the second parameter.</p>
+<pre class="prettyprint">ages = re.findall(r'\d{1,3}',exampleString)
+names = re.findall(r'[A-Z][a-z]*',exampleString)
+
+print(ages)
+print(names)
+
+</pre>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	  
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+

@@ -1,0 +1,102 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  	<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+<div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/RVXIBZvg-W8" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+	<body align="left" onload="brython({debug:1, cache:'version'})">
+		<div class="container" align="left" style="height:300px; max-width:750px" >
+			<center><button type="button" class="btn btn-success" id="run" style="height:35px"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span> Run</button></center>
+			
+			<table id="banner" cellpadding=0 cellspacing=0>
+			<tr id="banner_row">
+			
+			</tr>
+			</table>
+			
+
+
+
+			<div id="container" style="max-height:80%">
+			<div id="left-div">
+			<div style="padding: 3px 3px 3px 3px;">
+			
+			
+			</div>
+			  <div id="editor" style="width:100%;"></div>
+			</div>
+
+			<div id="right-div">
+			<div style="padding: 3px 3px 3px 3px;">
+
+
+
+			</div>
+			<div style="width:100%;height:100%;">
+			<textarea id="console"></textarea>
+
+			</div>
+			<p style="font-size:75%">Python 3 embedded console using <a href="http://brython.info/" target="_blank">Brython</a></p>
+			</div>
+			</div>
+
+		</div>
+	</body>
+
+<p>Our focus here is the difference between Python lists and tuples. Often confused, due to their similarities, these two structures are substantially different.</p>
+
+<p>A tuple is an assortment of data, separated by commas, which makes it similar to the Python list, but a tuple is fundamentally different in that a tuple is "immutable." This means that it cannot be changed, modified, or manipulated. A tuple is typically used specifically because of this property. A popular use for this is sequence unpacking, where we want to store returned data to some specified variables. Something like:</p>
+<pre class="prettyprint">def example():
+    return 15, 12
+
+x, y = example()
+print(x,y)
+
+# in the above case, we have used a tuple and cannot modify it... and
+# we definitely do not want to!
+</pre>
+<p>If you notice, the tuple had no brackets around it at all. If there are no encasing brackets or braces of any type, then Python will recognize the data as a tuple. Tuples also can have curved brackets like "(" or ")"</p>
+
+<p>Next, we have the far more popular Python list. To define a list, we use square brackets. A Python list acts very much like an array in other languages like php.</p>
+
+<p>Here's an example of a list and an example use:</p>
+<pre class="prettyprint">x = [1,3,5,6,2,1,6]
+
+'''
+You can then reference the whole list like:
+'''
+print(x)
+
+# or a single element by giving its index value.
+# index values start at 0 and go up by 1 each time
+
+print(x[0],x[1])
+</pre>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	  
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+

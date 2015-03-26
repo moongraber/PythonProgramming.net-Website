@@ -1,0 +1,87 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/Q1a12QFq3os?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M" frameborder="0" allowfullscreen></iframe></div>
+	  
+	  <p>Up until this point, I have shown you how you can use the socket module to make use of socket connections permitted by other clients and programs. Now it is time to cover how to do this ourselves!</p>
+	  <p>The way this is done should sound fairly expectable, as you know the requirements of sockets. First you bind a socket, then you listen on a port for incoming connections.</p>
+
+	  
+		<div class="row">
+		<div class="col-md-7">
+		<pre  class="prettyprint">
+		
+		
+import socket
+import sys
+ 
+HOST = '' 
+PORT = 5555 
+ 
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+
+		</pre></div>
+		<div class="col-md-5">
+<p>Socket import for sockets, sys import to execute a quit if there is a failure.</p><p>Next, we specify our host and port. You don't really need the host to be specified, but it is good practice to include it in your code, so we have. Finally, we're specifying a port. Pick whatever you want, just choose a high number so it hopefully doesn't conflict with another program of yours.</p></div></div>
+	  
+
+		<pre  class="prettyprint">
+try:
+    s.bind((HOST, PORT))
+    
+except socket.error as msg:
+    print('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
+    sys.exit()
+	
+print('Socket bind complete')
+		</pre>
+
+<p>Here, we are simply attempeting to bind a socket locally, on port 5555. If that fails, then we post the error and exit the program.</p>	
+
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+s.listen(10)
+
+conn, addr = s.accept()
+
+print('Connected with ' + addr[0] + ':' + str(addr[1]))
+
+		</pre></div>
+		<div class="col-md-6">
+<p>Next, we're going to use s.listen to listen. Here, the "10" stands for how many incoming connections we're willing to queue before denying any more.</p></div></div>
+
+
+
+<p>Now you can run your script. Once you've done that, you should be able to make a connection. You will likely get a security notifcation that you must accept in order to continue with the tutorial. You are getting this notification because the program is trying to open and listen for incoming connections on your behalf. As you might imagine, people might attempt to give you malicious software to do just this.</p>
+<p>Accept the warning if you get one, and now you should be able to telnet localhost on the port you chose, which was 5555 for me. So, opening bash, a shell, or cmd.exe, type:</p>
+<p>telnet localhost 5555</p>
+<p>For now, nothing much will happen, but you should see a black window and your running python script should update with the incoming connection address.</p>
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	  
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+

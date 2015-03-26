@@ -1,0 +1,116 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  	<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+<div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/AWIgW_F_k50?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+<body align="left" onload="brython({debug:1, cache:'version'})">
+		<div class="container" align="left" style="height:300px; max-width:750px" >
+			<center><button type="button" class="btn btn-success" id="run" style="height:35px"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span> Run</button></center>
+			
+			<table id="banner" cellpadding=0 cellspacing=0>
+			<tr id="banner_row">
+			
+			</tr>
+			</table>
+			
+
+
+
+			<div id="container" style="max-height:80%">
+			<div id="left-div">
+			<div style="padding: 3px 3px 3px 3px;">
+			
+			
+			</div>
+			  <div id="editor" style="width:100%;"></div>
+			</div>
+
+			<div id="right-div">
+			<div style="padding: 3px 3px 3px 3px;">
+
+
+
+			</div>
+			<div style="width:100%;height:100%;">
+			<textarea id="console"></textarea>
+
+			</div>
+			<p style="font-size:75%">Python 3 embedded console using <a href="http://brython.info/" target="_blank">Brython</a></p>
+			</div>
+			</div>
+
+		</div>
+	</body>
+
+<p>In this video we'll be discussing some of the basics to debugging. In my videos, I get a lot of questions for help where people have errors and are not sure what the problem is. If they used some extremely simple debugging, they'd realize how obvious the answer is. Most of the time, the problem is a typo, followed closely by a misunderstanding of indentation and standards.</p>
+
+<p>Standards how are how you organize your code. With python, unlike most languages, you define blocks of code, like functions, by indentation. Most python editors will automatically indent for you where it is necessary. With this, if you are ever coding along and find python automatically indenting you where you don't think it should, this should raise a flag for you to figure out.</p>
+
+<p>There are some more in-depth common-issues that you'll find from time to time, you can find more debugging videos by searching for debugging in my channel. For now I will just keep these ones basic. The first error we'll discuss is the NameError: is not defined.</p>
+
+<p>As obvious as this might appear to you, this gets people amazingly frequently. Just learn to recognize the "is not defined" as a high chance that you have typoed the definition of the variable or when you are calling it. Basically, you typo-ed somewhere.</p>
+<pre class="prettyprint">variable = 55
+print(varaible)
+</pre>
+Fail.
+
+<p>Next up, we have indentation issues. You will see "expected an indented block" as a popup when you never enter an indented block for something that requires it, like a function.</p>
+<pre class="prettyprint">def task1():
+
+
+def task2():
+    print('more tasks')
+</pre>
+<p>Nope.</p>
+
+<p>So there was a lacking expected indent. How about an unexpected one?</p>
+<pre class="prettyprint">def task():
+    print ('stuff')
+
+print('more stuff')
+
+    print('stuff')
+</pre>
+<p>Denied.</p>
+
+<p>Now what happens when you don't close off your strings and move to another line?</p>
+<pre class="prettyprint">def task():
+    print('some people find themselves committing this too
+
+
+    print('ouch...')
+</pre>
+<p>Nay. EOL while scanning string literal.</p>
+
+<p>So there we have just a handful of very common errors. There are others from time to time, but they tend to be typos or indent issues quite often.</p>
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	  
+	
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+

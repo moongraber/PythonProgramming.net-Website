@@ -1,0 +1,145 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  	<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+<div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/LUoKlnK5wcc" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+	<body align="left" onload="brython({debug:1, cache:'version'})">
+		<div class="container" align="left" style="height:300px; max-width:750px" >
+			<center><button type="button" class="btn btn-success" id="run" style="height:35px"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span> Run</button></center>
+			
+			<table id="banner" cellpadding=0 cellspacing=0>
+			<tr id="banner_row">
+			
+			</tr>
+			</table>
+			
+
+
+
+			<div id="container" style="max-height:80%">
+			<div id="left-div">
+			<div style="padding: 3px 3px 3px 3px;">
+			
+			
+			</div>
+			  <div id="editor" style="width:100%;"></div>
+			</div>
+
+			<div id="right-div">
+			<div style="padding: 3px 3px 3px 3px;">
+
+
+
+			</div>
+			<div style="width:100%;height:100%;">
+			<textarea id="console"></textarea>
+
+			</div>
+			<p style="font-size:75%">Python 3 embedded console using <a href="http://brython.info/" target="_blank">Brython</a></p>
+			</div>
+			</div>
+
+		</div>
+	</body>
+<p>This Python 3 programming tutorial covers list manipulation. This includes adding things to the end, inserting them into specific positions, removing things, finding data, counting the number of occurrences, sorting, and reversing the data.</p>
+
+<p>All of the above are very common operations with lists, and all of them are built into Python 3 for ease of use.</p>
+
+<p>Keep in mind that lists are mutable, and using these functions change the list.</p>
+
+<p>Here is some example code of list manipulation:</p>
+
+<p>Since lists are mutable, this means that we will be using lists for things where we might intend to manipulate the list of data, so how can we do that? Turns out we can do all sorts of things.</p>
+
+<p>We can add, remove, count, sort, search, and do quite a few other things to python lists. </p>
+<pre class="prettyprint">
+# first we need an example list:
+x = [1,6,3,2,6,1,2,6,7]
+# lets add something.
+# we can do .append, which will add something to the end of the list, like:
+x.append(55)
+print(x)
+</pre>
+
+<p>Above, we took a list, and added to the end of the list with .append. Remember append with files? Same thing, .append() will add to the end of a list. </p>
+
+<p>What if you have an exact place that you'd like to put something in a list, instead of just at the very end?</p>
+
+<pre class="prettyprint">
+x.insert(2,33)
+print(x)
+</pre>
+
+<p>Here we say that we want to insert, at the index of 2, the number 33. 
+The reason that went in the 3rd place, again, is because we start at the zero element, then go 1, 2...etc with lists.</p>
+
+<p>Now we can remove things. .remove() will remove the first instance of the value in the list. If it doesn't exist, there will be an error:</p>
+
+<pre class="prettyprint">
+x.remove(6)
+print(x)
+</pre>
+
+<p>Next, remember how we can reference an item by index in a list? like:</p>
+<pre class="prettyprint">
+print(x[5])
+</pre>
+
+<p>Well, we can also search for this index, like so:</p>
+
+<pre class="prettyprint">
+print(x.index(1))
+</pre>
+
+<p>Now here, we can see that it actually returned a 0, meaning the first element was a 1... when we knew there was another with an index of 5. So, instead we might want to know before-hand how many examples there are.</p>
+
+<pre class="prettyprint">
+print(x.count(1))
+</pre>
+<p>We see there are actually 2 of them</p>
+
+<p>We can also sort the list:</p>
+<pre class="prettyprint">
+x.sort()
+print(x)
+</pre>
+
+
+<p>What if these were strings? like:</p>
+<pre class="prettyprint">
+y = ['Jan','Dan','Bob','Alice','Jon','Jack']
+y.sort()
+print(y)
+y.reverse()
+print(y)
+</pre>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	  
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+

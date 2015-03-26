@@ -1,0 +1,143 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  	<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+<div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/7rjJrQy9gi4?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+
+	<body align="left" onload="brython({debug:1, cache:'version'})">
+		<div class="container" align="left" style="height:300px; max-width:750px" >
+			<center><button type="button" class="btn btn-success" id="run" style="height:35px"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span> Run</button></center>
+			
+			<table id="banner" cellpadding=0 cellspacing=0>
+			<tr id="banner_row">
+			
+			</tr>
+			</table>
+			
+
+
+
+			<div id="container" style="max-height:80%">
+			<div id="left-div">
+			<div style="padding: 3px 3px 3px 3px;">
+			
+			
+			</div>
+			  <div id="editor" style="width:100%;"></div>
+			</div>
+
+			<div id="right-div">
+			<div style="padding: 3px 3px 3px 3px;">
+
+
+
+			</div>
+			<div style="width:100%;height:100%;">
+			<textarea id="console"></textarea>
+
+			</div>
+			<p style="font-size:75%">Python 3 embedded console using <a href="http://brython.info/" target="_blank">Brython</a></p>
+			</div>
+			</div>
+
+		</div>
+	</body>
+
+<p>In this video, we cover a handful of the built-in functions with Python 3. For a full list, see: https://docs.python.org/3/library/functions.html</p>
+
+<p>We cover absolute value (abs()), the help() functions, max(), min() ...which are how to find maximum and minimum of a list, how to round a number with round(), as well as ceil() and floor(), even though these last two are NOT built in, it just seemed like a good time to bring them up. Finally, we cover converting floats, ints, and strings to and from each other.</p>
+
+<p>There are still quite a few other built in functions to Python 3, but the others are not really meant for a basics tutorial.</p>
+
+<p>Sample code for the built in functions that are covered in the video:</p>
+
+<strong><p>Absolute Values:</p></strong>
+<pre class="prettyprint">exNum1 = -5
+exNum2 = 5
+print(abs(exNum1))
+if abs(exNum1) == exNum2:
+    print('True!')
+</pre>
+<strong><p>The Help function:</p></strong>
+
+<p>This is probably one of the most under-utilized commands in Python, many people do not even know that it exists. With help(), you can type it with empty parameters to engage in a search, or you can put a specific function in question in the parameter.</p>
+<pre class="prettyprint">help()
+</pre>
+<strong>Or...</strong>
+<pre class="prettyprint">import time
+# will work in a typical installation of Python, but not in the embedded editor
+help(time)
+</pre>
+<strong>Max and Min:</strong>
+
+<p>How to find the maximum or highest number in a list...</p>
+<p>or how to find the lowest or minimum number in a list.</p>
+<pre class="prettyprint">exList = [5,2,1,6,7]
+
+largest = max(exList)
+print(largest)
+
+smallest = min(exList)
+print(smallest)
+</pre>
+<strong><p>Rounding:</p></strong>
+
+<p>Rounding will round to the nearest whole. There are also ways to round up or round down.</p>
+<pre class="prettyprint">x = 5.622
+x = round(x)
+print(x)
+
+y = 5.256
+y = round(y)
+print(y)
+</pre>
+<strong><p>Converting data types:</p></strong>
+
+<p>Many times, like reading data in from a file, you might find the datatype is incorrect, like when we mean to have integers, but they are currently in string form, or visa versa.</p>
+
+<strong><p>Converting a string to an integer:</p></strong>
+<pre class="prettyprint">intMe = '55'
+intMe = int(intMe)
+print(intMe)
+</pre>
+<strong><p>Converting and integer to a string:</p></strong>
+<pre class="prettyprint">stringMe = 55
+stringMe = str(stringMe)
+print(stringMe)
+</pre>
+<strong><p>Converting an integer to a float:</p></strong>
+<pre class="crayon-selected">floatMe = 55
+floatMe = float(floatMe)
+print(floatMe)
+</pre>
+<p>You can also convert floats to strings, strings to floats, and more. Just make sure you do a valid operation. You still cannot convert the letter h to a float.</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	  
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+

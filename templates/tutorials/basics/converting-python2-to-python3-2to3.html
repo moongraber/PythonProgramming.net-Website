@@ -1,0 +1,97 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/8qxKYnAsNuU?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M" frameborder="0" allowfullscreen></iframe></div>
+	  
+	  <p>Before concluding the Python 3 basics series, I think it would be wise to cover what can be involved when you run into code that is written in Python 2, as it will happen quite often and should be considered one of the basics to learning Python 3.</p>
+	  <p>Generally, you will likely find the largest culprit for Python 2 code not working in Python 3 the Python 2 print statement, compared to the Python 3 print function.</p>
+	  <pre  class="prettyprint">print "Hello there"</pre>
+	  <p>The above is fine for Python 2, but will throw a syntax error in Python 3. That said, Python 2 code can also be:</p>
+	  <pre  class="prettyprint">print("Hello there")</pre>
+	  <p>Most Python 3 code is capable of running on Python 2.</p>
+	  <p>Another major difference is going to be people's handling of exceptions. So in Python 2, you most often see:</p>
+<pre  class="prettyprint">
+try:
+    dosomething
+except Exception, e:
+    return str(e)
+
+</pre>	  
+	  
+	  
+	  
+	  <p>This code will throw a syntax error in Python 3!</p>
+<pre  class="prettyprint">
+try:
+    dosomething
+except Exception as e:
+    return str(e)
+
+</pre>	 	  
+	  
+	  <p>The above code is how Python 3 exceptions are supposed to be written, but this code also works as expected in Python 2.</p>
+	  <p>The third major difference I find in Python 2 vs Python 3 coding is urllib and general internet access.</p>
+	  <p>In Python 2, internet information is returned as string data. In Python 3, it comes in as bytes, and must be handled as such, being converted to string if that is how you wish to treat it.</p>
+	  <p>There are quite a few other small things, but those are the main areas. For smaller scripts, these things can be usually fixed very quickly. For larger ones, however, it can get very tedious... very fast. Luckily, Python 3 comes with a script called 2to3, which converts quite a bit of common differences between Python 2 and Python 3 code. </p>
+	  <p>For a quick example of 2to3 in action, let's write a quick Python 2 script:</p>
+	  
+<pre  class="prettyprint">
+import urllib2
+
+try:
+    x = urllib2.urlopen("http://pythonprogramming.net").read()
+	print x
+except Exception, e:
+    print str(e)
+</pre>	 	  
+	  
+	  
+	  
+	  <p>The above code has a few things that need to be changed. First the import for urllib2 is not valid in Python 3, we just use urllib. Next, we use urllib2.urlopen to open the URL, which, again, is not valid. Then we print x like print is a statement. Python 3 sheds a tear at this point. Then we really kick Python 3 while it is down with the except Exception, e bit. Yikes. Then we finally just spit at Python 3 one last time with another print statement.</p>
+	  <p>Now we're ready to test 2to3! Using this will vary slightly between operating systems. I show doing it in Windows and Ubuntu in the video. For the most part, however, you just need to reference the 2to3 script. The full path to it will be: </p>
+	  <p>PythonDirectory / Tools / scripts / 2to3.py</p>
+	  <p>Thus, on Windows, my version was in:</p>
+	  <p>C:/Python34/Tools/scripts/2to3.py</p>
+	  <p>You may be able to get by just typing 2to3, or python 2to3. Try if you like, didn't work for me since 2to3.py wasn't in my Path.</p>
+	  <p>So, for me, I open up my cmd.exe to the directory that I saved our Python 2 file to. If you open cmd.exe to somewhere that isn't the directory that contains the python 2 script we just wrote, you need to change directory there (cd).</p>
+	  <p>Now you can execute 2to3, here's what I typed:</p>
+	  <pre>C:/Python34/Tools/scripts/2to3.py python2script.py</pre>
+	  <p>That code will just output the problem and fixed code to the console. Now, let's actually convert the file!</p>
+	  <pre>C:/Python34/Tools/scripts/2to3.py -w python2script.py</pre>
+	  <p>With the additional -w (standing for write), we are able to write the changes to the file. You should also see a .bak file, which is a backup of the original file.</p>
+	  <p></p>
+
+	  
+	  
+
+		
+	  
+		
+		
+		
+		<p>That's it for the Python 3 Basics: <a title="Dashboard" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	  
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+

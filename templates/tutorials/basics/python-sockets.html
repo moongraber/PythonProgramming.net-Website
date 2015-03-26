@@ -1,0 +1,167 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/wzrGwor2veQ?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+	  
+	  <br>
+	  
+	  <p>Sockets are used in networking. The idea of a socket is to aid in the communication between two entities. When you view a website, you are opening a port and connecting to that website via sockets. In this, you are the client, and the website is the server. Quite literally, you are served data.</p>
+	  <strong><p>What are Ports and what are Sockets?</p></strong>
+	  <p>A natural point of confusion here is the difference between sockets and ports. You can think of a port much like a shipping port, where boats dock at the port and unload goods. Then, you can think of the ship itself as the socket. The ocean is the internet. Much like shipping ports, a socket (our ship in this metaphor), is bound by a specific port. Docking at a different port is not allowed, for ships or sockets!</p>
+	  <p>Now, let's go ahead and play with ports and sockets in Python! This can be a slightly confusing topic, so I will do my best to document everything. The video should help as well if you are finding yourself confused.</p>
+	  	<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+import socket
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+print(s)
+		</pre></div>
+		<div class="col-md-6">
+<p>So, we must import socket to use it. This is an included module with your Python 3 distribution</p>
+<p>Next, "s" here is being returned a "socket descriptor" by socket.socket. We then print "s" to show what this looks like.</p></div></div>
+
+
+	  <p>Generally, we use sockets to communicate between a couple of places, so let's show an example of that. One of the most common transmissions of data is between a "client" and "server," most often in the case of a user visiting a website and being served web-content, much like you are being served this page right now. Sockets did that for you.</p>
+	  
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+server = 'pythonprogramming.net'
+
+port = 80
+
+server_ip = socket.gethostbyname(server)
+print(server_ip)
+		</pre></div>
+		<div class="col-md-6">
+<p>Just about any public website will have port 80 open, which is for HTTP access. Most websites will have port 22 open, which is for SSH (secure shell), and many will have 20 and 21 open, which are used for FTP (File Transfer Protocol).</p></div></div>	
+
+<p>Here is some more information on open ports and hacking: <kbd data-toggle="collapse" data-target="#porthack" aria-expanded="false" aria-controls="porthack">Open Ports and Hacking</kbd></p>
+	  
+		<div class="collapse" id="porthack">
+		  <div class="well">
+			<strong><p>Do open ports mean you are going to be hacked?</p></strong>
+				  <p>It is a common misconception, perpetuated by the media, that an "open port" is all one needs to "hack" a something. The truth is, all websites have open ports, but each port is expecting a specific socket (ship in our metaphor from before), and that specific socket's type of payload of data (ship's cargo) is also known and expected before-hand.</p>
+				  <p>Thus, in our metaphor, if we have a ship that is supposed to be bringing 50 crates full of coffee, but has instead brought over 50 crates of swordfish, immediate red flags are thrown. The same is true with sockets and ports. The socket / ship can be denied.</p>
+				  
+				  <strong><p>Then how do hackers get in?</p></strong>
+				  <p>The way sockets and ports are abused by hackers is by taking advantage of vulnerabilities in the programs that have opened specific ports. Every program that uses the internet to provide you a service uses ports, and opens them to the world. Take Skype for example. Skype uses ports 80 and 443. You already know what port 80 is for. 443 is for other types of connections besides port 80's HTTP connections. Via port 443, Skype is expecting a certain type of data, but maybe their security is not perfect, and people are able to use port 443 maliciously because Skype's protocol is not perfectly secure.</p>
+				  <p>Thus, what hackers tend to do, is scan open ports. From the open ports, many times, they can deduce what programs you are running, and proceed to try various attacks against that program's vulnerabilities, especially the historical ones that are generally made public. This is why it is important to keep your software up to date. Most software updates contain security upgrades, fixes, or patches. Even if not specifically explained, the very act of patching an area of code can alert someone that there was something weak there before.</p>
+		  </div>
+		</div>  
+	  
+	  
+	  <p>So, above, we were able to access PythonProgramming.net via port 80. From there, we were able to determine the server's IP address by using gethostbyname().</p>
+	  <p>Now, let's make a request, making sure it is in-line with what the port will find acceptable from our socket:</p>
+	  <pre  class="prettyprint">
+request = "GET / HTTP/1.1\nHost: "+server+"\n\n"
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(("pythonprogramming.net", 80))
+	  </pre>
+	  <p>Above, we defined our request as an HTTP request, where we wanted to "GET" data from the "Host" of PythonProgramming.net</p>
+	  <p>Next, we defined our socket in the same manner as we had before.</p>
+	  <p>Finally, we make our connection to PythonProgramming.net on port 80. This is just a connection. We have defined out request, but not actually made any request, so let's make the request:</p>
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+s.send(request.encode())
+result = s.recv(4096)
+
+print(result)
+		</pre></div>
+		<div class="col-md-6">
+<p>First we're sending the request, and <kbd data-toggle="collapse" data-target="#encoding" aria-expanded="false" aria-controls="encoding">encoding</kbd> it.</p><p>Then we're using s.recv to receive the resulting data. The 4096 is a buffer for the data, so that you receive the data in manageable chunks rather than all at once. Finally, we're just printing the result (Though it should be noted this is printing only the first part of the buffer, so the buffer in this case is almost a waste.)</p></div></div>
+		<div class="collapse" id="encoding">
+		  <div class="well">
+			<p>With Python 3, one of the major changes from Python 2 was the differing treatment of strings and bytes. If you want to make a request that is a string, you need to encode it. You will also need to decode any return that you wish to treat like a string. You should just get into the habit mentally that everything you send out over the internet needs to be encoded, and all that you receive needs a .decode, every time! Python 2 implicitly handled this for us. Python 3 requires us to be explicit, which is more <kbd data-toggle="collapse" data-target="#Pythonic" aria-expanded="false" aria-controls="Pythonic">Pythonic</kbd> anyways.</p>
+		  </div>
+		</div>
+		<div class="collapse" id="Pythonic">
+		  <div class="well">
+			<p>One of the main pillars of Python is that "explicit is better than implicit. If you have not yet, open a console or use this one below, and do the following import:
+			<pre  class="prettyprint">import this</pre>
+			<body align="left" onload="brython({debug:1, cache:'version'})">
+		<div class="container" align="left" style="height:300px; max-width:750px" >
+			<center><button type="button" class="btn btn-success" id="run" style="height:35px"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span> Run</button></center>
+			
+			<table id="banner" cellpadding=0 cellspacing=0>
+			<tr id="banner_row">
+			
+			</tr>
+			</table>
+			
+
+
+
+			<div id="container" style="max-height:80%">
+			<div id="left-div">
+			<div style="padding: 3px 3px 3px 3px;">
+			
+			
+			</div>
+			  <div id="editor" style="width:100%;"></div>
+			</div>
+
+			<div id="right-div">
+			<div style="padding: 3px 3px 3px 3px;">
+
+
+
+			</div>
+			<div style="width:100%;height:100%;">
+			<textarea id="console"></textarea>
+
+			</div>
+			<p style="font-size:75%">Python 3 embedded console using <a href="http://brython.info/" target="_blank">Brython</a></p>
+			</div>
+			</div>
+
+		</div>
+	</body>
+			</p>
+		  </div>
+		</div>
+	  <p></p>
+	  <p>Since I said the buffer was almost a waste, I should probably show how to make the output actually buffer as well. Here's how:</p>
+	  <p>Instead of using print(result), comment or delete that, then do:</p>
+	  <pre  class="prettyprint">
+while (len(result) > 0):
+    print(result)
+    result = s.recv(4096)
+	  </pre>
+	  
+	  <p></p>
+	  <p></p>
+	  
+	  
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	 
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+

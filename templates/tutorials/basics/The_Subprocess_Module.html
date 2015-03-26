@@ -1,0 +1,55 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  	<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+<div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/5XU-mAZVv4w?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+
+
+
+<p>So this tutorial is a lot more than just the sample code. While you probably can just get by with the others without watching the video, this one is going to probably make no sense without the video. That said:</p>
+<pre class="prettyprint"># This tutorial is best followed in a shell / command prompt.
+# Open yours up, type python, or python3, and then follow.
+import subprocess
+
+# Say you are on windows:
+# module  call command in the shell
+# you can change that if you'd like, eventually.
+# IF YOU ARE NOT IN A SHELL, YOU WILL SEE NO OUTPUT!
+subprocess.call('dir', shell=True)
+subprocess.call('echo dir', shell=True)
+</pre>
+<p>So what we're able to do here is communicate to the shell commands from our Python script. The reason this matters is for the same reason that we can communicate from the shell to Python. We can <a title="sys module with python 3" href="/sys-module-python-3/" target="_blank"><span style="text-decoration: underline;"><strong>communicate from the shell to Python</strong></span></a> as we saw earlier, and now we see we can communicate from Python to the shell.</p>
+
+<p>What makes this special, is when you realize that you can do this same thing with other languages as well. So, you can use, say, java to communicate with the shell, which then passes vars through to a python script, which then communicates back to the shell, which then goes back into the java program... or any program. You can achieve similar results with sockets as well, and it will come down to performance and preference which you choose. I find this method to be far easier, but sometimes more clumsy.</p>
+
+<p>Anyway, hopefully you enjoyed.</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	  
+	
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+

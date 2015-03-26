@@ -1,0 +1,115 @@
+{% extends "header.html" %}
+{% block body %}
+
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  	<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>Math basics with Python 3</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/BvgPM9-krOY?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+	  
+	  <body align="left" onload="brython({debug:1, cache:'version'})">
+		<div class="container" align="left" style="height:300px; max-width:750px" >
+			<center><button type="button" class="btn btn-success" id="run" style="height:35px"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span> Run</button></center>
+			
+			<table id="banner" cellpadding=0 cellspacing=0>
+			<tr id="banner_row">
+			
+			</tr>
+			</table>
+			
+
+
+
+			<div id="container" style="max-height:80%">
+			<div id="left-div">
+			<div style="padding: 3px 3px 3px 3px;">
+			
+			
+			</div>
+			  <div id="editor" style="width:100%;"></div>
+			</div>
+
+			<div id="right-div">
+			<div style="padding: 3px 3px 3px 3px;">
+
+
+
+			</div>
+			<div style="width:100%;height:100%;">
+			<textarea id="console"></textarea>
+
+			</div>
+			<p style="font-size:75%">Python 3 embedded console using <a href="http://brython.info/" target="_blank">Brython</a></p>
+			</div>
+			</div>
+
+		</div>
+		</body>
+
+		<p>Math is a pretty popular topic, so we should probably learn how to do it in Python 3. Luckily for us, math is so very popular that it works extremely simply.</p>
+
+		&nbsp;
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">1+3
+		</pre></div>
+		<div class="col-md-6">
+		<p>Here, we have some simple addition, the returned number is 4.</p>
+		</div></div>
+		
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">4*4
+		</pre></div>
+		<div class="col-md-6">
+		<p>Next up, multiplication, fancy stuff! The return is 16.</p></div></div>
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">5-2
+		</pre></div>
+		<div class="col-md-6">
+		<p>Subtraction, even fancier. Return will be 3</p></div></div>
+		
+		
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">5/2
+		</pre></div>
+		<div class="col-md-6">
+		<p>Division, now this is actually fancy, based on Python's history.</p>
+		<p>In Python 2, the division does not necessarily work in the way expected. If you divide two whole numbers, you will be returned a whole number. You must divide one of the numbers as a float in order to get a proper return. This was changed in Python 3+, and now you always get expected division, yay!</p></div></div>
+		
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">#exponents
+		4**4
+		</pre></div>
+		<div class="col-md-6">
+		<p>There is another way to do exponents, but this works just fine, and is a familiar syntax for it.</p></div></div>
+
+		<p>That's it for basic math. It really is quite simple. Math is quite integral to a lot of programs, so it is very nice that it is kept simple enough.</p>
+
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+
+	  
+	
+		
+	  </div>
+	  
+
+</body>
+{% endblock %}
+

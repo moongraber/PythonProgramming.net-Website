@@ -1,0 +1,66 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  	<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+<div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/D2U6yg0i-oA?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+
+	
+
+<p>Since Python is such a popular programming language for data analysis, it only makes sense that it comes with a statistics module. Sadly, this is not available in Python 2.7, but that's okay because we're in Python 3!</p>
+
+<p>The statistics module comes with an assortment of goodies: Mean, median, mode, standard deviation, and variance.</p>
+
+<p>These are all fairly straight forward to use, here and some simple examples:</p>
+
+&nbsp;
+<pre class="prettyprint">import statistics
+
+example_list = [5,2,5,6,1,2,6,7,2,6,3,5,5]
+
+x = statistics.mean(example_list)
+print(x)
+
+y = statistics.median(example_list)
+print(y)
+
+z = statistics.mode(example_list)
+print(z)
+
+a = statistics.stdev(example_list)
+print(a)
+
+b = statistics.variance(example_list)
+print(b)
+</pre>
+<p>We've not gone much over importing things in Python, so I've kept this basic. As you can see, you just simply pass a list through the module's function, and you're output is the answer. Here, we're saving the output to a variable, and then we're just printing out the variable. In normal circumstances, you'd probably continue doing things with it.</p>
+
+<p>Here, we've seen how simple importing and using modules can be, but there are a lot of other options when it comes to how we import things.</p>
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	  
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+

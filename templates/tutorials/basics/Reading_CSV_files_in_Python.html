@@ -1,0 +1,107 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  	<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+<div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/K_oXb04izZM?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+
+<p>This Python 3 tutorial covers how to read CSV data in from a file and then use it in Python. For this, we use the csv module. CSV literally stands for comma separated variable, where the comma is what is known as a "delimiter." While you can also just simply use Python's split() function, to separate lines and data within each line, the CSV module can also be used to make things easy.</p>
+
+<p>Here is the sample code that matches the video:</p>
+
+<p>Example CSV file data:</p>
+<pre class="prettyprint">1/2/2014,5,8,red
+1/3/2014,5,2,green
+1/4/2014,9,1,blue
+</pre>
+&nbsp;
+
+<p>Next, let's cover the reading of CSV files into memory:</p>
+<pre class="prettyprint">
+import csv
+
+with open('example.csv') as csvfile:
+    readCSV = csv.reader(csvfile, delimiter=',')
+    for row in readCSV:
+        print(row)
+        print(row[0])
+        print(row[0],row[1],row[2],)
+</pre>
+
+<p>Above, we've shown how to open a CSV file and read each row, as well as reference specific data on each row.</p>
+
+<p>Next, we will show how to pull out specific data from the spreadsheet and save it to a list variable:</p>
+<pre class="prettyprint">
+import csv
+
+with open('example.csv') as csvfile:
+    readCSV = csv.reader(csvfile, delimiter=',')
+    dates = []
+    colors = []
+    for row in readCSV:
+        color = row[3]
+        date = row[0]
+
+        dates.append(date)
+        colors.append(color)
+
+    print(dates)
+    print(colors)
+</pre>
+
+<p>Once we have this data, what can we do with it? Maybe we are curious about what color something was on a specific date.</p>
+
+<pre class="prettyprint">
+import csv
+
+with open('example.csv') as csvfile:
+    readCSV = csv.reader(csvfile, delimiter=',')
+    dates = []
+    colors = []
+    for row in readCSV:
+        color = row[3]
+        date = row[0]
+
+        dates.append(date)
+        colors.append(color)
+
+    print(dates)
+    print(colors)
+
+    # now, remember our lists?
+
+    whatColor = input('What color do you wish to know the date of?:')
+    coldex = colors.index(whatColor)
+    theDate = dates[coldex]
+    print('The date of',whatColor,'is:',theDate)
+</pre>
+
+<p>Simple enough! If we enter something that doesn't exist, we get an ugly error.</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	  
+	
+	
+
+	
+</body>
+
+
+{% endblock %}
+

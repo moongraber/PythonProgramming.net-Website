@@ -1,0 +1,121 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  	<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Basics']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Basics']}}%;">
+				Basics Progress:  {{completed_percentages['Basics']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+<div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/Ihlpgw_HYic?list=PLQVvvaa0QuDe8XSftW-RAxdo6OmaeL85M" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+
+<p>Now that we've got the basic window, buttons, and event handling down, we're ready to tackle the idea of a menu bar. The way tkinter works, along with quite a few graphics/windows operations work, is with a main window, then you sort of build things on top of it, then display everything all at once, which gives the appearance of a singular package. What makes tkinter most confusing, at least to me, is that you have to work both forwards and backwards in relation to your goal.</p>
+
+<p>So, when I make programs, I usually work backwards from my goal. I know what the end objective is going to be, and then I take steps in reverse, first calling a non-existent function as if it works how I might need it to, then I define it to fit how I need it to act. With tkinter, this methodology is used as well, only you have to do some of the beginning steps, then you have to go to the end and work backwards. Let's hit the code to understand better:</p>
+<pre class="prettyprint">
+
+# Simple enough, just import everything from tkinter.
+from tkinter import *
+
+
+# Here, we are creating our class, Window, and inheriting from the Frame
+# class. Frame is a class from the tkinter module. (see Lib/tkinter/__init__)
+class Window(Frame):
+
+    # Define settings upon initialization. Here you can specify
+    def __init__(self, master=None):
+        
+        # parameters that you want to send through the Frame class. 
+        Frame.__init__(self, master)   
+
+        #reference to the master widget, which is the tk window                 
+        self.master = master
+
+        #with that, we want to then run init_window, which doesn't yet exist
+        self.init_window()
+
+    #Creation of init_window
+    def init_window(self):
+
+        # changing the title of our master widget      
+        self.master.title("GUI")
+
+        # allowing the widget to take the full space of the root window
+        self.pack(fill=BOTH, expand=1)
+
+        # creating a menu instance
+        menu = Menu(self.master)
+        self.master.config(menu=menu)
+
+        # create the file object)
+        file = Menu(menu)
+
+        # adds a command to the menu option, calling it exit, and the
+        # command it runs on event is client_exit
+        file.add_command(label="Exit", command=self.client_exit)
+
+        #added "file" to our menu
+        menu.add_cascade(label="File", menu=file)
+
+        # create the file object)
+        edit = Menu(menu)
+
+        # adds a command to the menu option, calling it exit, and the
+        # command it runs on event is client_exit
+        edit.add_command(label="Undo")
+
+        #added "file" to our menu
+        menu.add_cascade(label="Edit", menu=edit)
+
+    
+    def client_exit(self):
+        exit()
+
+        
+# root window created. Here, that would be the only window, but
+# you can later have windows within windows.
+root = Tk()
+
+root.geometry("400x300")
+
+#creation of an instance
+app = Window(root)
+
+#mainloop 
+root.mainloop()  
+
+</pre>
+<p>Output:</p>
+<img class="img-responsive" src="{{ url_for('static', filename='images/basics/tkinter-menu-bar-python-3-tutorial.png') }}" alt="menu bar in tkinter" width="571" height="505" />
+
+<p>Sometimes I like to describe things line by line, and sometimes I think it can make it confusing. For tkinter, you've probably noticed I've been commenting the heck out of it and describing. Hopefully that helps a bit. So, here, we can see that the menus are all done within init_window().</p>
+
+<p>We see to begin, we need a menu instance, then we bind that instance as a menu. Then, we create a menu within the menu. Then, we add the items to the menu within a menu...then we do it again.</p>
+
+<p>...and people are quickly lost with this. It's quite a confusing way to go about it at first, but that's what we've got. Once you get comfortable with tkinter, you can perform these operations much quicker. If you are confused, then I highly suggest you watch the video as well, since I show how the grouping of the 3 lines of object creation, adding options, then appending to the main menu sort of simplifies the process.</p>
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+	  
+	  
+	  
+	
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
