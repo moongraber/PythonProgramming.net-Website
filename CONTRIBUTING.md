@@ -5,9 +5,13 @@ This project is open source, and it is my hope that people will contribute to he
 For specific issues of direct interest, see the issues tab.
 
 Here are some examples of contributions:
+
 -General functionality concepts (handling users, CMS, improving the "one big file" init.py aspect)
+
 -Code fixes and new implementations (some specifics are listed here in the "issues" tab, but feel free to think for yourself)
+
 -Written tutorial updates or improvements (This is primarily an open source code project, though a big part of this website is the delivery of tutorials. If you think you have a better idea, let's see it!)
+
 -Typo fixes in the tutorials can come here as well. I didn't spell check anything in the initial commit, so I am sure I made plenty of mistakes!
 
 The main concern is the UI/UX. If you wish to fix the actual source code itself from the tutorials (for example, updating the code from the MPI tutorials)
