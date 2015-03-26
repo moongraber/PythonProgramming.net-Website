@@ -1,6 +1,6 @@
 # PythonProgramming.net-Website
 
-This is the source code to the actual PythonProgramming.net website.
+This is the source code to the actual PythonProgramming.net website. This website runs with the Flask web framework for Python.
 
 I am hosting the code here for the curious on-looker, but also seeking constructive criticism, as well as most importantly: support
 
