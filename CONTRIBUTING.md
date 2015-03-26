@@ -4,7 +4,9 @@ This project is open source, and it is my hope that people will contribute to he
 
 For specific issues of direct interest, see the issues tab.
 
-Here are some examples of contributions:
+#Here are some examples of contributions:
+
+-Contribute to this github. I am still a github noob, not really knowing what I am doing. 
 
 -General functionality concepts (handling users, CMS, improving the "one big file" init.py aspect)
 
@@ -17,9 +19,12 @@ Here are some examples of contributions:
 The main concern is the UI/UX. If you wish to fix the actual source code itself from the tutorials (for example, updating the code from the MPI tutorials)
 , then you are better off editing the source in that respective repository (This is the website code repo, but there are other repos which contain the actual source code from each individual tutorial as well). 
 
-Regarding UI/UX, I am very interested in:
+#Regarding UI/UX, I am very interested in:
+
 -Dashboard improvements (Suggestions: Better organization, saving tab location: this way someone can link specifically to the machine learning tab, rather than forcing the user to click through), tutorial suggestions.
+
 -Search: I have been thinking of simply using and re-skinning google search for the easiest, but a nice search in some form would be great. 
+
 -General Navigation
 
 This is a web app, and it's all about the user's experience. We want to make navigating, finding topics of interest, and consuming those topics as pleasurable as possible. 
