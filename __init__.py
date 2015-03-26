@@ -12,8 +12,6 @@ import os
 import time
 import urllib2
 from wtforms import Form, BooleanField, TextField, PasswordField, validators
-from werkzeug.security import generate_password_hash, \
-     check_password_hash
 from passlib.hash import sha256_crypt
 from dbconnect import connection
 import gc
@@ -21,17 +19,10 @@ import gc
 from content_management import Content
 import smtplib
 
-
-
 app = Flask(__name__)
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-
 
 # list of topics by {TOPIC:["TITLE", "URL"]}
 TOPIC_DICT = Content()
-
 
 class User:
     def username(self):
@@ -40,12 +31,7 @@ class User:
         except:
             return("guest")
 
-        
 user = User()
-
-
-
-    
 
 def userinformation():
     try:
@@ -55,8 +41,6 @@ def userinformation():
         guest = True
         client_name = "Guest"
         
-
-
     if not guest:
         try:
             
@@ -76,10 +60,8 @@ def userinformation():
         settings = [0,0]
         tracking = [0,0]
         rank = [0,0]
-
-
+        
     return client_name, settings, tracking, rank
-
 
 def update_user_tracking():
     try:
@@ -92,8 +74,6 @@ def update_user_tracking():
 
             #flash(str(client_name))
             #flash(str(tracking))
-
-            
 
             if tracking == None:
                 tracking = completed
@@ -113,7 +93,7 @@ def update_user_tracking():
             #flash(str(tracking))
         else:
             pass
-            #flash("that shit aint here boss")
+            #flash("that stuff aint here boss")
             #flash(completed)
             
     except Exception, e:
@@ -410,11 +390,6 @@ def headerpython():
         return(str(e))
 
 
-
-
-    
-    
-
 @app.errorhandler(404)
 def page_not_found(e):
     try:
@@ -594,7 +569,6 @@ def topic_completion_percent():
 
         completed_percentages = {}
         
-
         for each_topic in TOPIC_DICT:
             total = 0
             total_complete = 0
@@ -616,15 +590,10 @@ def topic_completion_percent():
         for each_topic in TOPIC_DICT:
             total = 0
             total_complete = 0
-        
-
+       
             completed_percentages[each_topic] = 0.0
 
         return completed_percentages
-    
-    
-
-    
 
     pass
     #return basics,pygame,pyopengl,kivy,flask,django,mysql,sqlite,datamanip,dataviz,nltk,svm,clustering,imagerec,forexalgo,robotics,supercomp,tkinter
@@ -643,20 +612,14 @@ def dashboard():
                 tracking = "/introduction-to-python-programming/"
             gc.collect()
 
-            
-
             if client_name == "Guest":
                 flash("Welcome Guest, feel free to browse content. Progress tracking is only available for Logged-in users.")
                 tracking = ['None']
 
-
-            
             update_user_tracking()
 
             completed_percentages = topic_completion_percent()
 
-
-                
             return render_template("dashboard.html",topics = TOPIC_DICT, tracking = tracking, completed_percentages=completed_percentages)
         except Exception, e:
             return((str(e), "please report errors to hskinsley@gmail.com"))
@@ -697,13 +660,6 @@ def privacy():
 @app.route('/support-donate/')
 def donate():
     try:
-
-        # title: [description, current_donated, target donated, donation link]
-
-
-        #
-        #
-        #
 
         future_topics = {"More Machine Learning with Scikit-Learn":["Machine Learning with Scikit-Learn is a massive topic that we've only just begun to cover. There are many more algorithms to cover, as well as topics to apply them to.",
                                                                     220,2500,"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QGWP42XA7ZRK2"],
@@ -3942,21 +3898,6 @@ def downloadpage_knowledgebase():
     update_user_tracking()
     completed_percentages = topic_completion_percent()
     return render_template("tutorials/Natural Language Processing with NLTK/downloadpage.html",completed_percentages=completed_percentages)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
