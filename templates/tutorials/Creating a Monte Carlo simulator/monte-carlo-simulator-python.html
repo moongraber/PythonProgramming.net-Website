@@ -1,0 +1,106 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Creating a Monte Carlo simulator']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Creating a Monte Carlo simulator']}}%;">
+				Creating a Monte Carlo simulator Progress:  {{completed_percentages['Creating a Monte Carlo simulator']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width=width="750" height="423" src="https://www.youtube.com/embed/9M_KPXwnrlE?list=PLQVvvaa0QuDdhOnp-FnVStDsALpYk2hk0" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+<p>Welcome to the monte carlo simulation experiment with python.</p>
+
+<p>Before we begin, we should establish what a monte carlo
+simulation is. The idea of a monte carlo simulation is to
+test various outcome possibilities. In reality, only one of the
+outcome possibilities will play out, but, in terms of risk assessment,
+any of the possibilities could have occurred. </p>
+
+<p>Monte carlo simulators are often used to assess the risk of a given
+trading strategy say with options or stocks.</p>
+
+<p>Monte carlo simulators can help drive the point home that
+success and outcome is not the only measure of whether or not a choice
+was good or not. Choices should not be assesed after their
+outcome. Instead, the risks and benefits should only be
+considered at the time the decision was made, without hindsight bias.
+A monte carlo simulator can help one
+visualize most or all of the potential outcomes to have a much
+better idea regarding the risk of a decision. </p>
+
+<p>With that, let's consider a basic example. Here, we will
+consider a gambling scenario, where a user can "roll" the metaphorical
+dice for an outcome of 1 to 100.</p>
+
+<p>If the user rolls anything from 1-50, the "house" wins. If the
+user rolls anything from 51 to 99, the "user" wins. If the user
+rolls a 100, they lose.</p>
+
+<p>With this, the house maintains a mere 1% edge, which is much smaller than the typical house edge, as well as the market edge when incorporating trading costs.</p>
+
+<p>For example, consider if you are trading with Scottrade, where the house takes $7 a trade. If you invest $1,000 per stock, this means
+you have $7 to pay in entry, and $7 to pay in exit, for a total of $14.</p>
+
+<p>This puts the "house edge" to 1.4% right out of the gate. Notably, Scottrade is not the
+actual house. The house is just not you. This means that, on a long term scale, your bets need to do better than 1.4% profit on average, otherwise you will be
+losing money. Despite the small number, the odds are already against you. Trading is a 50/50 game, especially in the short term.</p>
+
+
+<p>A monte carlo generator can also help illustrate the flaws of the gambler's
+fallacy. Many gamblers, and sometimes especially gamblers who
+understand statistics, fall prey to the gambler's fallacy.</p>
+
+<p>The fallacy asserts that, taking something like the flipping of a coin for
+heads or tails, you have a known 50/50 odds. That said, if you just flipped
+heads five times a row, somehow you're more likely to flip tails next.</p>
+
+<p>No matter how many heads have preceeded, your odds, each time you flip the
+coin are 50/50. It is easy to fall into the trap of thinking that on a long
+term scale odds will correlate to 50/50 therefor if the odds are imbalanced
+currently then the next flip's odds are also not 50/50</p>
+
+<p>So again, with our example in mind,
+1-50, house wins. 51-99 user wins. A perfect 100 means house wins.</p>
+
+<p>Now, let's begin. We first need to create our dice. For this, we'll employ the
+pseudo random number generator in python. </p>
+		<pre  class="prettyprint">
+import random
+
+def rollDice():
+    roll = random.randint(1,100)
+    return roll
+
+# Now, just to test our dice, let's roll the dice 100 times. 
+
+x = 0
+while x < 100:
+    result = rollDice()
+    print(result)
+    x+=1
+		</pre>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

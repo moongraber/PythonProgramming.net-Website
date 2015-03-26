@@ -1,0 +1,114 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Data Visualization']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Data Visualization']}}%;">
+				Data Visualization Progress:  {{completed_percentages['Data Visualization']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/dataviz/wire-frame-plane-tutorial-matplotlib-python-1024x682.png') }}" alt="matplotlib tutorials" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe src="//www.youtube.com/embed/Zv9a_wMJMe4?list=PLQVvvaa0QuDfpEcGUM6ogsbrlWtqpS5-1" width="750" height="423" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div><br>
+	  
+
+
+<p>In this tutorial, we cover how to make a wire frame / plane graph in Matplotlib. For this, we're just going to use the sample data provided by Matplotlib and leave it there. This type of graph is very specific in its application. If you happen to have your own data, feel free to substitute!</p>
+
+<p>The below code covers an example. I have included the commented out function that generates test data for this, in case you are curious:</p>
+<pre class="prettyprint">from mpl_toolkits.mplot3d import axes3d
+import matplotlib.pyplot as plt
+import numpy as np
+
+'''
+def get_test_data(delta=0.05):
+
+    from matplotlib.mlab import  bivariate_normal
+    x = y = np.arange(-3.0, 3.0, delta)
+    X, Y = np.meshgrid(x, y)
+
+    Z1 = bivariate_normal(X, Y, 1.0, 1.0, 0.0, 0.0)
+    Z2 = bivariate_normal(X, Y, 1.5, 0.5, 1, 1)
+    Z = Z2 - Z1
+
+    X = X * 10
+    Y = Y * 10
+    Z = Z * 500
+    return X, Y, Z
+
+'''
+
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+x, y, z = axes3d.get_test_data(0.05)
+ax.plot_wireframe(x,y,z, rstride=2, cstride=2)
+
+plt.show()
+</pre>
+
+
+<p>Not going to cover it officially, but check out:</p>
+<pre class="prettyprint">from __future__ import print_function
+"""
+A very simple 'animation' of a 3D plot
+"""
+from mpl_toolkits.mplot3d import axes3d
+import matplotlib.pyplot as plt
+import numpy as np
+import time
+
+def generate(X, Y, phi):
+    R = 1 - np.sqrt(X**2 + Y**2)
+    return np.cos(2 * np.pi * X + phi) * R
+
+plt.ion()
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+xs = np.linspace(-1, 1, 50)
+ys = np.linspace(-1, 1, 50)
+X, Y = np.meshgrid(xs, ys)
+Z = generate(X, Y, 0.0)
+
+wframe = None
+tstart = time.time()
+for phi in np.linspace(0, 360 / 2 / np.pi, 100):
+
+    oldcol = wframe
+
+    Z = generate(X, Y, phi)
+    wframe = ax.plot_wireframe(X, Y, Z, rstride=2, cstride=2)
+
+    # Remove old line collection before drawing
+    if oldcol is not None:
+        ax.collections.remove(oldcol)
+
+    plt.draw()
+
+print ('FPS: %f' % (100 / (time.time() - tstart)))
+</pre>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

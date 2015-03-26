@@ -1,0 +1,130 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"  
+<img class="img-responsive" src="{{ url_for('static', filename='images/pandas/.png') }}" alt="text to screen" />
+  -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Data Manipulation']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Data Manipulation']}}%;">
+				Data Manipulation Progress:  {{completed_percentages['Data Manipulation']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/pandas/3D-Matplotlib-Example.png') }}" alt="text to screen" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/qtQh2C5dzRo?list=PLQVvvaa0QuDfHt4XU7vTm22xDegR0v0fQ" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div><br>
+	  
+<h3>Pandas: Data manipulation, visualization, and analysis with for Python</h3>
+<p>You should now be able to follow along with this series using either Python 2 or Python 3. If you are having any trouble, comment on the video or shoot me an email for help. </p>
+<p>The Pandas module is a massive collaboration of many modules along with some unique features to make a very powerful module. Pandas is great for data manipulation, data analysis, and data visualization.</p>
+
+<p>The Pandas modules uses objects to allow for data analysis at a fairly high performance rate in comparison to typical Python procedures. With it, we can easily read and write from and to CSV files, or even databases. From there, we can manipulate the data by columns, create new columns, and even base the new columns on other column data. Next, we can progress into data visualization using Matplotlib. Matplotlib is a great module even without the teamwork of Pandas, but Pandas comes in and makes intuitive graphing with Matplotlib a breeze.</p>
+
+<p>In this series, I would like to walk you through the basics of the Pandas module, to show you all of the things you can do with it. At the end, I will even show you how to overcome any instance where Pandas does not do the </p>operation you are looking for, using function mapping.
+
+<p>The series is both text and video, with example code to go along with it. You can choose to only use one form, or both.</p>
+
+
+
+<p>Before we begin, you will need to not only download Pandas, but you will also need all the many dependencies. As I said before, Pandas makes use of a sort of collaboration between many modules, as well as adding some of its own code into the mix. This means we need quite a few others. I find the easiest set up to be the following website:</p>
+
+<a title="Python module windows installers" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/" target="_blank"><span style="text-decoration: underline;"><strong>http://www.lfd.uci.edu/~gohlke/pythonlibs/</strong></span></a>
+
+<p>That website has a plethora of Python modules and they also contain 64 bit versions of modules that are not normally offered as 64 bit. If you are not using Windows, then that website is of less use to you, but, then again, installing modules on Mac OS and Linux is usually quite simple!</p>
+
+<p>When on the website, download all of the dependencies listed. If you are not using that website to download Pandas or the dependencies, here is a list of the packages that you will definitely need:</p>
+<ul>
+	<li>Pandas</li>
+	<li>Numpy - Quite literally, number py</li>
+	<li>Dateutil - Easy dates</li>
+	<li>Pytz - Timezones</li>
+	<li>Bottleneck - Cython module for fast numpy arrays</li>
+	<li>Matplotlib - Graphing / Data visualization</li>
+</ul>
+
+<p>If you're using a newer version of Python, then you can make use if pip install. It should be as easy as:</p>
+
+<pre class="prettyprint">
+pip install dateutil
+pip install bottleneck
+pip install pytz
+pip install numpy
+pip install matplotlib
+pip install pandas
+</pre>
+
+<p>If you need help with pip, check out the <a href="/using-pip-install-for-python-modules/" target="blank"><button class="btn btn-primary">pip tutorial</button></a>.</p>
+
+
+
+<p>Once you have all of that, then you're ready to learn more about Pandas.</p>
+
+<p>It would be wise to get a general understanding about the terms used in Pandas, like what is a series, dataframe, indexing, slicing ... etc.</p>
+<iframe width="750" height="423" src="//www.youtube.com/embed/LUDiWiZ3bbw?list=PLQVvvaa0QuDfHt4XU7vTm22xDegR0v0fQ" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+<ul>
+	<li>Series - A series is a one-dimensional NumPy-like array. You can put any data type in here, and perform vectorized operations on it. A series is also dictionary - like in many ways. Usually this is denoted as "s."</li>
+	<li>DataFrame - Two-dimensional NumPy-like array. Again, any data type can be stuffed in here. Usually this is denoted as "df".</li>
+	<li>Index - This is what the data is "associated" by. So if you have time series data, like stock price information, generally the "index" is the date.</li>
+	<li>Slicing - Selecting specific batches of data.</li>
+</ul>
+<p>With that, what all can we further do? Since Pandas uses objects, we quickly can sort our data in just about any way we please, and do it fast. We can move columns around, add new ones, and remove others. Along with that, we can do basic and complex mathematics on our data, either with our own code or with one of the many built-in functions for Pandas, like standard deviation, correlation, or moving averages for example. When we're done modifying our data set, we can then utilize Matplotlib to generate some graphs and charts representing our data. Pandas works seemlessly with Matplotlib including data sets that have dates.</p>
+
+
+<p>Now that we have a basic understanding of Pandas, let's get started using it:</p>
+
+
+
+<iframe width="750" height="423" src="//www.youtube.com/embed/pkNJdko-9zI?list=PLQVvvaa0QuDfHt4XU7vTm22xDegR0v0fQ" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+
+<p>One of the most popular types of files to handle for data analysis in general is the CSV, or comma separated variable, file type. This is because the spreadsheet-style is popularly used for data analysis and lends itself to it. Reading CSV files into Python natively is actually fairly simplistic, but going from there can be a tedious challenge. With Pandas, we can of course read into and write to CSV files just like we can with Python already, but where Pandas shines is with any sort of manipulation of the data. Sometimes, you might only be concerned with a few columns out of many, or maybe you want to do some simple operations on the rows and columns. Maybe you want to add new columns, or move them around. All of this gets slightly more challenging natively with Python, but is quite simple with Pandas. Let's begin to see what Pandas can do for us with CSV files:</p>
+
+<p>First, we need to import the proper modules to help us in our task:</p>
+<pre class="prettyprint">import pandas as pd
+from pandas import DataFrame
+import datetime
+import pandas.io.data
+</pre>
+<p>Of course we need pandas imported. We're going to be using DataFrame extensively, so we might as well import that specifically. We will make use of the datetime module here, since we're going to import a time-series from Yahoo's finance API. Finally, we're going to use pandas.io.data to easily import the Yahoo API data we want to use.</p>
+
+<p>Now, let's grab some finance data for the S&amp;P 500 from Yahoo finance. For some of the indexes, the label might look funny. For stocks, however, the label is just the ticker. For the S&amp;P 500, the label is %5EGSPC, but for say Apple, the label is the same as the ticker, which is AAPL.</p>
+<pre class="prettyprint">sp500 = pd.io.data.get_data_yahoo('%5EGSPC', 
+                                 start=datetime.datetime(2000, 10, 1), 
+                                 end=datetime.datetime(2012, 1, 1))
+</pre>
+<p>So, here, we've saved the data we grabbed using pandas to the variable named sp500. Take note of the date format used to specify the beginning and end to the data we're interested in.</p>
+
+<p>The data set is quite large, but sometimes we would like to see some of it to know how to code our next block of code, or we would just like to see that we're on the right track. Instead of printing out everything, there is a quick and easy way for us to print out the first few lines of our data set:</p>
+<pre class="prettyprint">print(sp500.head())
+</pre>
+<p>Awesome, so we have the data we were expecting, now let's save it to a CSV file. We can do this with one simple line:</p>
+<pre class="prettyprint">sp500.to_csv('sp500_ohlc.csv')
+</pre>
+<p>The above will translate our data into a CSV file with titled columns. Here, we're saving the file in the same directory as our script, but we could change the path if we wanted.</p>
+
+<p>Next, let's read from a CSV. Since we just saved one, how about we just read from that?</p>
+<pre class="prettyprint">df = pd.read_csv('sp500_ohlc.csv', index_col='Date', parse_dates=True)
+df.head()
+</pre>
+<p>That's all there is to reading and writing CSV files with Pandas and Python.</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

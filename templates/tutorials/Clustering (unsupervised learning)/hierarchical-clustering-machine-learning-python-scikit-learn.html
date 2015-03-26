@@ -1,0 +1,262 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Clustering (unsupervised learning)']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Clustering (unsupervised learning)']}}%;">
+				Clustering (unsupervised learning) Progress:  {{completed_percentages['Clustering (unsupervised learning)']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/unsupervised-learning/hierarchcical-clustering-3d-matplotlib-meanshift-tutorial.png') }}"/>
+	  <h2>{{curTitle}}</h2>
+	  <h3>Mean Shift cluster analysis example with Python and Scikit-learn</h3>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/EQZaSuK-PHs?list=PLQVvvaa0QuDd0flgGphKCej-9jp-QdzZ3" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>The next step after Flat Clustering is Hierarchical Clustering, which is where we allow the machine to determined the most applicable unumber of clusters according to the provided data.</p>
+	  <p>It is posited that humans are the only species capable of hierarchical thinking to any large degree, and it is only the mammalian brain that exhibits it at all, since some chimps have been able to learn things like sign language.</p>
+	  <p><strong>What actually is hierarchical thinking?</strong></p>
+
+	  <p>Hierarchical thinking is shown when you can take a structure with many elements, arrange those elements into a pattern, give that pattern a symbol, and then use that symbol as an element in another structure with many elements, repeating this process many times for many layers of "complexity."</p>
+	  <p>One of the easiest examples of hierarchical thinking is written language. First you have lines, then you take those lines and put them together to make shapes, called letters. Next you arrange those letters into patterns and call them words with unique names and meanings for each word. Then we take these words to form patterns of meaning called sentences. Then we put those together to express entire ideas, concepts, and general knowledge. </p>
+	  <p>With this, humans the only species on this planet capable of actually "compounding" their knowledge, building on top of pre-existing knowledge, continually adding layers of complexity, yet easily understanding it because we've employed hierarchical thinking.</p>
+	  <p>This is a fascinating concept to me. For example, consider that:</p>
+	  <p>A little over 300 years ago, we were burning people at the stake and engaging in other torturous acts against them on the grounds that they were witches.</p>
+	  <p>150 years ago, (this tutorial is written in 2015) the United States abolished slavery with the 13th ammendment. While some people still lag behind, we are in general agreement, that all humans are created equal.</p>
+	  <p>Biologically, nothing significant separates us from our cousines of the 1800s and late 1600s. We are the very same people. Consider for a moment how easily you could have been a slave owner, or enslaved (something still occurring today). Or how you could have condemned a witch, or been the witch yourself (something still occurring today).</p> 
+	  
+	  <p>The only thing separating us now from those times is this degree of hierarchical learning. Time has aided us in our hierarchical learning linearly, though the age of the internet has sped this process of significantly. Looking at the societies still enslaving people, barring those trafficking purely for the money, or the societies who are still burning witches (or similar acts), we can obviously see they are disconnected, quite literally, from the rest of world knowledge.</p>
+	  
+	  <p>There are plenty of examples of how knowledge stacks on top of knowledge, and they all point to our "increased" intelligence of today compared to 1,000 years ago as being non-biological.</p>
+	  
+	  <p>I've long tried to point out how incredibly basic and simple programming is. You can break down every single program into simple patterns of if statements, while loops, for loops, some functions, maybe some objects if OOP is used, maybe a few other things, but it all breaks down into incredibly basic elements.</p>
+	  <p>There's really nothing complex about programming, nor is there about anything at all. Everything breaks down into simple elements, which are put together into a structure. That structure, again, comprised of simple elements, then becomes an element, still simple, that gets put together into another structure. Humans get it. Dogs don't.</p>
+	  <p>...and, not too surprisingly, computers get it too. Unlike our current knowledge-base mostly leading up to this point, which grew linearly, computers are now allowing us to grow this knowledge-base exponentially.</p>
+	  <p>Now this is just a tiny sliver of hierarchical learning, but it's quite awesome how quickly you can do such a thing.</p>
+	  <p></p>
+	  <p></p>
+	  
+	  <p>We're going to employ <a href="https://www.python.org/" target="_blank"><strong>Python</strong></a> and the <a href="http://scikit-learn.org/" target="_blank"><strong>Scikit-learn (sklearn) module</strong></a> to do this.</p>
+	  <kbd data-toggle="collapse" data-target="#donthav" aria-expanded="false" aria-controls="donthav">Don't have Python or Sklearn?</kbd><br>
+	  
+		<div class="collapse" id="donthav">
+		  <div class="well">
+			<p><strong><a href="https://www.python.org/" target="_blank">Python</a></strong> is a programming language, and the language this entire website covers tutorials on. If you need Python, click on the link to python.org and download the latest version of Python.</p>
+			
+			<p><strong><a href="http://scikit-learn.org" target="_blank">Scikit-learn (sklearn)</a></strong> is a popular machine learning module for the Python programming language.</p>
+			<p><strong></strong></p>
+			<p>The Scikit-learn module depends on Matplotlib, SciPy, and NumPy as well. You can use pip to install all of these, once you have Python.</p>
+			<kbd data-toggle="collapse" data-target="#dontknow" aria-expanded="false" aria-controls="dontknow">Don't know what pip is or how to install modules?</kbd>
+	  
+				<div class="collapse" id="dontknow">
+				  <div class="well">
+					<p><strong>Pip</strong> is probably the easiest way to install packages Once you install Python, you should be able to open your command prompt, like cmd.exe on windows, or bash on linux, and type:</p>
+					<code>pip install scikit-learn</code>
+					<p>Having trouble still? No problem, there's a tutorial for that: <a href="/using-pip-install-for-python-modules/" target="_blank"><strong>pip install Python modules tutorial</strong></a>.</p>
+					<p>If you're still having trouble, feel free to contact us, using the contact in the footer of this website.</p>
+				  </div>
+				</div>
+		  </div>
+		</div>
+		
+		
+		<p>There are many methodologies for hierarchical clustering. Since we're using Scikit-learn here, we are using Ward's Method, which works by measuring degrees of minimum variance to create clusters.</p>
+		<p>The specific algorithm that we're going to use here is Mean Shift.</p>
+		<p>Let's hop into our example, shall we?</p>
+		<p>First, let's do the imports:</p>
+		
+		
+		<pre class = "prettyprint">
+import numpy as np
+from sklearn.cluster import MeanShift
+from sklearn.datasets.samples_generator import make_blobs
+import matplotlib.pyplot as plt
+from matplotlib import style
+style.use("ggplot")
+		</pre>
+		
+		
+		<p>NumPy for the swift number crunching, then, from the clustering algorithms of scikit-learn, we import MeanShift.</p>
+		<p>We're going to be using the sample generator built into sklearn to create a dataset for us here, called make_blobs.</p>
+		<p>Finally, Matplotlib for the graphing aspects.</p>
+				<pre class = "prettyprint">
+centers = [[1,1],[5,5],[3,10]]
+X, _ = make_blobs(n_samples = 500, centers = centers, cluster_std = 1)
+		</pre>
+		
+		<p>Above, we're making our example data set. We've decided to make a dataset that originates from three center-points. One at 1,1, another at 5,5 and the other at 3,10. From here, we generate the sample, unpacking to X and y. X is the dataset, and y is the label of each data point according to the sample generation.</p>
+		<p>This part might confuse some people. We're unpacking to y because we have to, since the make_blobs returns a label, but we do not actually use y, other than to possibly test the accuracy of the algorithm. Remember, unsupervised learning does not actually train against data and labels, it derives structure and labels on its own, it's not derivative.</p>
+		<p>What we have now is an example data set, with 500 randomized samples around the center points with a standard deviation of 1 for now.</p>
+		<p>This has nothing to do with machine learning yet, we're just creating a data set. At this point, it would help to visualize the data set, so let's do:</p>
+		<pre class = "prettyprint">
+plt.scatter(X[:,0],X[:,1])
+plt.show()
+		</pre>
+		
+		<img class="img-responsive" src="{{ url_for('static', filename='images/unsupervised-learning/hierarchical-clustering-unmarked-tutorial.png') }}"/>
+		
+		<p>Your example should look similar. Here, we can already identify ourselves the major clusters. There are some points in between the clusters that we might not know exactly where they go, but we can see the clusters.</p>
+		<p>What we want is the machine to do the same thing. We want the machine to see this data set, without knowing how many clusters there ought to be, and identify the same three clusters we can see are obviously clusters.</p>
+		<p>For this, we're going to use MeanShift</p>
+		<pre class = "prettyprint">
+ms = MeanShift()
+ms.fit(X)
+labels = ms.labels_
+cluster_centers = ms.cluster_centers_
+		</pre>
+		<p>First we initialize MeanShift, then we fit according to the dataset, "X."</p>
+		<p>Next we populate labels and cluster_centers with the machine-chosen labels and cluster centers. Keep in mind here, the labels are the ones the machine has chosen, these are not the same labels as the unpacked-to "y" variable above.</p>
+		<p>We could compare the two for an accuracy measurement, but this may or may not be very useful in the end, given the way we're synthetically generating data. If we were to set our standard deviation to, say, 10, there would be signficant overlap. Even if the data originally came from from one cluster, it might actually be a better fit into another. This isn't really a fault of the machine learning algorithm in any way. The data is actually a better fit elsewhere and you were too wild with the standard deviation in the generation.</p>
+		<p>Instead, it might be a bit better of an accuracy measurement to compare the cluster_centers with the actual cluster centers you started with (centers = [[1,1],[5,5],[3,10]]) to create the random data. We'll see how accurate this is, though it should be a given that: The more samples you have, and the less standard deviation, the more accurate your predicted cluster centers should be compared to the actual ones used to generate the randomized data. If this is not the case, then the machine learning algorithm might be problematic.</p>
+		<p>We can see the cluster centers and grab the total number of clusters by doing the following:</p>
+		<pre class = "prettyprint">
+print(cluster_centers)
+n_clusters_ = len(np.unique(labels))
+print("Number of estimated clusters:", n_clusters_)
+		</pre>
+		
+		<p>Next, since we're intending to graph the results, we want to have a nice list of colors to choose from:</p>
+<pre class = "prettyprint">
+colors = 10*['r.','g.','b.','c.','k.','y.','m.']
+		</pre>
+		<p>This is just a simple list of red, green, blue, cyan, black, yellow, and magenta multiplied by ten. We should be confident that we're only going to need three colors, but, with hierarchical clustering, we are allowing the machine to choose, we'd like to have plenty of options. This allows for 70 clusters, so that should be good enough.</p>
+		<p>Now for the plotting code. This code is purely for graphing only, and has nothing to do with machine learning other than helping us petty humans to see what is happening:</p>
+		<p></p>
+		<pre class = "prettyprint">
+for i in range(len(X)):
+    plt.plot(X[i][0], X[i][1], colors[labels[i]], markersize = 10)
+
+plt.scatter(cluster_centers[:,0],cluster_centers[:,1],
+            marker="x",color='k', s=150, linewidths = 5, zorder=10)
+
+plt.show()
+		</pre>
+		<p>Above, first we're iterating through all of the sample data points, plotting their coordinates, and coloring by their label # as an index value in our color list.</p>
+		<p>After the for loop, we are calling plt.scatter to scatter plot the cluster centers.</p>
+		<p>Finally, we show it. You should see something similar to:</p>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/unsupervised-learning/hierarchical-clustering-marked-tutorial.png') }}"/>
+		<p>Thus, we can see our machine did it! Very exciting times. We should next peak at the cluster_centers:</p>
+		<pre>[[ 0.86629751  1.03005482]
+ [ 4.9038423   5.16998291]
+ [ 3.0363859   9.9793174 ]]</pre>
+		<p>Your centers will be slightly different, and the centers will be different every time you run it, since there is a degree of randomness with our sample generation. Regardless, the cluster_centers are darn close to the original values that we created. Very impressive.</p>
+		<p>From here, try adding more clusters, try increasing the standard deviation. Without getting too absurd, try to give the machine a decent challenge.</p>
+		<p>Now, let's do a bonus round! How about 3 dimensions? If you want to learn more about 3D plotting, see the <a href="/3d-scatter-plot-customizing/" target="_blank"><strong>3D plotting with Matplotlib Tutorial</strong></a>.</p>
+		
+		<pre class = "prettyprint">
+import numpy as np
+from sklearn.cluster import MeanShift# as ms
+from sklearn.datasets.samples_generator import make_blobs
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import style
+style.use("ggplot")
+
+centers = [[1,1,1],[5,5,5],[3,10,10]]
+
+X, _ = make_blobs(n_samples = 500, centers = centers, cluster_std = 1.5)
+
+
+
+ms = MeanShift()
+ms.fit(X)
+labels = ms.labels_
+cluster_centers = ms.cluster_centers_
+
+print(cluster_centers)
+
+n_clusters_ = len(np.unique(labels))
+
+print("Number of estimated clusters:", n_clusters_)
+
+colors = 10*['r','g','b','c','k','y','m']
+
+print(colors)
+print(labels)
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+for i in range(len(X)):
+
+    ax.scatter(X[i][0], X[i][1], X[i][2], c=colors[labels[i]], marker='o')
+
+
+ax.scatter(cluster_centers[:,0],cluster_centers[:,1],cluster_centers[:,2],
+            marker="x",color='k', s=150, linewidths = 5, zorder=10)
+
+plt.show()
+		</pre>
+		
+		<p>You may regret doing 500 samples on a 3D plot depending on your processing abilities, but feel free to try it. Now the output should be something like:</p>
+		
+		<img class="img-responsive" src="{{ url_for('static', filename='images/unsupervised-learning/hierarchcical-clustering-3d-matplotlib-meanshift-tutorial.png') }}"/>
+		
+		<div class="row">
+		<div class="col-md-6">
+<p><strong>Machine-Chosen Clusters:</strong></p>
+		<pre>
+[[ 1.11615056  1.10163911  1.06359602]
+ [ 4.84704737  5.19257102  4.83831019]
+ [ 2.89080753  9.95938337  9.95381081]]
+		</pre></div>
+		<div class="col-md-6">
+<p><strong>Actual Centers Used:</strong></p>
+		<pre>
+[[ 1.0  1.0  1.0]
+ [ 5.0  5.0  5.0]
+ [ 3.0  10.0 10.0]]
+		</pre></div></div>
+		
+		
+		<p>That's quite accurate. Just like before, you might be thinking "well I could have easily figured this one out." Sure, that's true. 2D and 3D is easy. Try 15D, or 15,000D, don't forget to use PCA.</p>
+		
+	  
+
+	  
+	  
+	  
+	  
+	  
+	 <!-- 
+	  
+	  
+	  <kbd data-toggle="collapse" data-target="#consoleinfo" aria-expanded="false" aria-controls="consoleinfo">console</kbd>
+	  
+		<div class="collapse" id="consoleinfo">
+		  <div class="well">
+			<p>When someone refers to "the console," they are referring to where information from your program is ouput. You will see an example of "output to console" below. If you want this message to go away, just click again on the "console" button that you originally clicked on.</p>
+		  </div>
+		</div>
+		
+		
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+CODE HERE
+		</pre></div>
+		<div class="col-md-6">
+<p>EXPLANATION</p></div></div>
+	  
+		
+		-->
+		
+		<p>That's all for now on this topic. For other tutorials, head to the <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,74 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Build a Supercomputer and program with MPI']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Build a Supercomputer and program with MPI']}}%;">
+				Build a Supercomputer and program with MPI Progress:  {{completed_percentages['Build a Supercomputer and program with MPI']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/ZewAcbTfX0s?list=PLQVvvaa0QuDf9IW-fe6No8SCw-aVnCfRi" frameborder="0" allowfullscreen></iframe></div>
+	  
+	  <p>In this tutorial, we're going to be talking about scatter within MPI using Python and mpi4py. Scatter is a way that we can take a bunch of elements, like those in a list, and "scatter" those elements around to the processing nodes.</p>
+	  <p></p>
+	  <p></p>
+
+
+		
+		
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+from mpi4py import MPI
+
+comm = MPI.COMM_WORLD
+size = comm.Get_size()
+rank = comm.Get_rank()
+
+if rank == 0:
+   data = [(x+1)**x for x in range(size)]
+   print 'we will be scattering:',data
+else:
+   data = None
+   
+data = comm.scatter(data, root=0)
+print 'rank',rank,'has data:',data
+		</pre></div>
+		<div class="col-md-6">
+<p>Create the information that we want to scatter about. </p>
+<p>What we've done above is created a quick 1-liner for loop that creates a list of elements that is as long as there are processors, and generates a unique number based on a simple equation (x+1)**x which translates to the processor number, plus one, to the power of that processor number.</p>
+<p>Now we actually scatter the data from the root processor of 0. Then we're printing out the rank, and the data that rank received from the scatter.
+</p></div></div>
+
+
+<code>mpirun.openmpi -np 5 -machinefile /home/pi/mpi_testing/machinefile python ~/Desktop/sct/sct9.py</code><br>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/supercomputer/mpi4py-mpi-scatter-tutorial-example.png') }}" alt="MPI with MPI4py and Python tutorial" /><br>	
+		
+		<p>Keep in mind one of the restrictions to scatter, and that is that you can only scatter as many elements as you have processors. If you attempt to scatter more elements than you have processors, you will get an error like:</p>
+		
+		<img class="img-responsive" src="{{ url_for('static', filename='images/supercomputer/scatter-example-debug.png') }}" alt="MPI with MPI4py and Python tutorial" /><br>	
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

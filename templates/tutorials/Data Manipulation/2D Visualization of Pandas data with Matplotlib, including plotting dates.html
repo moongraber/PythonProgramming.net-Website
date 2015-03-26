@@ -1,0 +1,53 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Data Manipulation']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Data Manipulation']}}%;">
+				Data Manipulation Progress:  {{completed_percentages['Data Manipulation']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/pandas/sp500-graph-using-pandas-and-matplotlib-1024x620.png') }}" alt="text to screen" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/pt85jGDGFtU?list=PLQVvvaa0QuDfHt4XU7vTm22xDegR0v0fQ" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div><br>
+	  
+
+<p>One of the most powerful aspects of Pandas is it's easy inclusion into the Matplotlib module. Matplotlib is a popular and robust Python module that allows programmers to create graphs and charts from their data. Pandas makes loading your data into Matplotlib slightly easier, as well as handles almost all of the processing necessary to get it ready for Matplotlib. Pandas is basically created to do this in the most efficient way possible. Pandas is also quite remarkably good at working with data with dates and Matplotlib. Traditionally, working with data that is indexed by date is somewhat challenging with Matplotlib, but not when using Pandas!</p>
+<pre class="prettyprint">import pandas as pd
+from pandas import DataFrame
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('sp500_ohlc.csv', index_col = 'Date', parse_dates=True)
+df['H-L'] = df.High - df.Low
+df['100MA'] = pd.rolling_mean(df['Close'], 100)</pre>
+<pre class="prettyprint">All typical code up to this point, then we call to plot:</pre>
+<pre class="prettyprint">df[['Open','High','Low','Close','100MA']].plot()
+plt.show()
+</pre>
+<p>The above will generate the Matplotlib code and create a lovely chart! If you data is "normalized" enough to all fit on 1 figure, you could also do df.plot(). The reason why we cannot do this here is because we have columns like H-L and, more especially, volume. Since volume is quite drastically different. Even though we could have done it very simply with df.plot(), this also gave me the chance to show you that you can also plot very specific things as well if you like. What's exceedingly great about this is that you don't have to mess at all with the x axis and dates! I also quite like the automatic legend moving around to avoid going over the lines.</p>
+
+
+<p>Now, what if you have been through my matplotlib series where you learned all sorts of crazy things that you can do with graphing, and you cannot figure it out with Pandas? You can still plot objects through Matplotlib as well. Pandas offers an "almost" custom version of Matplotlib, where it basically handles the entire transaction, but you are free to revert back to the normal instance of Matplotlib and code everything yourself.</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

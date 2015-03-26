@@ -1,0 +1,67 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Build a Supercomputer and program with MPI']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Build a Supercomputer and program with MPI']}}%;">
+				Build a Supercomputer and program with MPI Progress:  {{completed_percentages['Build a Supercomputer and program with MPI']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/CT9tqR7XeX0?list=PLQVvvaa0QuDf9IW-fe6No8SCw-aVnCfRi" frameborder="0" allowfullscreen></iframe></div>
+	  
+	  
+
+		
+		
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+from mpi4py import MPI
+#import numpy
+comm = MPI.COMM_WORLD
+rank=comm.rank
+size=comm.size
+name=MPI.Get_processor_name()
+
+
+
+shared=(rank+1)*5
+
+comm.send(shared,dest=(rank+1)%size)
+data=comm.recv(source=(rank-1)%size)
+print name
+print 'Rank:',rank
+print 'Recieved:',data,'which came from rank:',(rank-1)%size
+		</pre></div>
+		<div class="col-md-6">
+<p>Now we're going to talk about dynamically sending and receiving messages. Maybe you are running in a heavily distributed network, with available node counts that change often.</p>
+	  <p>Maybe you just have a large number of nodes, and you don't want to hand-code something for each tiny node. You'll need to create algorithms to choose nodes that can scale with your network.</p>
+	  <p>Here's an example algorithm that will always send to the next node up, and wrap around to the beginning when we reach the largest node number. </p></div></div>
+	  
+		
+		<code>mpirun.openmpi -np 5 -machinefile /home/pi/mpi_testing/machinefile python ~/Desktop/sct/sct6.py</code><br>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/supercomputer/mpi-mpi4py-tutorial-node-choosing-algorithm.png') }}" alt="MPI with MPI4py and Python tutorial" /><br>
+
+	  
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,253 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Data Manipulation']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Data Manipulation']}}%;">
+				Data Manipulation Progress:  {{completed_percentages['Data Manipulation']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/ktyW-4o1vAM?list=PLQVvvaa0QuDfHt4XU7vTm22xDegR0v0fQ" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div><br>
+	  
+
+
+<p>What we're going to cover here is how to gather some basic statistics information on our data sets. This includes information like how many rows, the average of all of the data, standard deviation for all of the data... max and min % swing on all data. All of this is given to us with describe(). Then, we can take it a step further and gather rolling information of correlation and covariance. What makes this exceedingly interesting, is how it ends up translating, to the point where you can do some basic manipulation and have some pretty great analysis already.</p>
+
+<p>Let's get started. Note: if you don't have sp500_ohlc.csv, then you didn't follow the whole series. You should be able to do this entire tutorial with your own data and then soon we'll be getting new data anyway!</p>
+<pre class="prettyprint">import pandas as pd
+from pandas import DataFrame
+
+df = pd.read_csv('sp500_ohlc.csv', index_col = 'Date', parse_dates=True)
+df['H-L'] = df.High - df.Low
+
+print(df.describe())
+</pre>
+<p>Output:</p>
+<pre class="prettyprint">              Open         High          Low        Close        Volume  \
+count  2830.000000  2830.000000  2830.000000  2830.000000  2.830000e+03   
+mean   1172.834276  1181.118809  1163.808601  1172.820491  2.898598e+09   
+std     177.216544   176.393538   177.979827   177.132788  1.754116e+09   
+min     679.280000   695.270000   666.790000   676.530000  3.560700e+08   
+25%    1071.250000  1079.040000  1063.192500  1071.220000  1.426118e+09   
+50%    1178.880000  1186.540000  1170.795000  1178.825000  2.325460e+09   
+75%    1293.977500  1300.702500  1284.667500  1294.095000  4.134882e+09   
+max    1564.980000  1576.090000  1555.460000  1565.150000  1.145623e+10   
+
+         Adj Close          H-L  
+count  2830.000000  2830.000000  
+mean   1172.820491    17.310208  
+std     177.132788    11.273921  
+min     676.530000     2.900000  
+25%    1071.220000    10.010000  
+50%    1178.825000    14.505000  
+75%    1294.095000    21.077500  
+max    1565.150000   102.650000  
+</pre>
+<p>As you can see, we get quite a bit of information here with just one quick invocation of .describe(). We get count, which is how many rows we have for each column. We then get mean, or the average, of all the data in that column. STD is standard deviation for each column. Min is the minimum value in that row. 25% is where the 25th percentile mark is, and so on through 75%. Finally, we get max, which is the highest value for that column.</p>
+
+<p>Next, we can calculate correlation with .corr():</p>
+<pre class="prettyprint">print(df.corr())
+</pre>
+<p>Output:</p>
+<pre class="prettyprint">               Open      High       Low     Close    Volume  Adj Close  \
+Open       1.000000  0.998747  0.998277  0.996652 -0.060033   0.996652   
+High       0.998747  1.000000  0.998016  0.998467 -0.049252   0.998467   
+Low        0.998277  0.998016  1.000000  0.998569 -0.073954   0.998569   
+Close      0.996652  0.998467  0.998569  1.000000 -0.061102   1.000000   
+Volume    -0.060033 -0.049252 -0.073954 -0.061102  1.000000  -0.061102   
+Adj Close  0.996652  0.998467  0.998569  1.000000 -0.061102   1.000000   
+H-L       -0.133110 -0.109380 -0.171749 -0.142097  0.396885  -0.142097   
+
+                H-L  
+Open      -0.133110  
+High      -0.109380  
+Low       -0.171749  
+Close     -0.142097  
+Volume     0.396885  
+Adj Close -0.142097  
+H-L        1.000000  
+</pre>
+<p>Here, we get the correlation of each column compared to the other one. As you can see, we get a table of comparison. Obviously, Open, High, Low, and Close are all very closely correlated.</p>
+
+<p>How about covariance?</p>
+<pre class="prettyprint">print(df.cov())
+</pre>
+Output:
+<pre class="prettyprint">                   Open          High           Low         Close  \
+Open       3.140570e+04  3.122069e+04  3.148663e+04  3.128575e+04   
+High       3.122069e+04  3.111468e+04  3.133220e+04  3.119719e+04   
+Low        3.148663e+04  3.133220e+04  3.167682e+04  3.148096e+04   
+Close      3.128575e+04  3.119719e+04  3.148096e+04  3.137602e+04   
+Volume    -1.866176e+10 -1.523944e+10 -2.308814e+10 -1.898494e+10   
+Adj Close  3.128575e+04  3.119719e+04  3.148096e+04  3.137602e+04   
+H-L       -2.659442e+02 -2.175186e+02 -3.446199e+02 -2.837660e+02   
+
+                 Volume     Adj Close           H-L  
+Open      -1.866176e+10  3.128575e+04 -2.659442e+02  
+High      -1.523944e+10  3.119719e+04 -2.175186e+02  
+Low       -2.308814e+10  3.148096e+04 -3.446199e+02  
+Close     -1.898494e+10  3.137602e+04 -2.837660e+02  
+Volume     3.076921e+18 -1.898494e+10  7.848706e+09  
+Adj Close -1.898494e+10  3.137602e+04 -2.837660e+02  
+H-L        7.848706e+09 -2.837660e+02  1.271013e+02  
+</pre>
+<p>What if you just want to compare a few elements instead of everything?</p>
+<pre class="prettyprint">print( df[['Volume','H-L']].corr())
+</pre>
+<p>Output:</p>
+<pre class="prettyprint">          Volume       H-L
+Volume  1.000000  0.396885
+H-L     0.396885  1.000000
+</pre>
+<p>So now that you're somewhat comfortable with this, let's check out a popular use for correlation and covariance tables. There are many websites out there that either are a paid service, or a heavily advertised that create a correlation matrix, and sometimes co-variance, matrix tables. Turns out, doing this in Pandas is incredibly easy!</p>
+
+<p>Let's start a new program specifically for this:</p>
+<pre class="prettyprint">import datetime
+import pandas.io.data
+import pandas as pd
+
+C = pd.io.data.get_data_yahoo('C', 
+                                 start=datetime.datetime(2011, 10, 1), 
+                                 end=datetime.datetime(2014, 1, 1))
+AAPL = pd.io.data.get_data_yahoo('AAPL', 
+                                 start=datetime.datetime(2011, 10, 1), 
+                                 end=datetime.datetime(2014, 1, 1))
+MSFT = pd.io.data.get_data_yahoo('MSFT', 
+                                 start=datetime.datetime(2011, 10, 1), 
+                                 end=datetime.datetime(2014, 1, 1))
+TSLA = pd.io.data.get_data_yahoo('TSLA', 
+                                 start=datetime.datetime(2011, 10, 1), 
+                                 end=datetime.datetime(2014, 1, 1))
+BAC = pd.io.data.get_data_yahoo('BAC', 
+                                 start=datetime.datetime(2011, 10, 1), 
+                                 end=datetime.datetime(2014, 1, 1))
+BBRY = pd.io.data.get_data_yahoo('BBRY', 
+                                 start=datetime.datetime(2011, 10, 1), 
+                                 end=datetime.datetime(2014, 1, 1))
+CMG = pd.io.data.get_data_yahoo('CMG', 
+                                 start=datetime.datetime(2011, 10, 1), 
+                                 end=datetime.datetime(2014, 1, 1))
+EBAY = pd.io.data.get_data_yahoo('EBAY', 
+                                 start=datetime.datetime(2011, 10, 1), 
+                                 end=datetime.datetime(2014, 1, 1))
+JPM = pd.io.data.get_data_yahoo('JPM', 
+                                 start=datetime.datetime(2011, 10, 1), 
+                                 end=datetime.datetime(2014, 1, 1))
+SBUX = pd.io.data.get_data_yahoo('SBUX', 
+                                 start=datetime.datetime(2011, 10, 1), 
+                                 end=datetime.datetime(2014, 1, 1))
+TGT = pd.io.data.get_data_yahoo('TGT', 
+                                 start=datetime.datetime(2011, 10, 1), 
+                                 end=datetime.datetime(2014, 1, 1))
+WFC = pd.io.data.get_data_yahoo('WFC', 
+                                 start=datetime.datetime(2011, 10, 1), 
+                                 end=datetime.datetime(2014, 1, 1))
+print(C.head())
+</pre>
+<p>Up to this point, we can see that we've grabbed a bunch of data for various stocks that we want to create a correlation matrix with. Right now, we're nowhere near a matrix table for these stocks, but we're getting there. I've printed C.head() to give us a reminder of the data that we're looking at. We're only interested in comparing one of the prices to the rest. Generally, people will use the adjusted closes for comparison. Let's do that. Now, let's remove the other columns for C, or Citigroup.</p>
+<pre class="prettyprint">del C['Open']
+del C['High']
+del C['Low']
+del C['Close']
+del C['Volume']
+</pre>
+<p>That's done, we're just left with Adj Close now. Now we can just rename C to whatever we want.</p>
+<pre class="prettyprint">corComp = C
+</pre>
+<p>That'll do for a name. Now, instead of calling these columns all Adj Close, we're going to want to call them the stock name, so we can compare easily:</p>
+<pre class="prettyprint">corComp.rename(columns={'Adj Close': 'C'}, inplace=True)
+</pre>
+<p>So now our table is just 1 column of Citigroup's adjusted close, let's add the others.</p>
+<pre class="prettyprint">corComp['BAC'] = BAC['Adj Close']
+corComp['MSFT'] = MSFT['Adj Close']
+corComp['TSLA'] = TSLA['Adj Close']
+
+corComp['AAPL'] = AAPL['Adj Close']
+corComp['BBRY'] = BBRY['Adj Close']
+corComp['CMG'] = CMG['Adj Close']
+corComp['EBAY'] = EBAY['Adj Close']
+corComp['JPM'] = JPM['Adj Close']
+corComp['SBUX'] = SBUX['Adj Close']
+corComp['TGT'] = TGT['Adj Close']
+corComp['WFC'] = WFC['Adj Close']
+
+print(corComp.head())
+</pre>
+<p>Output:</p>
+<pre class="prettyprint">                C   BAC   MSFT   TSLA   AAPL   BBRY     CMG   EBAY    JPM  \
+Date                                                                        
+2011-10-03  23.04  5.47  22.65  23.73  51.15  20.50  292.70  28.11  26.30   
+2011-10-04  24.32  5.70  23.40  23.66  50.86  21.00  301.09  29.35  28.02   
+2011-10-05  24.63  5.71  23.91  25.37  51.65  23.60  300.79  30.53  28.56   
+2011-10-06  25.94  6.21  24.32  26.96  51.53  24.42  298.99  31.44  29.99   
+2011-10-07  24.55  5.84  24.24  26.99  50.49  23.36  294.59  31.07  28.43   
+
+             SBUX    TGT    WFC  
+Date                             
+2011-10-03  34.81  44.70  21.53  
+2011-10-04  35.82  46.27  22.48  
+2011-10-05  36.59  46.54  22.75  
+2011-10-06  37.02  48.55  23.56  
+2011-10-07  37.75  48.22  22.79 
+</pre>
+<p>At this point, we've now got a Pandas set of data that consists of columns of stock names and their close prices by date! Converting this to a correlation matrix is just one call away:</p>
+<pre class="prettyprint">print( corComp.corr())
+</pre>
+<p>Output:</p>
+<pre class="prettyprint">             C       BAC      MSFT      TSLA      AAPL      BBRY       CMG  \
+C     1.000000  0.975169  0.732407  0.792107 -0.172905 -0.249992  0.450620   
+BAC   0.975169  1.000000  0.767743  0.812945 -0.027634 -0.392026  0.494348   
+MSFT  0.732407  0.767743  1.000000  0.783313  0.207460 -0.530131  0.775090   
+TSLA  0.792107  0.812945  0.783313  1.000000 -0.103821 -0.404356  0.677697   
+AAPL -0.172905 -0.027634  0.207460 -0.103821  1.000000 -0.694610  0.093031   
+BBRY -0.249992 -0.392026 -0.530131 -0.404356 -0.694610  1.000000 -0.332754   
+CMG   0.450620  0.494348  0.775090  0.677697  0.093031 -0.332754  1.000000   
+EBAY  0.796745  0.846395  0.527071  0.528979  0.137681 -0.464328  0.108140   
+JPM   0.979039  0.979418  0.789477  0.786151 -0.043577 -0.361171  0.508082   
+SBUX  0.863705  0.909169  0.868984  0.913326  0.034459 -0.491639  0.758022   
+TGT   0.808486  0.825841  0.618687  0.561540  0.075709 -0.452150  0.172996   
+WFC   0.905780  0.954583  0.856305  0.831263  0.137327 -0.577703  0.561800   
+
+          EBAY       JPM      SBUX       TGT       WFC  
+C     0.796745  0.979039  0.863705  0.808486  0.905780  
+BAC   0.846395  0.979418  0.909169  0.825841  0.954583  
+MSFT  0.527071  0.789477  0.868984  0.618687  0.856305  
+TSLA  0.528979  0.786151  0.913326  0.561540  0.831263  
+AAPL  0.137681 -0.043577  0.034459  0.075709  0.137327  
+BBRY -0.464328 -0.361171 -0.491639 -0.452150 -0.577703  
+CMG   0.108140  0.508082  0.758022  0.172996  0.561800  
+EBAY  1.000000  0.810438  0.666961  0.895417  0.823806  
+JPM   0.810438  1.000000  0.895216  0.815957  0.947179  
+SBUX  0.666961  0.895216  1.000000  0.674836  0.930716  
+TGT   0.895417  0.815957  0.674836  1.000000  0.848994  
+WFC   0.823806  0.947179  0.930716  0.848994  1.000000  
+</pre>
+<p>Finally, you might want to take this data and maybe have it as a csv file, which you can do further analysis with:</p>
+<pre class="prettyprint">fancy = corComp.corr()
+fancy.to_csv('bigmoney.csv')
+</pre>
+<p>And that's it! So now you know how to create your own correlation tables. You can make these sorts of tables based on more than just correlation. It can be co-variance, standard deviation, or even your own custom functions.</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

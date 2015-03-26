@@ -1,0 +1,158 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Creating a Monte Carlo simulator']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Creating a Monte Carlo simulator']}}%;">
+				Creating a Monte Carlo simulator Progress:  {{completed_percentages['Creating a Monte Carlo simulator']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/monte-carlo/monte-carlo-simulation-10000-wagers.png') }}" alt="monte carlo simulator with Python tutorial" /><br>
+
+	  <h2>{{curTitle}}</h2>
+	  <h3>Monte carlo results from betting</h3>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width=width="750" height="423" src="https://www.youtube.com/embed/jeVZP5vgEC4?list=PLQVvvaa0QuDdhOnp-FnVStDsALpYk2hk0" frameborder="0" allowfullscreen></iframe></div><br>
+	  <p>In this video we're going to use <a href="http://matplotlib.org/" target="blank">matplotlib</a> to further visualize
+our gamblers and their varying scenarios.</p>
+
+<p>This will be especially useful for when we begin adding different
+bettor types. So far, we've only been able to see the a single person's
+various odds examples, nothing more.</p>
+
+<p>Interestingly enough, at this point, should a bettor make their way to
+doubling their money, they might be thought of as having an expert strategy.</p>
+
+<p>We know this is not true, but the same can be said for stock traders.</p>
+
+<p>Most stock traders are graded on their performance, not by the weight of
+their risk. We can clearly see already, however, that, statistically,
+there must be some traders who heavily outperform. Just by sheer odds they
+must exist, but these people can blow up just as quickly, or usually faster,
+than they grew. Anyway, let's start up the graphing!</p>
+
+<p>For now, let's actually plot the full path in its entirety. We could simply
+plot the end result, but that is somewhat boring. </p>
+
+<p>You will need matplotlib for this. You can use pip install for this now by opening cmd.exe or bash and doing:</p>
+<p><code>pip install matplotlib</code></p>
+<p>If you need help with pip, check out the <a href="/using-pip-install-for-python-modules/" target="blank"><button class="btn btn-primary">pip tutorial</button></a>.</p>
+
+
+
+
+
+
+
+		<pre  class="prettyprint">
+import random
+import matplotlib
+import matplotlib.pyplot as plt
+
+def rollDice():
+    roll = random.randint(1,100)
+
+    if roll == 100:
+        return False
+    elif roll <= 50:
+        return False
+    elif 100 > roll >= 50:
+        return True
+
+
+'''
+Simple bettor, betting the same amount each time.
+'''
+def simple_bettor(funds,initial_wager,wager_count):
+    value = funds
+    wager = initial_wager
+
+    # wager X
+    wX = []
+
+    #value Y
+    vY = []
+
+    # change to 1, to avoid confusion so we start @ wager 1
+    # instead of wager 0 and end at 100. 
+    currentWager = 1
+
+    #           change this to, less or equal.
+    while currentWager <= wager_count:
+        if rollDice():
+            value += wager
+            # append #
+            wX.append(currentWager)
+            vY.append(value)
+            
+        else:
+            value -= wager
+            # append #
+            wX.append(currentWager)
+            vY.append(value)
+
+        currentWager += 1
+        
+    #print 'Funds:', value
+
+    plt.plot(wX,vY)
+    
+
+
+x = 0
+
+# start this off @ 1, then add, and increase 50 to 500, then 1000
+while x < 100:
+    simple_bettor(10000,100,1000)
+    x += 1
+
+
+plt.ylabel('Account Value')
+plt.xlabel('Wager Count')
+plt.show()
+		</pre>
+<p>At only 100 bets, it is clear that there is some edge, but it looks like a lot of people are getting lucky. It is only money, let's play!</p>
+<img class="img-responsive" src="{{ url_for('static', filename='images/monte-carlo/monte-carlo-simulation-100-wagers.png') }}" alt="monte carlo simulator with Python tutorial" /><br>
+
+<p>Even at 1,000 bets, some people are making a lot of money!</p>
+<img class="img-responsive" src="{{ url_for('static', filename='images/monte-carlo/graphing-monte-carlo-matplotlib-tutorial-1000-wagers.png') }}" alt="monte carlo simulator with Python tutorial" /><br>
+
+<p>... but at 100,000 it's extremely obvious. In my example, only 2 bettors are in the green. One just barely. A lot of bettors are in heavy debt./p>
+<img class="img-responsive" src="{{ url_for('static', filename='images/monte-carlo/monte-carlo-simulation-10000-wagers.png') }}" alt="monte carlo simulator with Python tutorial" /><br>
+
+<p>This is why gamblers lose. Usually the odds are not extremely heavily stacked against them, just slightly. Casinos just understand basic psychology, knowing that "winning" is extremely addicting. Casinos are built to keep you in, and keep you playing.</p>
+
+<p>In the short term, most players do not really realize that they are so certain to lose, the wins and losses seem pretty even. Some people, almost half, are statistically certain to actually profit. The problem is this is addicting, and they want to continue doing it. They end up continuing, and most end up handing back their gains. It's just simple math, but human psychology is weak.</p>
+
+
+
+
+<p>At this point, bettors, with their bettor mind, begin to envision various
+strategies to overtake their odds.</p>
+
+<p>One of the most common practices here is doubling up on losses. So, if you lose,
+you just double your wager until you win. After you've won, you revert back
+to your starting point. We just need that 1% edge, it should be super easy right?</p>
+
+<p>Let's play that out in the next video.  </p>
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+
