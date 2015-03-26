@@ -1,0 +1,52 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+
+
+
+
+
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Flask']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Flask']}}%;">
+				Flask Progress:  {{completed_percentages['Flask']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/mr90d7fp3SE?list=PLQVvvaa0QuDcOS4l8RCWh0olq_je0OKaP" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div><br>
+	  
+
+<p>Now that you've decided that you'd like to embark on a Flask development experience, we first have to set up our environment. Depending on where you watch your tutorial, many people might have you first make a local development environment. I do not really see the use in this, as it only creates a lot of headache for you down the road. Moving from a local environment, especially if you were operating in Windows, to a remote environment, which will be Linux most likely, is just plain a massive pain!</p>
+
+<p>So, first we're going to need a domain name and a hosting plan somewhere that gives us root access to the server (this means no shared hosting places like GoDaddy... etc).</p>
+
+<p>At the time of my writing this, I think these three options can be good choices. I've personally used all of these extensively. They all get ~$100 a month from me:</p>
+
+<p><strong>1</strong>. <a title="Linode hosting" href="https://www.linode.com/?r=b417bc672ff52d6c055fd7a56e024939c667b0fd" target="_blank"><span style="text-decoration: underline;"><strong>Linode</strong></span></a><p>Definitely the best host that I've ever had. No down-time in the few years that I've been with them. I currently use them to host <a href="/" target="_blank"><strong>This website</strong></a>, <a title="Bitcoin automated trading" href="http://seaofbtc.com/" target="_blank"><strong>SeaofBTC.com</strong></a> and <a title="Sentiment analysis for stocks politics and more" href="http://sentdex.com/" target="_blank"><strong>Sentdex.com</strong></a>.</p></p>
+
+<p><strong>2</strong>. <a title="Digital Ocean server hosting" href="https://www.digitalocean.com/?refcode=d1c4c6e66979" target="_blank"><span style="text-decoration: underline;"><strong>Digital Ocean</strong></span></a> <p>Second best host in my opinion. Could be the best, but recently the pricing models switched compared to Linode, where you basically get half of what you could get at Linode. I've also had more down-times with Digital Ocean. That said, they have a $5/mo option, which I absolutely love, and I host five different smaller websites on there, as well as a few servers.</p></p>
+
+<p><strong>3</strong>. <strong><a title="Python Anywhere python hosting" href="https://www.pythonanywhere.com" target="_blank"><span style="text-decoration: underline;">PythonAnywhere</span></a></strong> <p>These guys can be a great choice as well. You can host your Flask app here for absolutely free. They'll give you a subdomain, which is your name.pythonanywhere.com. I put them as #3 for a few reasons. First, I think it is better to have full control of your server. You will not get that here. It will be far easier to quickly set up your Flask environment, but there is certainly a cost there. Second, I do not think PythonAnywhere is a good place just yet to actually host a website. They have greatly improved over the years that I've been with them, but they do have their issues. I have some strange script freezing glitch that has been ongoing for a while, and they do shutdown for maintenance fairly frequently. All of that said, it's a great place to check out.</p></p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

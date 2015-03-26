@@ -1,0 +1,171 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">             width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['PyGame']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['PyGame']}}%;">
+				PyGame Progress:  {{completed_percentages['PyGame']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/pygame/messages-to-the-screen-pygame.png') }}" alt="text to screen" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/dX57H9qecCU?list=PLQVvvaa0QuDdLkP8MrOXLe_rKuf6r80KO" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+	  
+	  
+
+<p>Now that we've got movement, and boundaries, we need some way of informing our gamer that they 'dun goofed. Just simply exiting the game is rather harsh on our player. Instead, what we want to do is have some sort of "game over" screen. To do this, we need to show some text to the screen. </p>
+
+<p>Our new code is as follows:</p>
+
+<pre class="prettyprint">
+import pygame
+import time
+
+pygame.init()
+
+display_width = 800
+display_height = 600
+
+black = (0,0,0)
+white = (255,255,255)
+red = (255,0,0)
+
+car_width = 73
+
+gameDisplay = pygame.display.set_mode((display_width,display_height))
+pygame.display.set_caption('A bit Racey')
+clock = pygame.time.Clock()
+
+carImg = pygame.image.load('racecar.png')
+
+def car(x,y):
+    gameDisplay.blit(carImg,(x,y))
+
+def text_objects(text, font):
+    textSurface = font.render(text, True, black)
+    return textSurface, textSurface.get_rect()
+
+def message_display(text):
+    largeText = pygame.font.Font('freesansbold.ttf',115)
+    TextSurf, TextRect = text_objects(text, largeText)
+    TextRect.center = ((display_width/2),(display_height/2))
+    gameDisplay.blit(TextSurf, TextRect)
+
+    pygame.display.update()
+
+    time.sleep(2)
+
+    game_loop()
+    
+    
+
+def crash():
+    message_display('You Crashed')
+    
+def game_loop():
+    x = (display_width * 0.45)
+    y = (display_height * 0.8)
+
+    x_change = 0
+
+    gameExit = False
+
+    while not gameExit:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x_change = -5
+                if event.key == pygame.K_RIGHT:
+                    x_change = 5
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    x_change = 0
+
+        x += x_change
+
+        gameDisplay.fill(white)
+        car(x,y)
+
+        if x > display_width - car_width or x < 0:
+            crash()
+            
+        
+        pygame.display.update()
+        clock.tick(60)
+
+game_loop()
+pygame.quit()
+quit()
+</pre>
+
+<p>So the major changes are some new functions, but they all boil down to this line from our main loop:</p>
+
+<pre class="prettyprint">
+         if x > display_width - car_width or x < 0:
+            crash()
+</pre>
+
+<p>We want to be able to have some sort of handling specific to our users crashing rather than just lumping it in with an exit. So, we know we want to be able to do a crash, so we just need to make a crash function. </p>
+
+<p>So, then we consider what would be the most ideal situation for us to create a crash:</p>
+
+<pre class="prettyprint">
+def crash():
+    message_display('You Crashed')
+</pre>
+<p>Since we might want to make a crash more elaborate in the future, we make a specific function, but, for now, we just want to utilize a message_display function. Too bad it doesn't exist! We can see how it might be useful though, so we're going to make one.</p>
+
+
+<pre class="prettyprint">
+def message_display(text):
+    largeText = pygame.font.Font('freesansbold.ttf',115)
+    TextSurf, TextRect = text_objects(text, largeText)
+    TextRect.center = ((display_width/2),(display_height/2))
+    gameDisplay.blit(TextSurf, TextRect)
+    pygame.display.update()
+    time.sleep(2)
+    game_loop()
+</pre>
+
+<p>So there's our message displaying function, we define the large text, then we define the text and the rectangle that would encompass it. We then center the text, using our width and height variables (the gift that keeps on giving...just imagine deciding you wanted to change dimensions now?). Then we blit this stuff to the surface, remembering this only draws it in the background, and that we need to call "pygame.display.update()."</p>
+
+<p>Easy enough, after the message display, we run back to the game loop, whatever that happens to be. In hindsight, I think the superior choice for the game_loop() function call would actually be in our crash function, after calling message_display. It makes way more sense, since all messages you might want to display shouldn't lead to restarting the game. I advise doing that instead of the way shown in the code here and the video, I am only just now noticing this as I write this a while after writing and filming. </p>
+
+<p>Finally, we realize that, gosh darnit, text_objects doesn't exist yet! Let's finally make that one!</p>
+
+<pre class="prettyprint">
+def text_objects(text, font):
+    textSurface = font.render(text, True, black)
+    return textSurface, textSurface.get_rect()
+</pre>
+
+<p>The only fancy thing we're doing here is using .get_rect() to get the rectangle that is somewhat invisible, so we can reference it and center the text. </p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

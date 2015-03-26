@@ -1,0 +1,421 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['PyOpenGL']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['PyOpenGL']}}%;">
+				PyOpenGL Progress:  {{completed_percentages['PyOpenGL']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/pyopengl/PyOpenGL-3D-field-cubes-tutorial.gif') }}" alt="text to screen" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/xwdFk7SCD2g?list=PLQVvvaa0QuDdfGpqjkEJSeWKGCP31__wD" frameborder="0" allowfullscreen></iframe></div>
+	  
+
+
+<p>Now we are ready to improve the previous program. We notice immediately two major issues. The first is that cubes pop up sometimes very close to us. Ideally, they all start behind our far clipping plane. The second problem is that we can go in any direction, and avoid the barrage of cubes. We'd like to be able to move left, right, up, or down, and have cubes continue to come. </p>
+
+<p>The first problem is easily solved with some minor tweaks. The second problem is a bit... bigger. The idea is to give the sense that there are cubes everywhere. This means we want the player to be able to just press and hold, say, the left arrow key, and never outpace the cubes. This means that we need to have some cubes off to the sides "just in case." These cubes may never even be seen, but we need them to the left, right, above, and below the "user." This means more processing, but we can balance that. Keep in mind that, again, this will depend on your processing abilities. You can always decrease the amount of cubes, as well as change the pace at which you can move to save processing. </p>
+
+<p>Let's get started. First, we're going to change set_vertices a bit by including the location of the "camera," or user. </p>
+
+<pre class="prettyprint">
+def set_vertices(max_distance, min_distance = -20, camera_x = 0, camera_y = 0):
+
+    camera_x = -1*int(camera_x)
+    camera_y = -1*int(camera_y)
+
+    
+    x_value_change = random.randrange(camera_x-75,camera_x+75)
+    y_value_change = random.randrange(camera_y-75,camera_y+75)
+    
+    z_value_change = random.randrange(-1*max_distance,min_distance)
+
+    new_vertices = []
+
+    for vert in vertices:
+        new_vert = []
+
+        new_x = vert[0] + x_value_change
+        new_y = vert[1] + y_value_change
+        new_z = vert[2] + z_value_change
+
+        new_vert.append(new_x)
+        new_vert.append(new_y)
+        new_vert.append(new_z)
+
+        new_vertices.append(new_vert)
+
+    return new_vertices
+</pre>
+
+<p>Next, let's modify the main function's top a bit:</p>
+
+<pre class="prettyprint">
+def main():
+    pygame.init()
+    display = (800,600)
+    pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
+
+
+    max_distance = 100
+    
+    gluPerspective(45, (display[0]/display[1]), 0.1, max_distance)
+
+    glTranslatef(0,0, -40)
+
+    #object_passed = False
+
+    x_move = 0
+    y_move = 0
+
+    cur_x = 0
+    cur_y = 0
+
+    game_speed = 2
+    direction_speed = 2
+
+    
+
+    cube_dict = {}
+
+    for x in range(50):
+        cube_dict[x] =set_vertices(max_distance)
+</pre>
+
+<p>Notice the larger range, as well as cur_x and cur_y mostly. We've also added game_speed and direction_speed, so you can tweak things easier. </p>
+
+<p>Since we're changing that, we need to change our event loop slightly as well:</p>
+
+<pre class="prettyprint">
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x_move = direction_speed
+                if event.key == pygame.K_RIGHT:
+                    x_move = -1*direction_speed
+
+                if event.key == pygame.K_UP:
+                    y_move = -1*direction_speed
+                if event.key == pygame.K_DOWN:
+                    y_move = direction_speed
+</pre>
+
+<p>Now, not only can we tweak these speeds, but the game can also tweak them. A common thing to do is speed up the game to increase challenge. </p>
+
+<p>Now to conclude our main function:</p>
+
+<pre class="prettyprint">
+        x = glGetDoublev(GL_MODELVIEW_MATRIX)
+        #print(x)
+
+        
+        camera_x = x[3][0]
+        camera_y = x[3][1]
+        camera_z = x[3][2]
+
+        
+        cur_x += x_move
+        cur_y += y_move
+        
+
+                    
+        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+
+        glTranslatef(x_move,y_move,game_speed)
+
+
+
+        for each_cube in cube_dict:
+            Cube(cube_dict[each_cube])
+
+        for each_cube in cube_dict:
+            if camera_z <= cube_dict[each_cube][0][2]:
+                new_max = int(-1*(camera_z-(max_distance*2)))
+                cube_dict[each_cube] = set_vertices(new_max,int(camera_z-max_distance), cur_x, cur_y)
+
+                
+
+            
+        pygame.display.flip()
+
+</pre>
+
+<p>Notice mainly the "cur_x" and "cur_y" additions, along with the new var game_speed in the translate function. </p>
+
+<p>The next main change is in the generation of new cubes in the final for loop (in the above code).</p>
+
+
+<p>The full code up to this point is:</p>
+
+<pre class="prettyprint">
+import pygame
+from pygame.locals import *
+
+from OpenGL.GL import *
+from OpenGL.GLU import *
+
+import random
+
+vertices = (
+    (1, -1, -1),
+    (1, 1, -1),
+    (-1, 1, -1),
+    (-1, -1, -1),
+    (1, -1, 1),
+    (1, 1, 1),
+    (-1, -1, 1),
+    (-1, 1, 1)
+    )
+
+edges = (
+    (0,1),
+    (0,3),
+    (0,4),
+    (2,1),
+    (2,3),
+    (2,7),
+    (6,3),
+    (6,4),
+    (6,7),
+    (5,1),
+    (5,4),
+    (5,7)
+    )
+
+surfaces = (
+    (0,1,2,3),
+    (3,2,7,6),
+    (6,7,5,4),
+    (4,5,1,0),
+    (1,5,7,2),
+    (4,0,3,6)
+    )
+
+
+colors = (
+    (1,0,0),
+    (0,1,0),
+    (0,0,1),
+    (0,1,0),
+    (1,1,1),
+    (0,1,1),
+    (1,0,0),
+    (0,1,0),
+    (0,0,1),
+    (1,0,0),
+    (1,1,1),
+    (0,1,1),
+    )
+
+
+##ground_vertices = (
+##    (-10, -1.1, 20),
+##    (10, -1.1, 20),
+##    (-10, -1.1, -300),
+##    (10, -1.1, -300),
+##    )
+##
+##
+##def ground():
+##    glBegin(GL_QUADS)
+##    for vertex in ground_vertices:
+##        glColor3fv((0,0.5,0.5))
+##        glVertex3fv(vertex)
+##
+##    glEnd()
+        
+
+
+
+def set_vertices(max_distance, min_distance = -20, camera_x = 0, camera_y = 0):
+
+    camera_x = -1*int(camera_x)
+    camera_y = -1*int(camera_y)
+
+    
+    x_value_change = random.randrange(camera_x-75,camera_x+75)
+    y_value_change = random.randrange(camera_y-75,camera_y+75)
+    
+    z_value_change = random.randrange(-1*max_distance,min_distance)
+
+    new_vertices = []
+
+    for vert in vertices:
+        new_vert = []
+
+        new_x = vert[0] + x_value_change
+        new_y = vert[1] + y_value_change
+        new_z = vert[2] + z_value_change
+
+        new_vert.append(new_x)
+        new_vert.append(new_y)
+        new_vert.append(new_z)
+
+        new_vertices.append(new_vert)
+
+    return new_vertices
+        
+    
+
+
+def Cube(vertices):
+    glBegin(GL_QUADS)
+    
+    for surface in surfaces:
+        x = 0
+
+        for vertex in surface:
+            x+=1
+            glColor3fv(colors[x])
+            glVertex3fv(vertices[vertex])
+        
+    glEnd()
+    
+
+
+    
+    glBegin(GL_LINES)
+    for edge in edges:
+        for vertex in edge:
+            glVertex3fv(vertices[vertex])
+    glEnd()
+
+
+def main():
+    pygame.init()
+    display = (800,600)
+    pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
+
+
+    max_distance = 100
+    
+    gluPerspective(45, (display[0]/display[1]), 0.1, max_distance)
+
+    glTranslatef(0,0, -40)
+
+    #object_passed = False
+
+    x_move = 0
+    y_move = 0
+
+    cur_x = 0
+    cur_y = 0
+
+    game_speed = 2
+    direction_speed = 2
+
+    
+
+    cube_dict = {}
+
+    for x in range(50):
+        cube_dict[x] =set_vertices(max_distance)
+
+    #glRotatef(25, 2, 1, 0)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x_move = direction_speed
+                if event.key == pygame.K_RIGHT:
+                    x_move = -1*direction_speed
+
+                if event.key == pygame.K_UP:
+                    y_move = -1*direction_speed
+                if event.key == pygame.K_DOWN:
+                    y_move = direction_speed
+
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    x_move = 0
+
+                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                    y_move = 0
+
+##            if event.type == pygame.MOUSEBUTTONDOWN:
+##                if event.button == 4:
+##                    glTranslatef(0,0,1.0)
+##
+##                if event.button == 5:
+##                    glTranslatef(0,0,-1.0)
+                    
+                    
+
+        
+
+        #glRotatef(1, 3, 1, 1)
+
+        x = glGetDoublev(GL_MODELVIEW_MATRIX)
+        #print(x)
+
+        
+        camera_x = x[3][0]
+        camera_y = x[3][1]
+        camera_z = x[3][2]
+
+        
+        cur_x += x_move
+        cur_y += y_move
+        
+
+                    
+        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+
+        glTranslatef(x_move,y_move,game_speed)
+
+
+
+        for each_cube in cube_dict:
+            Cube(cube_dict[each_cube])
+
+        for each_cube in cube_dict:
+            if camera_z <= cube_dict[each_cube][0][2]:
+                new_max = int(-1*(camera_z-(max_distance*2)))
+                cube_dict[each_cube] = set_vertices(new_max,int(camera_z-max_distance), cur_x, cur_y)
+
+                
+
+            
+        pygame.display.flip()
+
+
+main()
+pygame.quit()
+quit()
+
+</pre>
+	  
+		
+		
+		
+		<p>That's it for PyOpenGL tutorials for now. Next, you can head to the: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a> for more tutorials!</p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,99 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  <h2>Matplotlib Tutorial Part 5: Subplots (multiple plots, same figure)</h2>
+	  <h3>How to how multiple graphs per figure</h3>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/UnLquFmtI4I?list=PLQVvvaa0QuDfpEcGUM6ogsbrlWtqpS5-1" frameborder="0" allowfullscreen></iframe></div><br>
+	  <p>In this tutorial, we cover how to plot multiple subplots on the same figure in Python's Matplotlib. The way the subplot numbers work can be somewhat confusing at first, but should be fairly easy to get the hang of. Later on, I will also show another way to modify the showing of multiple subplots, but this is the easiest way.</p>
+	  <p>Here is the sample code to go along with the completed video. Take note all the hard-coding. We'll show how to remedy that as well, soon enough.</p>
+	  <p></p>
+	  <p></p>
+	  <p></p>
+	 
+
+	  <pre  class="prettyprint">
+import matplotlib.pyplot as plt
+
+x = []
+y = []
+
+fig = plt.figure()
+rect = fig.patch
+rect.set_facecolor('#31312e')
+
+readFile = open('SampleData.txt','r')
+sepFile = readFile.read().split('\n')
+readFile.close()
+
+for plotPair in sepFile:
+    xAndY = plotPair.split(',')
+    x.append(int(xAndY[0]))
+    y.append(int(xAndY[1]))
+
+ax1 = fig.add_subplot(2,2,1, axisbg='grey')
+ax1.plot(x, y, 'c', linewidth=3.3)
+ax1.tick_params(axis='x', colors='c')
+ax1.tick_params(axis='y', colors='c')
+ax1.spines['bottom'].set_color('w')
+ax1.spines['top'].set_color('w')
+ax1.spines['left'].set_color('w')
+ax1.spines['right'].set_color('w')
+ax1.yaxis.label.set_color('c')
+ax1.xaxis.label.set_color('c')
+ax1.set_title('Matplotlib graph', color = 'c')
+ax1.set_xlabel('x axis')
+ax1.set_ylabel('y axis')
+
+ax2 = fig.add_subplot(2,2,2, axisbg='grey')
+ax2.plot(x, y, 'c', linewidth=3.3)
+ax2.tick_params(axis='x', colors='c')
+ax2.tick_params(axis='y', colors='c')
+ax2.spines['bottom'].set_color('w')
+ax2.spines['top'].set_color('w')
+ax2.spines['left'].set_color('w')
+ax2.spines['right'].set_color('w')
+ax2.yaxis.label.set_color('c')
+ax2.xaxis.label.set_color('c')
+ax2.set_title('Matplotlib graph', color = 'c')
+ax2.set_xlabel('x axis')
+ax2.set_ylabel('y axis')
+
+ax3 = fig.add_subplot(2,1,2, axisbg='grey')
+ax3.plot(x, y, 'c', linewidth=3.3)
+ax3.tick_params(axis='x', colors='c')
+ax3.tick_params(axis='y', colors='c')
+ax3.spines['bottom'].set_color('w')
+ax3.spines['top'].set_color('w')
+ax3.spines['left'].set_color('w')
+ax3.spines['right'].set_color('w')
+ax3.yaxis.label.set_color('c')
+ax3.xaxis.label.set_color('c')
+ax3.set_title('Matplotlib graph', color = 'c')
+ax3.set_xlabel('x axis')
+ax3.set_ylabel('y axis')
+
+plt.show()   
+	  </pre>
+
+
+		
+		<p>Fore more tutorials, head to the <a title="Python programming tutorials" href="/dashboard/"><button class="btn btn-primary">Dashboard</button></a></p>
+	  </div>
+	  
+	  
+	  
+	
+	
+
+	
+</body>
+
+
+{% endblock %}
+

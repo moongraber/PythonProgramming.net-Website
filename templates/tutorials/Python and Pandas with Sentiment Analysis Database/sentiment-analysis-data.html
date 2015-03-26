@@ -1,0 +1,75 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Python and Pandas with Sentiment Analysis Database']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Python and Pandas with Sentiment Analysis Database']}}%;">
+				Python and Pandas with Sentiment Analysis Database Progress:  {{completed_percentages['Python and Pandas with Sentiment Analysis Database']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/cR-bqEicUps?list=PLQVvvaa0QuDdktuSQRsofoGxC2PTSdsi7" frameborder="0" allowfullscreen></iframe></div>
+	  
+	  <p>
+    There are many reasons why one may wish to modify the existing dataset. A lot of times
+    you might want to do it just to make it easier to read, but you also might want to
+    automatically replace data. If you are going to run a lot of tests on date, say with
+    a unix time stamp, it might be wise to just convert it once, re-save, and not do
+    it again.
+
+    </p>
+	  <p>
+    While you are at it, you can also just get rid of the unix time stamps in the file.
+    After that, we also don't need id at all either, so we can kill that too. </p>
+	  
+
+		<pre  class="prettyprint">
+import pandas as pd
+from pandas import DataFrame
+import matplotlib.pyplot as plt
+from matplotlib import style
+import numpy as np
+
+style.use('ggplot')
+
+
+
+def modifyDataSet():
+
+
+    df = pd.read_csv('X:/sentiment/stocks_sentdex.csv')
+
+    df['time'] = pd.to_datetime(df['time'],unit='s')
+
+    df = df.set_index('time')
+    #print df.head()
+
+    del df['id']
+
+    print df.head()
+
+    df.to_csv('X:/stocks_sentdex_dates_full.csv')
+		</pre>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

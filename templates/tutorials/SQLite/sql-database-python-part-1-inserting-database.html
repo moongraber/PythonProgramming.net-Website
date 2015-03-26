@@ -1,0 +1,64 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    
+
+
+-->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['SQLite']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['SQLite']}}%;">
+				SQLite Progress:  {{completed_percentages['SQLite']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/4ogGd8BAYYs?list=PLQVvvaa0QuDcagwDfL_pmuPkEaHs39Jjv" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+<p>In this tutorial, we talk about where to get sqlite, and how to set up a database. Databases offer, typically, a superior method of high-volume data input and output over a typical file such as a text file. SQLite is a "light" version that works based on SQL syntax. SQL is a programming language in itself, but is a very popular database language. Many websites use <a href="/mysql-intro/" target="blank"><strong>MySQL</strong></a>, for example.</p>
+
+<p>SQLite truly shines because it is extremely lightweight. Setting a SQLite database is nearly instant, there's no hoops to jump through like there are for MySQL!</p>
+
+<p>This tutorial assumes you understand basic SQL syntax, and that you're mainly after a tutorial purely on SQLite. If you need to learn about SQL or need a refresher, the <a href="/mysql-intro/" target="blank"><strong>MySQL tutorial</strong></a> is probably the best place for you first.</p>
+
+<p>Once you have sqlite, the first thing you must do is create the actual table itself. This only needs to be done once, but of course must be done.</p>
+
+<p>Here is the sample code that accompanies the video:</p>
+<pre class="prettyprint">
+import sqlite3
+
+conn = sqlite3.connect('tutorial.db')
+c = conn.cursor()
+
+def tableCreate():
+    c.execute("CREATE TABLE stuffToPlot(ID INT, unix REAL, datestamp TEXT, keyword TEXT, value REAL)")
+
+
+def dataEntry():
+    c.execute("INSERT INTO stuffToPlot VALUES(1, 1365952181,'2013-04-14 10:09:41','Python Sentiment',5)")
+    c.execute("INSERT INTO stuffToPlot VALUES(2, 1365952257,'2013-04-14 10:10:57','Python Sentiment',6)")
+    c.execute("INSERT INTO stuffToPlot VALUES(3, 1365952264,'2013-04-14 10:11:04','Python Sentiment',4)")
+    conn.commit()
+   
+</pre>
+<p>The above code will first create a database file called "tutorial." Then the code will create a table called "stuffToPlot" with tableCreate(). This tableCreate function should only be run ONCE. Not again. Subsequently, we can use dataEntry() to actually enter some sample data into the database.</p>
+
+<p>Notably, this code is problematic since we are having to still type out the values. What if we have a program that derives values and needs to insert them into the database? </p>
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

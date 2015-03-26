@@ -1,0 +1,92 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Forex Algo HFT']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Forex Algo HFT']}}%;">
+				Forex Algo HFT Progress:  {{completed_percentages['Forex Algo HFT']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/_qArnFg1Xhg?list=PLQVvvaa0QuDe6ZBtkCNWNUbdaBo2vA4RO" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+<p>Alright everyone, time gather our thoughts, and plant our feet. </p>
+
+<p>So far, we've only done a few very basic things, so, it may seem like we've only just barely left the beach, but, the reality is, we're in very deep waters already. </p>
+
+Let's consider the current situation. </p>
+
+
+<p>We have a lot of variables already which will need to be accounted for. Not only do we have explicit variables, we also have implicit ones. </p>
+
+<p><strong>Our Explicit Variables</strong>:</p>
+
+<p>1. Percent change as pattern recognition.</p>
+   <p>	- this could be other things as well. </p>
+
+<p>2. Start point to current point % change.</p>
+   <p>	- as compared to point-by-point, or end to start. </p>
+   <p>	- point by point will give us differing looking lines visually, </p>
+   <p>	- end to beginning will give us end points that are more accurate. </p>
+
+<p>3. Fixed pattern length of 30</p>
+
+<p>4. Fixed value, or weight, of patterns, no matter how old or fresh they are. </p>
+
+<p>5. Looking 20-30 points into the future for the outcome. Truthful? Smaller or wider?</p>
+
+<p>6. Similarity required to bring pattern into consideration. </p>
+
+
+
+<p><strong>Implicit Variables:</strong></p>
+
+<p>Opportunity vs Accuracy. </p>
+
+<p>In machine learning, the way we typically find the best scenario, is much like how companies find the best price for their products. Profit margin matters, but amount sold matters too! A very cheap price will sell many units presumably, but profit per unit will be less than a higher price per unit, which would result in fewer sales.</p>
+
+<p>Here, we must also weigh opportunity, which is the volume of possible trades/much like  the amount of units sold, comparing this to Accuracy, which is how often we're correct, which is much like the profit margin (since you might have a 60% accuracy in high volume opportunities, compared to 80% in low volume).</p>
+
+<p>Consider:</p>
+
+<p>You find an algorithm that will earn you $2 a trade, with 85% accuracy, very appealing. With this, you're allotted an opportunity to deploy this tactic 600 times, or for 600 trades. </p>
+
+<p>This means, at 85%, you will be successful with 510 of those trades, and lose 90 of them. </p>
+
+<p>510 successful trades @ $2 a trade is $1,020</p>
+    <p>90 unsuccessful  trades @ $2 a trade is $-180<p>
+<p>A total profit of $840. </p>
+
+<p>Let's consider another situation, which earns you the same $2 a trade if successful, but only has 70% accuracy. That said, it is a looser algorithm, thus giving more opportunity, and you get 1800 trades.</p>
+
+<p>This means 1260 trades are successful, for $2520 profit. </p>
+<p>This also means 540 trades are not, for $-1080 meaning total profit of $1440. </p>
+
+<p>Now, the above example is actually more likely an underexaggeration. You will find as you loosen up the requirements, even by tiny degrees, opportunities added are usually exponential, so opportunity will go up very quickly as we adjust things, but, eventually, the return in profit will not match the risk. The goal is to find the perfect balancing point. As such, this is a very important variable to keep in mind. </p>
+
+<p>Luckily for you, all of the above variables are capable of being machine learned!</p>
+
+<p>If you consider the unlimited allowance of pattern length, and unlimited degree of comparison (since we can say we require something like 72.5522512525% accuracy)... you will find quickly that the combination of variables is unlimited... so where do we even begin?!</p>
+
+<p>Generally, the accepted method with machine learning for finding the best combination of variables is to recalculate and continue following the path that is showing growing improvement with each step. As long as return on "change" continues growing, then you should continue. It's often compared to finding the quickest path down a mountain, like a rolling ball might. So long as you keep going down (improving) you keep moving variables in that direction until you stop going down, then change some others.</p>
+
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,76 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Tkinter']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Tkinter']}}%;">
+				Tkinter Progress:  {{completed_percentages['Tkinter']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/tkinter/embed-matplotlib-into-tkinter-gui.png') }}" alt="Tkinter GUI tutorial in Python" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/kfMSN7JEtAA?list=PLQVvvaa0QuDclKx-QpC9wntnURXVJqLyk" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+
+
+We've got the data, and the graph, but now we might want to change the graph a bit. Here, we'll be changing some of the basic visual aspects of our graph, feel free to add your own touch. 
+
+Here's our new animate function:
+
+<pre class="prettyprint">
+def animate(i):
+    dataLink = 'https://btc-e.com/api/3/trades/btc_usd?limit=2000'
+    data = urllib.request.urlopen(dataLink)
+    data = data.readall().decode("utf-8")
+    data = json.loads(data)
+
+    
+    data = data["btc_usd"]
+    data = pd.DataFrame(data)
+
+    buys = data[(data['type']=="bid")]
+    buys["datestamp"] = np.array(buys["timestamp"]).astype("datetime64[s]")
+    buyDates = (buys["datestamp"]).tolist()
+    
+
+    sells = data[(data['type']=="ask")]
+    sells["datestamp"] = np.array(sells["timestamp"]).astype("datetime64[s]")
+    sellDates = (sells["datestamp"]).tolist()
+
+    a.clear()
+
+    a.plot_date(buyDates, buys["price"], "#00A3E0", label="buys")
+    a.plot_date(sellDates, sells["price"], "#183A54", label="sells")
+
+    a.legend(bbox_to_anchor=(0, 1.02, 1, .102), loc=3,
+             ncol=2, borderaxespad=0)
+
+    title = "BTC-e BTCUSD Prices\nLast Price: "+str(data["price"][1999])
+    a.set_title(title)
+</pre>
+
+The major changes here are that we are specifically specifying a color and a label for our plots. After that, we're creating a legend at the top left. Finally, we're making a custom title that includes the last price. 
+
+<img class="img-responsive" src="{{ url_for('static', filename='images/tkinter/embed-matplotlib-into-tkinter-gui.png') }}" alt="Tkinter GUI tutorial in Python" /><br>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

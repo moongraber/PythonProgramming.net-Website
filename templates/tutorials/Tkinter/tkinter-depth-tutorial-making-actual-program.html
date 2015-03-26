@@ -1,0 +1,56 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423" 
+
+<pre class="prettyprint">
+<img class="img-responsive" src="{{ url_for('static', filename='images/tkinter/tkinter-gui-tutorial-with-python-3.png') }}" alt="Tkinter GUI tutorial in Python" />
+
+
+</iframe></div><br><br>
+
+   -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Tkinter']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Tkinter']}}%;">
+				Tkinter Progress:  {{completed_percentages['Tkinter']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/tkinter/tkinter-gui-tutorial-with-python-3.png') }}" alt="Tkinter GUI tutorial in Python" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/HjNHATw6XgY?list=PLQVvvaa0QuDclKx-QpC9wntnURXVJqLyk" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div><br>
+	  
+	  <p>Hello and welcome to my Tkinter mega-series, where I walk you through the creation of an actual application made with Python and Tkinter.</p>
+	  <p>Are you just looking for the basics of Tkinter? Check out the miniseries within the <a title="Python 3 programming basics tutorial" href="/introduction-to-python-programming/" target="_blank"><button class="btn btn-primary">Python 3 basics series</button></a> here: <a title="Tkinter with python programming basics" href="/python-3-tkinter-basics-tutorial/" target="_blank"><button class="btn btn-primary">Tkinter Basics</button></a></p>
+	  <p>Many people are under the impression that Python and Tkinter are just plain not suitable for making applications, and I think they are wrong. The problem is no one actually appears to have shown people how to do it, so I will take that upon myself!</p>
+	  <p>What we're going to be making here is a trading application for Bitcoin. The application will mainly:
+<ul>
+	<li>Have multiple windows / navigation.</li>
+	<li>Have Live Matplotlib Graphs, displaying the Bitcoin price from various exchanges.</li>
+	<li>Allow the user to execute trades manually.</li>
+	<li>Allow the user to execute trades automatically.</li>
+</ul></p>
+	  <p>This will keep us busy enough, and even these four things are very in-depth. The main concern with using Python for this application is resource allocation. Python naturally is single-threaded, and very linear. If any one single operation is taking a while to occur, the entire application will halt while that operation is in process. This is a huge downside, and the main reason people immediately discount Python for creating all sorts of programs, including GUI applications. This is a shame, since you can very easily thread Python, and do many other things. We wont be able to utilize GPU processing here, but that is another option as well, but it would severely limit the amount of people who would be able to use the application (limiting to people with CUDA enabled Nvidia GPUs).</p>
+	  <p>While all of this might sound very confusing and daunting, what I plan to do is hold your hand through the entire process, explaining everything at every step of the way. If you ever get lost, you can always comment on the matching YouTube tutorial video that is included in each section, and I will be happy to assist you.</p>
+	  <p>With that, let's get started!</p>
+
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

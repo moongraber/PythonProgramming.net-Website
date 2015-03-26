@@ -1,0 +1,111 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Python and Pandas with Sentiment Analysis Database']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Python and Pandas with Sentiment Analysis Database']}}%;">
+				Python and Pandas with Sentiment Analysis Database Progress:  {{completed_percentages['Python and Pandas with Sentiment Analysis Database']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/pandas-sentiment/python-with-sentiment-analysis-investing-tutorial.png') }}" alt="Pandas and Python for investing with sentiment" /> 
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/hxLdlx_aNrs?list=PLQVvvaa0QuDdktuSQRsofoGxC2PTSdsi7" frameborder="0" allowfullscreen></iframe></div>
+	  
+<p>Code written in Python 2, but you can either comment out all print statements, or convert them to functions and it will work fine.</p>
+		<pre  class="prettyprint">
+import datetime
+import pandas as pd
+import pandas.io.data
+from pandas import DataFrame
+import matplotlib.pyplot as plt
+from matplotlib import style
+
+style.use('ggplot')
+
+
+
+## grabbing from yahoo finance ###
+sp500 = pd.io.data.get_data_yahoo('%5EGSPC', 
+                                 start=datetime.datetime(2000, 10, 1), 
+                                 end=datetime.datetime(2012, 1, 1))
+print sp500.head()
+
+# saving to a csv #
+sp500.to_csv('sp500_ohlc.csv')
+
+
+# reading from the csv #
+df = pd.read_csv('sp500_ohlc.csv', index_col='Date', parse_dates=True)
+df.head()
+
+print df.index
+
+# again, just accessing a column.... #
+
+ts = df['Close'][-10:]
+print ts
+
+# or a couple:
+print df[['Open', 'Close']].head()
+
+# can also create new columns:
+df['H-L'] = df.High - df.Low
+print df.head()
+
+# can also delete:
+del df['H-L']
+print df.head()
+
+#So besides High minus low, people like to see moving averages:
+close = df['Adj Close']
+ma = pd.rolling_mean(close, 50)
+print ma[-10:]
+
+#so then let's bring back the high minus low, since ppl like to use that
+#sometimes.
+# can also create new columns:
+df['H-L'] = df.High - df.Low
+
+HLMA = pd.rolling_mean(df['H-L'], 50)
+
+print df.head()
+
+ax1 = plt.subplot(2, 1, 1)
+ax1.plot(close, label='sp500')
+ax1.plot(ma, label='50MA')
+plt.legend()
+
+ax2 = plt.subplot(2, 1, 2, sharex = ax1)
+ax2.plot(df['H-L'], label='H-L')
+ax2.plot(HLMA, label='HL 50MA')
+
+
+
+
+plt.legend()
+plt.show()
+
+		</pre>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

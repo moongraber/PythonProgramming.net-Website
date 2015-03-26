@@ -1,0 +1,66 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Image Recognition']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Image Recognition']}}%;">
+				Image Recognition Progress:  {{completed_percentages['Image Recognition']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423"  src="https://www.youtube.com/embed/GxTSAtXlhuU?list=PLQVvvaa0QuDffXBfcH9ZJuvctJV3OtB8A" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>Now we're going to cover how to see the image array visually. Obviously, we start with images that we can already see, but soon we're going to start manipulating the images a bit. To see our changes, we could save to an image and then look at it, but it will be quicker and easier to display it via our program.</p>
+	  <p>For this, we're going to use Matplotlib.</p>
+	  <p>With some additional ending code, you can show the image:</p>
+	  <pre class="prettyprint">
+from PIL import Image
+import numpy as np
+####
+import matplotlib.pyplot as plt
+###
+i = Image.open('images/dotndot.png')
+
+iar = np.asarray(i)
+
+
+plt.imshow(iar)
+print(iar)
+plt.show()
+	  </pre>
+	  
+	  <p>The result should be something like:</p>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/image-recognition/showing-image-array-in-matpltolib.png') }}"/><br>
+	  
+	  <p>Now try another, let's change dotndot.png to just dot.png.</p>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/image-recognition/python-image-recognition-example-dot-array.png') }}"/><br>
+	  
+	  
+	  <p>That's it for a quick example of displaying our data. There is a lot more to Matplotlib if you're curious, you can head to the <a href="/matplotlib-python-3-basics-tutorial/" target="_blank"><strong>Matplotlib Tutorials</strong></a>.</p>
+	  
+	  
+
+	  
+
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

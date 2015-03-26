@@ -1,0 +1,214 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['MySQL']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['MySQL']}}%;">
+				MySQL Progress:  {{completed_percentages['MySQL']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/vemWWj8THK8?list=PLQVvvaa0QuDcppfxEowvKiMYyILwOQIHF" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>Now that we have a database, we're ready to create our table. Generally, you can imagine a MySQL table like a spreadsheet. A Database holds many of these tables. Let's access one of our Databases now:</p>
+	  <pre>USE dbname;</pre>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-tutorial-use-database.png') }}" alt="mysql tutorials" />
+	  <p>Still not forgetting our semicolons, replace dbname with your database name that you chose from the previous tutorial. This will put is into our chosen database, and you should see "Database changed"</p>
+	  <p>Now, let's create an actual table. Again, this table is more likely what you consider a database, or at least that's how it was for me. So again, a Database just simply houses the tables. The tables actually house the data. To create a new table:</p>
+
+	  
+	  <pre>CREATE TABLE taula (time INT(13), username VARCHAR(20), tweet VARCHAR(140)); </pre>
+	  
+	  
+	  <p>Press enter, and you're done. Now let's explain this entire query:</p>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-tutorial-create-table.png') }}" alt="mysql tutorials" />
+	  
+	  
+	  <kbd data-toggle="collapse" data-target="#createtable" aria-expanded="false" aria-controls="createtable">CREATE TABLE</kbd>
+	  
+		<div class="collapse" id="createtable">
+		  <div class="well">
+			<p>MySQL syntax for creating tables, in all-caps to designate this as a MySQL command.</p>
+		  </div>
+		</div>
+		
+		
+		<kbd data-toggle="collapse" data-target="#taula" aria-expanded="false" aria-controls="taula">taula</kbd>
+	  
+		<div class="collapse" id="taula">
+		  <div class="well">
+			<p>This is the name I have chosen for my table. Call yours what you want, just remember that when you see "taula" that you need to change it to your own name.</p>
+		  </div>
+		</div>
+		
+		<kbd data-toggle="collapse" data-target="#opening" aria-expanded="false" aria-controls="opening">'(' opening parenthesis</kbd>
+	  
+		<div class="collapse" id="opening">
+		  <div class="well">
+			<p>We begin the rules for this new table. Do not forget to close them at the end. It would be wise at this point to just close them off and add the semi-colon.</p>
+		  </div>
+		</div>
+		
+		<kbd data-toggle="collapse" data-target="#time" aria-expanded="false" aria-controls="time">time</kbd>
+	  
+		<div class="collapse" id="time">
+		  <div class="well">
+			<p>This is our first column's name. Call it something that makes sense. Many people make the first column "id" and do an auto-increment. We are not doing this here.</p>
+		  </div>
+		</div>
+		
+		
+		<kbd data-toggle="collapse" data-target="#inttt" aria-expanded="false" aria-controls="inttt">INT(13)</kbd>
+	  
+		<div class="collapse" id="inttt">
+		  <div class="well">
+			<p>This is our datatype, and then the length of that datatype. In our case, we're calling this an INT for integer, and saying it will be 13 characters long. Integers are whole numbers. If you need decimals, then you would use a FLOAT or DECIMAL depending on your needs.</p>
+		  </div>
+		</div>
+		
+		
+		<kbd data-toggle="collapse" data-target="#username" aria-expanded="false" aria-controls="username">username</kbd>
+	  
+		<div class="collapse" id="username">
+		  <div class="well">
+			<p>Another column, our second one, and we're calling it "username."</p>
+		  </div>
+		</div>
+		
+		
+		<kbd data-toggle="collapse" data-target="#varchar" aria-expanded="false" aria-controls="varchar">VARCHAR(20)</kbd>
+	  
+		<div class="collapse" id="varchar">
+		  <div class="well">
+			<p>This datatype is "VARCHAR," which is variable characters. The variable is in reference to the length. This means you can put in 5 characters, or 19, and it will not take up any more space. If you put CHAR(20), then it would not be variable. Now, what if we try to insert 21 characters into our VARCHAR(20) column? The sky wont fall, but the last character will be chopped off. Thus, you want to be careful when choosing limits. If you have a website that has a login, for example, and you intend to limit usernames to 20 characters, you need to make sure this limit is in the database as well as in the registration form.</p>
+		  </div>
+		</div>
+		
+		
+		
+		<kbd data-toggle="collapse" data-target="#tweet" aria-expanded="false" aria-controls="tweet">tweet VARCHAR(140)</kbd>
+	  
+		<div class="collapse" id="tweet">
+		  <div class="well">
+			<p>This is our last column name, tweet, of the datatype of VARCHAR, which will be up to 140 characters in length.</p>
+		  </div>
+		</div>
+		
+		
+		<kbd data-toggle="collapse" data-target="#closing" aria-expanded="false" aria-controls="closing">);</kbd>
+	  
+		<div class="collapse" id="closing">
+		  <div class="well">
+			<p>You should have added the closing parenthesis and the final semi-colon already, but if you have not, do this!</p>
+		  </div>
+		</div>
+
+	 
+	  <p>There are many other datatypes to consider like TEXT, FLOAT, DOUBLE, DECIMAL, BLOB, TINYINT, SMALLINT, MEDIUMINT, BIGINT, DOUBLE, DATE, DATETIME, TIMESTAMP, YEAR, TINYBLOB, TINYTEXT, MEDIUMBLOB, MEDIUMTEXT, LONGBLOB, LONGTEXT, ENUM.</p>
+	  
+	  <kbd data-toggle="collapse" data-target="#manytypes" aria-expanded="false" aria-controls="manytypes">Why so many types? Doesn't VARCHAR pretty much cover it all?</kbd>
+	  
+		<div class="collapse" id="manytypes">
+		  <div class="well">
+			  <p>Most of those you will probably never use. You can really get by with pretty much all varchars, some int, some float.</p>
+			  <p>So then why might there be this many datatypes? Especially considering all these "tiny, small, medium, and large" examples? For the typical database, using these data types wont really yield much benefit, but what if you're running a truly massive database that is terabytes in size and millions of rows? </p>
+			  <p>Let's consider FLOAT vs DECIMAL vs DOUBLE for a moment. Many people question why these even exist, as they are built to contain exactly the same looking data. </p>
+			  <p>It all depends what you're doing with the data. Are you just storing it and you want to access it quickly? Are you going to attempt to do calculations on the data or run other types of logic?</p>
+			  <p>Different datatypes are going to act slightly different in various scenarios, and, depending on your uses, you may find one is superior to the others. As your database grows, and your needs change, you will likely want to revisit data-types and test performance with different ones. </p>
+		  </div>
+		</div>
+	  
+
+	  <p>Now that you've created this table, let's look at it real quick:</p>
+	  <pre>DESCRIBE taula;</pre>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-tutorial-python-describe.png') }}" alt="mysql tutorials" />
+	  <p>This is how you look at the structure of your table. You will see the field names (like your columns), the datatype, and some more information.</p>
+	  <p>Now let's insert some data. Eventually, our goal is to have our program insert data for us, but it is a good idea to do it yourself to better understand how it works before we get into doing it via a program.</p>
+	  
+	  <pre>INSERT INTO taula VALUES (1385419969, "sentdex", "welcome to my tutorial");</pre>
+	  <p>Above is a typical insertion query. Here's each step explained:</p>
+	  
+	  <kbd data-toggle="collapse" data-target="#insert" aria-expanded="false" aria-controls="insert">INSERT INTO</kbd>
+	  
+		<div class="collapse" id="insert">
+		  <div class="well">
+			<p>This is a MySQL command, notifying MySQL that we're about to insert some data.</p>
+		  </div>
+		</div>
+		
+		
+		
+		
+		<kbd data-toggle="collapse" data-target="#tablename" aria-expanded="false" aria-controls="tablename">taula</kbd>
+	  
+		<div class="collapse" id="tablename">
+		  <div class="well">
+			<p>This is our table name, so we're telling MySQL where we're going to be doing this inserting.</p>
+		  </div>
+		</div>
+		
+		
+		
+		
+		
+		
+		<kbd data-toggle="collapse" data-target="#vals" aria-expanded="false" aria-controls="vals">VALUES</kbd>
+	  
+		<div class="collapse" id="vals">
+		  <div class="well">
+			<p>This is another MySQL command, which notifies MySQL what we're planning to insert.</p>
+		  </div>
+		</div>
+		
+		
+		
+		
+		
+		<kbd data-toggle="collapse" data-target="#insertedvals" aria-expanded="false" aria-controls="insertedvals">(1385419969, "sentdex", "welcome to my tutorial");</kbd>
+	  
+		<div class="collapse" id="insertedvals">
+		  <div class="well">
+			<p>Here is the list of inserted values. Notice how we are inserting the values in this specific order, these are the values in order of our columns (time, username, tweet)</p>
+		  </div>
+		</div>
+		
+		
+		
+	  
+	  
+	  <p>Now feel free to insert a few more rows, increasing the time slightly. Here's a few I used in the video.</p>
+
+	  <pre>INSERT INTO taula VALUES (1385419970, "sentdex", "wow thanks @Obama, you are right these tutorials rock");</pre>
+	  <pre>INSERT INTO taula VALUES (1385419971, "sentdex", "@BillGates, thanks Bill for the job offer as VP, but i wanna keep opts open");</pre>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-tutorial-python-insert-data.png') }}" alt="mysql tutorials" />
+	  <p>Now we have the data in the table, how do we access it?</p>
+	  <pre>SELECT * FROM taula;</pre>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-tutorial-select.png') }}" alt="mysql tutorials" />
+	  <p>This SELECTs all (which is denoted with a *) FROM the table named taula.</p>
+	  <p>Now you should see each row organized like a spreadsheet.</p>
+
+	  <p></p>
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

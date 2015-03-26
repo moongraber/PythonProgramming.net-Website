@@ -1,0 +1,75 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  <h2>Adding Color To Graphs Python - Matplotlib tutorial 4</h2>
+	  <h3>Adding more color customization to our Python graph</h3>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/ijijoLJtuPY?list=PLQVvvaa0QuDfpEcGUM6ogsbrlWtqpS5-1" frameborder="0" allowfullscreen></iframe></div><br>
+	  <p>This tutorial builds on the previous one, teaching you some more of the options for Matplotlib color-customization. In this video, we change the color of the x axis and y axis labels, the spine colors, and the title.</p>
+	  <p></p>
+	  <p></p>
+	  <p></p>
+	  <p></p>
+	 
+
+	  <pre  class="prettyprint">
+import matplotlib.pyplot as plt
+
+x = []
+y = []
+
+fig = plt.figure()
+rect = fig.patch
+rect.set_facecolor('#31312e')
+
+readFile = open('SampleData.txt','r')
+sepFile = readFile.read().split('\n')
+readFile.close()
+
+for plotPair in sepFile:
+    xAndY = plotPair.split(',')
+    x.append(int(xAndY[0]))
+    y.append(int(xAndY[1]))
+
+ax1 = fig.add_subplot(1,1,1, axisbg='grey')
+ax1.plot(x, y, 'c', linewidth=3.3)
+
+ax1.tick_params(axis='x', colors='c')
+ax1.tick_params(axis='y', colors='c')
+
+ax1.spines['bottom'].set_color('w')
+ax1.spines['top'].set_color('w')
+ax1.spines['left'].set_color('w')
+ax1.spines['right'].set_color('w')
+
+ax1.yaxis.label.set_color('c')
+ax1.xaxis.label.set_color('c')
+
+ax1.set_title('Matplotlib graph', color='c')
+ax1.set_xlabel('x axis')
+ax1.set_ylabel('y axis')
+
+plt.show()   
+	  </pre>
+
+
+		
+		<p>Fore more tutorials, head to the <a title="Python programming tutorials" href="/dashboard/"><button class="btn btn-primary">Dashboard</button></a></p>
+	  </div>
+	  
+	  
+	  
+	
+	
+
+	
+</body>
+
+
+{% endblock %}
+

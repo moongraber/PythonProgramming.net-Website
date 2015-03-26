@@ -1,0 +1,135 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Tkinter']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Tkinter']}}%;">
+				Tkinter Progress:  {{completed_percentages['Tkinter']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/tkinter/button-command-functions-with-parameters-how-to.png') }}" alt="Tkinter GUI tutorial in Python" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/Y6cir7P3YUk?list=PLQVvvaa0QuDclKx-QpC9wntnURXVJqLyk" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+
+
+<p>If you have been using Tkinter much, you've likely found yourself stumped when it comes time to pass parameters through your functions via the command option. You can very easily pass a function without parameters, but adding parameters seems impossible. </p>
+
+<p>Fear not, I have a solution for you!</p>
+
+<p>First, let's go ahead and add the following function to our current script:</p>
+
+<pre class="prettyprint">
+def qf(quickPrint):
+    print(quickPrint)
+</pre>
+
+<p>So this is just a super simple function that will print whatever we pass through it. So it's a print function that prints using the print function!</p>
+
+<p>Next, here's our new StartPage, with an added button:</p>
+
+<pre class="prettyprint">
+class StartPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self,parent)
+        label = tk.Label(self, text="Start Page", font=LARGE_FONT)
+        label.pack(pady=10,padx=10)
+
+        button = tk.Button(self, text="Visit Page 1",
+                            command=lambda: qf("Check me out, I'm passing vars!"))
+        button.pack()
+
+</pre>
+
+<p>Command is where you can pass functions, but here we're going to pass a lambda function instead, which creates a quick throwaway function, using the parameters we've set. Here's what you should get: </p>
+
+<img class="img-responsive" src="{{ url_for('static', filename='images/tkinter/button-command-functions-with-parameters-how-to.png') }}" alt="Tkinter GUI tutorial in Python" />
+
+<p>If you click the button, you should get a print out to the console with your message.</p>
+
+<p>In case you are confused or lost, here's the current code in full up to this point:</p>
+
+<pre class="prettyprint">
+import tkinter as tk
+
+
+LARGE_FONT= ("Verdana", 12)
+
+
+class SeaofBTCapp(tk.Tk):
+
+    def __init__(self, *args, **kwargs):
+        
+        tk.Tk.__init__(self, *args, **kwargs)
+        container = tk.Frame(self)
+
+        container.pack(side="top", fill="both", expand = True)
+
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        self.frames = {}
+
+
+
+        frame = StartPage(container, self)
+
+        self.frames[StartPage] = frame
+
+        frame.grid(row=0, column=0, sticky="nsew")
+
+        self.show_frame(StartPage)
+
+    def show_frame(self, cont):
+
+        frame = self.frames[cont]
+        frame.tkraise()
+
+
+def qf(quickPrint):
+    print(quickPrint)
+
+        
+class StartPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self,parent)
+        label = tk.Label(self, text="Start Page", font=LARGE_FONT)
+        label.pack(pady=10,padx=10)
+
+        button = tk.Button(self, text="Visit Page 1",
+                            command=lambda: qf("Check me out, I'm passing vars!"))
+        button.pack()
+
+app = SeaofBTCapp()
+app.mainloop()
+
+</pre>
+
+<p>The downside? This is a throwaway function. As we'll see later on, this can be a bit of a pain. For example, if we pass some data through this function like maybe the button's relationship to some other data, like an ID for the button or something, it can just go missing and not act as we had hoped. This is problematic at times, but it can also be resolved. There's always a way!</p>
+
+<p>Now that we know how to create buttons, and have those buttons run functions with parameters, then we can run a function that assigns the new frame that we want to have raised in our application.</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

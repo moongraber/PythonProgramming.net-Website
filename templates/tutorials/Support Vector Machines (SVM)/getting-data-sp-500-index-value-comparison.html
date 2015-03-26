@@ -1,0 +1,208 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Support Vector Machines (SVM)']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Support Vector Machines (SVM)']}}%;">
+				Support Vector Machines (SVM) Progress:  {{completed_percentages['Support Vector Machines (SVM)']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/PMAwBh0nrds?list=PLQVvvaa0QuDd0flgGphKCej-9jp-QdzZ3" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+
+
+<p>Our end goal with "labeling" data is to categorize it. With investing, we really have just two categories. There's outperform or under-perform. In the future, we may add a third category, "match." For now, we're only interested in whether it would have been better or not to invest in the company, but it might be a good idea to further differentiate companies, like:</p>
+
+
+
+<blockquote>Significantly Outperform
+Outperform
+Match (say within 0.5% or something)
+Under-perform
+Significantly Under-perform</blockquote>
+
+
+
+<p>Then we could convert that to say, </p>
+
+
+
+<blockquote>2
+1
+0
+-1
+-2</blockquote>
+
+
+
+<p>That said, we're going to keep things simple for now, and just do:</p>
+
+
+
+<blockquote>Outperform (1)
+Under-perform (0)</blockquote>
+
+
+
+<p>With that in mind, how do we intend to do this? Well, there are a few necessary steps!</p>
+
+<p>First, we need to compare it to something. In our case, we're going to compare to "market," or the S&P 500 index. Thus, we need to get the S&P 500 value. Yahoo Finance does track this for us, though they switch up their methods during our sample. We can compensate for this, though I think we might as well cover a more valuable learning experience: Meshing two different datasets! Fun!</p>
+
+<p>So, our main data set is Yahoo Finance, but we want to combine this data set with another. We want the S&P 500 values, so we're going to need those. For most basic data sets, the website Quandl.com is my go-to source. They have data on all kinds of interesting topics. Their granularity is usually not ideal, but their vast coverage is exquisite. You can certainly use Quandl for testing and prototyping to see if buying a better data set might be worth it. </p>
+
+<p>Head on over to quandl.com, search for S&P 500, choose index, Choose data from the year 2000 on-wards. After that, click on "download," choosing CSV. Easy as that, now we've got a CSV. Next we need to read it and load it into our DataFrame. Turns out Pandas does all of this, so let's do it!</p>
+
+Now the top of our program will read like:</p>
+
+<pre class="prettyprint">
+import pandas as pd
+import os
+import time
+from datetime import datetime
+
+path = "X:/Backups/intraQuarter"
+
+def Key_Stats(gather="Total Debt/Equity (mrq)"):
+    statspath = path+'/_KeyStats'
+    stock_list = [x[0] for x in os.walk(statspath)]
+    df = pd.DataFrame(columns = ['Date','Unix','Ticker','DE Ratio','Price','SP500'])
+
+    sp500_df = pd.DataFrame.from_csv("YAHOO-INDEX_GSPC.csv")
+</pre>
+
+<p>As you can see, all remains the same besides the definition of sp500_df, which is its own dataframe which we load by using from_csv, as well as initiating our data frame with a few new columns. </p>
+
+<p>Next up, we begin the for loop:</p>
+
+<pre class="prettyprint">
+    for each_dir in stock_list[1:25]:
+        each_file = os.listdir(each_dir)
+        ticker = each_dir.split("\\")[1]
+        if len(each_file) > 0:
+            for file in each_file:
+                date_stamp = datetime.strptime(file, '%Y%m%d%H%M%S.html')
+                unix_time = time.mktime(date_stamp.timetuple())
+                full_file_path = each_dir+'/'+file
+                source = open(full_file_path,'r').read()
+                try:
+                    value = float(source.split(gather+':&lt;/td>&lt;td class="yfnc_tabledata1">')[1].split('&lt;/td>')[0])
+
+                    try:
+                        sp500_date = datetime.fromtimestamp(unix_time).strftime('%Y-%m-%d')
+                        row = sp500_df[(sp500_df.index == sp500_date)]
+                        sp500_value = float(row["Adjusted Close"])
+                    except:
+                        sp500_date = datetime.fromtimestamp(unix_time-259200).strftime('%Y-%m-%d')
+                        row = sp500_df[(sp500_df.index == sp500_date)]
+                        sp500_value = float(row["Adjusted Close"])
+</pre>
+
+<p>Most of this remains the same except for the end. You can see here that we have a new try-except statement, containing the definition of the sp500 date and value. What we're doing here is hunting for the value of the S&P 500 index at the same time as the date for our stock file. The reason for the Try and Except here is because some of our stock data may have been pulled on a weekend day. If we hunt for a weekend day's value of the S&P 500, that date just simply wont exist in the dataset, since there is only data for Monday-Friday. </p>
+
+<p>Next in the script, we want to pull the stock price to compare to the S&P 500 value:</p>
+
+<pre class="prettyprint">
+                    stock_price = float(source.split('&lt;/small>&lt;big>&lt;b>')[1].split('&lt;/b>&lt;/big>')[0])
+</pre>
+
+<p>Here, again, we're using fairly clunky splitting procedures for hunting for the price. Eventually, we're going to upgrade this using Regular Expressions. </p>
+
+<p>The final major change is adding all of this to our data frame:</p>
+
+<pre class="prettyprint">
+                    df = df.append({'Date':date_stamp,
+                                    'Unix':unix_time,
+                                    'Ticker':ticker,
+                                    'DE Ratio':value,
+                                    'Price':stock_price,
+                                    'SP500':sp500_value}, ignore_index = True)
+</pre>
+
+
+<p>Just in case you're lost somewhere up to this point, here's the full code:</p>
+
+<pre class="prettyprint">
+import pandas as pd
+import os
+import time
+from datetime import datetime
+
+path = "X:/Backups/intraQuarter"
+
+def Key_Stats(gather="Total Debt/Equity (mrq)"):
+    statspath = path+'/_KeyStats'
+    stock_list = [x[0] for x in os.walk(statspath)]
+    df = pd.DataFrame(columns = ['Date','Unix','Ticker','DE Ratio','Price','SP500'])
+
+    sp500_df = pd.DataFrame.from_csv("YAHOO-INDEX_GSPC.csv")
+
+    for each_dir in stock_list[1:25]:
+        each_file = os.listdir(each_dir)
+        ticker = each_dir.split("\\")[1]
+        if len(each_file) > 0:
+            for file in each_file:
+                date_stamp = datetime.strptime(file, '%Y%m%d%H%M%S.html')
+                unix_time = time.mktime(date_stamp.timetuple())
+                full_file_path = each_dir+'/'+file
+                source = open(full_file_path,'r').read()
+                try:
+                    value = float(source.split(gather+':&lt;/td>&lt;td class="yfnc_tabledata1">')[1].split('&lt;/td>')[0])
+
+                    try:
+                        sp500_date = datetime.fromtimestamp(unix_time).strftime('%Y-%m-%d')
+                        row = sp500_df[(sp500_df.index == sp500_date)]
+                        sp500_value = float(row["Adjusted Close"])
+                    except:
+                        sp500_date = datetime.fromtimestamp(unix_time-259200).strftime('%Y-%m-%d')
+                        row = sp500_df[(sp500_df.index == sp500_date)]
+                        sp500_value = float(row["Adjusted Close"])
+
+
+                    stock_price = float(source.split('&lt;/small>&lt;big>&lt;b>')[1].split('&lt;/b>&lt;/big>')[0])
+                    #print("stock_price:",stock_price,"ticker:", ticker)
+                        
+                    
+
+                    df = df.append({'Date':date_stamp,
+                                    'Unix':unix_time,
+                                    'Ticker':ticker,
+                                    'DE Ratio':value,
+                                    'Price':stock_price,
+                                    'SP500':sp500_value}, ignore_index = True)
+                except Exception as e:
+                    pass
+
+    save = gather.replace(' ','').replace(')','').replace('(','').replace('/','')+('.csv')
+    print(save)
+    df.to_csv(save)
+    
+        
+
+Key_Stats()
+    
+</pre>
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

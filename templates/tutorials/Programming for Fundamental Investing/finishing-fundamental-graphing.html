@@ -1,0 +1,122 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Programming for Fundamental Investing']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Programming for Fundamental Investing']}}%;">
+				Programming for Fundamental Investing Progress:  {{completed_percentages['Programming for Fundamental Investing']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/JZdyG6qLSMA?list=PLQVvvaa0QuDejNczz7dbpyu3JnwUBvNch" frameborder="0" allowfullscreen></iframe></div>
+	  
+
+		<pre  class="prettyprint">
+import urllib2
+import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
+import matplotlib.dates as mdates
+import numpy as np
+
+
+
+def grabQuandl(ticker):
+
+    netIncomeAr = []
+    revAr = []
+    ROCAr = []
+
+    
+    endLink = 'sort_order=asc&auth_token=asdfasdfsagsvasd'
+    try:
+        netIncome = urllib2.urlopen('http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_'+ticker+'_NET_INC.csv?&'+endLink).read()
+        revenue = urllib2.urlopen('http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_'+ticker+'_REV_LAST.csv?&'+endLink).read()
+        ROC = urllib2.urlopen('http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_'+ticker+'_ROC.csv?&'+endLink).read()
+
+        splitNI = netIncome.split('\n')
+        print 'Net Income:'
+        for eachNI in splitNI[1:-1]:
+            print eachNI
+            netIncomeAr.append(eachNI)
+
+        print '_________'
+        splitRev = revenue.split('\n')
+        print 'Revenue:'
+        for eachRev in splitRev[1:-1]:
+            print eachRev
+            revAr.append(eachRev)
+
+        
+        print '_________'
+        splitROC = ROC.split('\n')
+        print 'Return on Capital:'
+        for eachROC in splitROC[1:-1]:
+            print eachROC
+            ROCAr.append(eachROC)
+
+
+        incomeDate, income = np.loadtxt(netIncomeAr, delimiter=',',unpack=True,
+                                        converters={ 0: mdates.strpdate2num('%Y-%m-%d')})
+
+        revDate, revenue = np.loadtxt(revAr, delimiter=',',unpack=True,
+                                        converters={ 0: mdates.strpdate2num('%Y-%m-%d')})
+
+        rocDate, ROC = np.loadtxt(ROCAr, delimiter=',',unpack=True,
+                                        converters={ 0: mdates.strpdate2num('%Y-%m-%d')})
+
+
+
+        
+
+        fig = plt.figure()
+        
+        ax1 = plt.subplot2grid((6,6),(0,0), rowspan=2, colspan=6)
+        ax1.plot(incomeDate, income)
+
+        ax2 = plt.subplot2grid((6,6),(2,0), sharex=ax1, rowspan=2, colspan=6)
+        ax2.plot(revDate, revenue)
+
+        ax3 = plt.subplot2grid((6,6),(4,0), sharex=ax1, rowspan=2, colspan=6)
+        ax3.plot(rocDate, ROC)
+
+
+        ax1.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+        plt.subplots_adjust(hspace=0.53)
+        
+        plt.show()
+
+    except Exception, e:
+        print 'failed the main quandl loop for reason of',str(e)
+
+
+
+grabQuandl('YHOO')
+
+
+
+
+		</pre>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

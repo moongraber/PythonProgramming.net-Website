@@ -1,0 +1,43 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Robotics with the Raspberry Pi']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Robotics with the Raspberry Pi']}}%;">
+				Robotics with the Raspberry Pi Progress:  {{completed_percentages['Robotics with the Raspberry Pi']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/raspberry-pi-robot-car.jpg') }}" alt="robotics with the Raspberry Pi" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423"   src="https://www.youtube.com/embed/ZEmKlxxITI8?list=PLQVvvaa0QuDeJlgD1RX9_49tMLUxvIxF4" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>You may think creating an autonomous car is a long way from where you are now, but it's not too far. You can break robotics down, just like programming, to extremely simple elements. Our car is no different, albeit our car will be very basic.</p>
+	  <p>We're going to use combinations of GPIO pins to control four motors. The added layer of complexity will be an added H-bridge board, which will allow us to utilize forward and reverse with our motors. With four motors capable of forward and reverse, we can make a car with fixed wheels go forward, reverse, turn left, turn right, or pivot in place clockwise / counter clockwise.</p>
+	  <p>After that, we're going to bring in the HC SR04 distance sensor, reading values from that into our program. We can use this distance sensor to move our car into autonomy. If we had two, we could have one on the front, one at the rear, and our car would (almost) never hit anything. Even just one on the front is fairly successful, but we hit the back end fairly often.</p>
+	  <p>Let's get started, first order of business: Supplies needed.</p>
+	  
+	  
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

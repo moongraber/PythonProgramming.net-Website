@@ -1,0 +1,198 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Flask']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Flask']}}%;">
+				Flask Progress:  {{completed_percentages['Flask']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/eZ5XKaNYTiw?list=PLQVvvaa0QuDcOS4l8RCWh0olq_je0OKaP" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+
+
+<p>In this Flask tutorial video, we cover the extending capability of Flask Templates. The idea of extending is to allow for custom templates "within" other templates. So, you will generally have something like your header and footer in your main template, with things like your navbar, logo/banner, and then your footer information. Then, in the body area, you have the body data actually coming from another template that "extends" the main template. </p>
+
+<p>An example of this would be:</p>
+
+<p>index.html:</p>
+
+<pre class="prettyprint">  
+&lt;html&gt;
+&lt;link rel="stylesheet" media="screen" href = "&#123;&#123; url_for('static', filename='bootstrap.min.css') &#125;&#125;"&gt;
+&lt;meta name="viewport" content = "width=device-width, initial-scale=1.0"&gt;
+&lt;head&gt;
+&lt;/head&gt;
+
+&lt;body class = "body"&gt;
+&lt;nav class="navbar navbar-default" role="navigation"&gt;
+  &lt;div class="container-fluid"&gt;
+    &lt;!-- Brand and toggle get grouped for better mobile display --&gt;
+    &lt;div class="navbar-header"&gt;
+      &lt;button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"&gt;
+        &lt;span class="sr-only"&gt;Toggle navigation&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;a class="navbar-brand" href="/"&gt;Home&lt;/a&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Collect the nav links, forms, and other content for toggling --&gt;
+    &lt;div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"&gt;
+      &lt;ul class="nav navbar-nav"&gt;
+        &lt;li&gt;&lt;a href="/graph"&gt;Graph&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;
+
+      &lt;/ul&gt;
+
+    &lt;/div&gt;&lt;!-- /.navbar-collapse --&gt;
+  &lt;/div&gt;&lt;!-- /.container-fluid --&gt;
+&lt;/nav&gt;
+
+	&lt;body&gt;
+		&lt;h3&gt;&#123;&#123; title &#125;&#125;&lt;/h3&gt;
+		&#123;% for p in paragraph %&#125;
+		&lt;p&gt;&#123;&#123; p &#125;&#125;&lt;/p&gt;
+		&#123;% endfor %&#125;
+		
+		&#123;% block body %&#125;
+		&#123;% endblock %&#125;
+		
+	&lt;/body&gt;
+	
+&lt;/body&gt;
+
+&lt;script type = "text/javascript" src = "/static/bootstrap.min.js"&gt;&lt;/script&gt;
+
+
+&lt;/html&gt;
+</pre>
+
+<p>Above, we can see that we've got:</p>
+<p>&#123;% block body %&#125;</p>
+<p>&#123;% endblock %&#125;</p>
+
+<p>Between those tags is where we can pass through body data. </p>
+		
+<p>So then we can do this:</p>
+
+<p>graph.html</p>
+
+<pre class="prettyprint">  
+&#123;% extends "index.html" %&#125;
+&#123;% block body %&#125;
+
+	&lt;body&gt;
+
+		&lt;div id=&#123;&#123; chartID|safe &#125;&#125; class="chart" style="height: 500px"&gt;&lt;/div&gt;
+		&lt;script&gt;
+			var chart_id = &#123;&#123; chartID|safe &#125;&#125;
+			var credits = &#123;"text":"HKinsley","href":"http://harrisonkinsley.com"&#125;
+			var series = &#123;&#123; series|safe &#125;&#125;
+			var colors = ['#00A3E0', '#183A54', '#90ed7d', '#f7a35c', '#8085e9', '#f15c80', '#e4d354', '#8085e8', '#8d4653', '#91e8e1', '#7cb5ec', '#434348']
+			var title = &#123;&#123; graphtitle|safe &#125;&#125;
+			var xAxis = &#123;&#123; xAxis|safe &#125;&#125;
+			var yAxis = &#123;&#123; yAxis|safe &#125;&#125;
+			var chart = &#123;&#123; chart|safe &#125;&#125;
+			var subtitle = &#123;&#123; subtitleText|safe &#125;&#125;
+		&lt;/script&gt;
+			&lt;script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"&gt;&lt;/script&gt;
+			&lt;script src="http://code.highcharts.com/highcharts.js"&gt;&lt;/script&gt;
+			&lt;script src="../static/graph.js"&gt;&lt;/script&gt;
+		
+	&lt;/body&gt;
+	
+	
+&#123;% endblock %&#125;
+
+</pre>
+
+<p>Now, to put it all together, in our app script, when we render a template, we render graph.html. When that html file is loaded, it will see the extends tag and incorporate graph.html within the index.html template. </p>
+
+<p>So here's our current __init__.py file:</p>
+
+<pre class="prettyprint">  
+from flask import Flask, render_template
+ 
+app = Flask(__name__)
+
+@app.route('/')
+def homepage():
+
+    title = "Epic Tutorials"
+    paragraph = ["wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!","wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!"]
+
+    try:
+        return render_template("index.html", title = title, paragraph=paragraph)
+    except Exception, e:
+        return str(e)
+
+@app.route('/about')
+def aboutpage():
+
+    title = "About this site"
+    paragraph = ["blah blah blah memememememmeme blah blah memememe"]
+
+    pageType = 'about'
+
+    return render_template("about.html", title=title, paragraph=paragraph, pageType=pageType)
+
+
+@app.route('/about/contact')
+def contactPage():
+
+    title = "About this site"
+    paragraph = ["blah blah blah memememememmeme blah blah memememe"]
+
+    pageType = 'about'
+
+    return render_template("index.html", title=title, paragraph=paragraph, pageType=pageType)
+
+@app.route('/graph')
+def graph_Example(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
+        subtitleText = 'test'
+	#topPairs, bottomPairs = datafunctions.twoPaneGraphData('btceHistory',1, 3, 4)
+        dataSet = [[1408395614.0, 430.2], [1408395614.0, 431.13], [1408395617.0, 431.354], [1408395623.0, 432.349], [1408395623.0, 432.017], [1408395640.0, 430.195], [1408395640.0, 430.913], [1408395640.0, 430.913], [1408395647.0, 430.211], [1408395647.0, 430.297], [1408395647.0, 430.913], [1408395648.0, 432.996], [1408395648.0, 432.996], [1408395648.0, 432.349], [1408395654.0, 431.0]]
+        pageType = 'graph'
+	chart = &#123;"renderTo": chartID, "type": chart_type, "height": chart_height, "zoomType":'x'&#125;
+	series = [&#123;"name": 'Label1', "data": dataSet&#125;]
+	graphtitle = &#123;"text": 'My Title'&#125;
+	xAxis = &#123;"type":"datetime"&#125;
+	yAxis = &#123;"title": &#123;"text": 'yAxis Label'&#125;&#125;
+	return render_template('graph.html',pageType=pageType,subtitleText=subtitleText, chartID=chartID, chart=chart, series=series, graphtitle=graphtitle, xAxis=xAxis, yAxis=yAxis)
+
+
+
+
+if __name__ == "__main__":
+	app.run()
+
+
+</pre>
+
+
+	  
+		
+		
+		
+		<p>That's all for now with the Flask Basics, head back to the <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a> for more tutorials.</p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

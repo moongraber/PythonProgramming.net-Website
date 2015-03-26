@@ -1,0 +1,83 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"  
+
+</iframe></div><br><br>
+
+
+<pre class="prettyprint"> 
+
+<img class="img-responsive" src="{{ url_for('static', filename='images/forex-pattern-recognition/machine-learning-algorithmic-trading-example.png') }}" alt="pattern recognition tutorial" />
+
+  -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Forex Algo HFT']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Forex Algo HFT']}}%;">
+				Forex Algo HFT Progress:  {{completed_percentages['Forex Algo HFT']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/forex-pattern-recognition/machine-learning-algorithmic-trading-example.png') }}" alt="pattern recognition tutorial" />
+		<h2>Machine Learning and Pattern Recognition for Algorithmic Forex and Stock Trading</h2>
+	  <h3>{{curTitle}}</h3>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/v_L9jR8P-54?list=PLQVvvaa0QuDe6ZBtkCNWNUbdaBo2vA4RO" frameborder="0" allowfullscreen></iframe></div><br>
+	  <p>Machine learning in any form, including pattern recognition, has of course many uses from voice and facial recognition to medical research. In this case, our question is whether or not we can use pattern recognition to reference previous situations that were similar in pattern. If we can do that, can we then make trades based on what we know happened with those patterns in the past and actually make a profit?</p>
+	  
+	  <p>To do this, we're going to completely code everything ourselves. If you happen to enjoy this topic, the next step would be to look into GPU acceleration or <kbd data-toggle="collapse" data-target="#threading" aria-expanded="false" aria-controls="threading">threading</kbd>. We're only going to need <a href="/matplotlib-python-3-basics-tutorial/" target="blank"><strong>Matplotlib</strong></a> (for data visualization) and some <strong>NumPy</strong> (for number crunching), and the rest is up to us.</p>
+	  
+	  <div class="collapse" id="threading">
+		  <div class="well">
+			<p>Python is naturally a single-threaded language, meaning each script will only use a single cpu (usually this means it uses a single cpu core, and sometimes even just half or a quarter, or worse, of that core).</p>
+			<p>This is why programs in Python may take a while to computer something, yet your processing might only be 5% and RAM 10%.</p>
+			<p>To learn more about threading, you can view the <a href="/threading-tutorial-python/" target="blank"><strong>threading tutorial</strong></a> on this site.</p>
+			<p></p>
+		  </div>
+		</div>
+		
+		
+	<p>The easiest way to get these modules nowadays is to use pip install.</p>
+	
+		  <kbd data-toggle="collapse" data-target="#dontknow" aria-expanded="false" aria-controls="dontknow">Don't know what pip is or how to install modules?</kbd><br>
+	  
+				<div class="collapse" id="dontknow">
+				  <div class="well">
+					<p><strong>Pip</strong> is probably the easiest way to install packages Once you install Python, you should be able to open your command prompt, like cmd.exe on windows, or bash on linux, and type:</p>
+					<code>pip install numpy</code><br>
+					<code>pip install matplotlib</code>			
+					<p>Having trouble still? No problem, there's a tutorial for that: <a href="/using-pip-install-for-python-modules/" target="_blank"><strong>pip install Python modules tutorial</strong></a>.</p>
+					<p>If you're still having trouble, feel free to contact us, using the contact in the footer of this website.</p>
+				  </div>
+				</div>
+	
+
+	<br>
+	
+	<p>Finally, you will need: <a href="{{ url_for('static', filename='downloads/forex-hft-pattern-recognition/GBPUSD.zip') }}"><button class="btn btn-primary">Forex tick Dataset for this Tutorial</button></a></p>
+	
+	<p>The plan is to take a group of prices in a time frame, and convert them to percent change in an effort to normalize the data. Let's say we take 50 consecutive price points for the sake of explanation. What we'll do is map this pattern into memory, move forward one price point, and re-map the pattern. For each pattern that we map into memory, we then want to leap forward a bit, say, 10 price points, and log where the price is at that point. We then map this "outcome" to the pattern and continue. Every pattern has its result.</p>
+
+	<p>Next, we take the current pattern, and compare it to all previous patterns. What we'll do is compare the percent similarity to all previous patterns. If their percent similarity is more than a certain threshold, then we're going to consider it. From here, maybe we have 20-30 comparable patterns from history. With these similar patterns, we can then aggregate all of their outcomes, and come up with an estimated "average" outcome. With that average outcome, if it is very favorable, then we might initiate a buy. If the outcome is not favorable, maybe we sell, or short.</p>
+	  <p>For visualization, here's an example:</p>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/forex-pattern-recognition/machine-learning-algorithmic-trading-example.png') }}" alt="pattern recognition tutorial" />
+	  <p>In the above example, the predicted average pattern is to go up, so we might initiate a buy.</p>
+	  <p>This series will not end with you having any sort of get-rich-quick algorithm. There are a few known bugs with this program, and the chances of you being able to execute trades fast enough with this tick data is unlikely, unless you are a bank. The goal here is to show you just how easy and basic pattern recognition is. As long as you have some basic Python programming knowledge, you should be able to follow along. </p>
+
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

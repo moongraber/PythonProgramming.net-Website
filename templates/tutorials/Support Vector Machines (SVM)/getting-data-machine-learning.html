@@ -1,0 +1,94 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Support Vector Machines (SVM)']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Support Vector Machines (SVM)']}}%;">
+				Support Vector Machines (SVM) Progress:  {{completed_percentages['Support Vector Machines (SVM)']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/rAdAVcS4aL0?list=PLQVvvaa0QuDd0flgGphKCej-9jp-QdzZ3" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+
+
+<p>Assuming you have the <strong><a href="http://pythonprogramming.net/downloads/intraQuarter.zip" title="machine learning data set" target="_blank">machine learning data file</a></strong> downloaded, then you're ready to learn how to parse the data. </p>
+
+<p>The data set we have mimics exactly having visited the web pages at the time, only we're not actually needing to visit the page. We have the full HTML source code, so it is just like parsing the website, minus the bandwidth use. </p>
+
+<p>First, we're going to want to know what the corresponding date is to our data, then we're going to pull the actual data. </p>
+
+<p>To start:</p>
+
+<pre class="prettyprint">
+import pandas as pd
+import os
+import time
+from datetime import datetime
+
+path = "X:/Backups/intraQuarter"
+</pre>
+
+<p>Above, we're importing pandas for the Pandas module, os so that we can interact with directories, time and datetime for managing time and date information.</p> 
+
+<p>Finally, we define "path," which is the path to the intraQuarter folder (you need to unzip the original zip file you downloaded from this website).</p>
+
+<pre class="prettyprint">
+def Key_Stats(gather="Total Debt/Equity (mrq)"):
+    statspath = path+'/_KeyStats'
+    stock_list = [x[0] for x in os.walk(statspath)]
+    #print(stock_list)
+</pre>
+
+<p>Here, we begin our function, with the specification that we're going to try to collect the Debt/Equity value. </p>
+
+<p>Statspath is the path to the stats directory. </p>
+
+<p>stock_list is a quick one-liner for loop that uses os.walk to list out all contents within a directory. </p>
+
+<p>Next:</p>
+
+<pre class="prettyprint">
+    for each_dir in stock_list[1:]:
+        each_file = os.listdir(each_dir)
+        if len(each_file) > 0:
+</pre>
+<p>Above, we're cycling through every directory (which is every stock ticker). Then, we list "each_file" which is each file within that stock's directory. If the length of each_file, which is a list of all of the files in the stock's directory is greater than 0, then we want to proceed. Some stocks have no files/data. </p>
+
+<pre class="prettyprint">
+            for file in each_file:
+
+                date_stamp = datetime.strptime(file, '%Y%m%d%H%M%S.html')
+                unix_time = time.mktime(date_stamp.timetuple())
+                print(date_stamp, unix_time)
+                #time.sleep(15)
+
+Key_Stats()
+</pre>
+
+<p>Finally, we run a for loop that pulls the date_stamp from each file. Our files are stored under their ticker, with a file name of the exact date and time from the information being pulled. </p>
+
+<p>From there, we explain to date-time what the format for our date stamp is, then we convert to a unix time stamp. </p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,139 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">             width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['PyGame']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['PyGame']}}%;">
+				PyGame Progress:  {{completed_percentages['PyGame']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/pygame/pause-and-game-over-pygame-tutorial.png') }}" alt="text to screen" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/Et--T7SKHnk?list=PLQVvvaa0QuDdLkP8MrOXLe_rKuf6r80KO" frameborder="0" allowfullscreen></iframe></div>
+	  
+
+
+<p>In this tutorial, you are shown how to add pause and game over to your game. For those watching the videos, this includes the current video and the next one in the playlist.</p>
+
+<p>First, let's add a pausing function. Sometimes, a player needs to pause for various reasons. Maybe their boss is walking by or they have to pee. Either way, pausing is useful! There are two methods for pausing. One method is to freeze the frame and write Pause over it with some instructions on how to play again. Another is to have the window cleared and have the Pause and instructions on that. If you think your players might be inclined to cheat by pausing to slow things down, then you might want to clear the screen. </p>
+
+<pre class="prettyprint">
+def paused():
+
+    largeText = pygame.font.SysFont("comicsansms",115)
+    TextSurf, TextRect = text_objects("Paused", largeText)
+    TextRect.center = ((display_width/2),(display_height/2))
+    gameDisplay.blit(TextSurf, TextRect)
+    
+
+    while pause:
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+                
+        #gameDisplay.fill(white)
+        
+
+        button("Continue",150,450,100,50,green,bright_green,unpause)
+        button("Quit",550,450,100,50,red,bright_red,quitgame)
+
+        pygame.display.update()
+        clock.tick(15)  
+</pre>
+
+Un-comment the fill if you want the window to be cleared before pause is shown. 
+
+Now, all you need to do is add a check if the P key is pressed in the KEYDOWN event if-statement:
+
+<pre class="prettyprint">
+if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x_change = -5
+                if event.key == pygame.K_RIGHT:
+                    x_change = 5
+                if event.key == pygame.K_p:
+                    pause = True
+                    paused()
+</pre>
+
+
+<p>Next up, we want to cover the game over sequence, which is triggered when we crash. </p>
+
+<p>Here's that function:</p>
+
+<pre class="prettyprint">
+def crash():
+    
+    
+    largeText = pygame.font.SysFont("comicsansms",115)
+    TextSurf, TextRect = text_objects("You Crashed", largeText)
+    TextRect.center = ((display_width/2),(display_height/2))
+    gameDisplay.blit(TextSurf, TextRect)
+    
+
+    while True:
+        for event in pygame.event.get():
+            #print(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+                
+        #gameDisplay.fill(white)
+        
+
+        button("Play Again",150,450,100,50,green,bright_green,game_loop)
+        button("Quit",550,450,100,50,red,bright_red,quitgame)
+
+        pygame.display.update()
+        clock.tick(15) 
+</pre>
+
+<p>Now you want to edit the bottom of the game_loop function to look like:</p>
+
+<pre class="prettyprint">
+if x > display_width - car_width or x < 0:
+            crash()
+ 
+        if thing_starty > display_height:
+            thing_starty = 0 - thing_height
+            thing_startx = random.randrange(0,display_width)
+            dodged += 1
+            thing_speed += 1
+            thing_width += (dodged * 1.2)
+ 
+        if y < thing_starty+thing_height:
+            print('y crossover')
+ 
+            if x > thing_startx and x < thing_startx + thing_width or x+car_width > thing_startx and x + car_width < thing_startx+thing_width:
+                print('x crossover')
+                crash()
+</pre>
+
+
+<p>Basically, you want to replace the game_over = True with crash().</p>
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

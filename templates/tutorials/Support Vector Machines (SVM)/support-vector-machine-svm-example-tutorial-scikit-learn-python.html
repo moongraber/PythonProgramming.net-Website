@@ -1,0 +1,165 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Support Vector Machines (SVM)']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Support Vector Machines (SVM)']}}%;">
+				Support Vector Machines (SVM) Progress:  {{completed_percentages['Support Vector Machines (SVM)']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/svm/machine-learning-with-image-recognition-in-python-and-scikit-learn.png') }}"/>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/KTeVOb8gaD4?list=PLQVvvaa0QuDd0flgGphKCej-9jp-QdzZ3" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div><br>
+	  
+
+
+<p>In this tutorial video, we cover a very simple example of how machine learning works. My goal here is to show you how simple machine learning can actually be, where the real hard part is actually getting data, labeling data, and organizing the data. To emphasize this, we're going to use a pre-existing data set that everyone has that has come with their installation of Scikit-Learn.</p>
+
+<p>One of the data sets, digits, contains an already structured and labeled set of samples that contains pixel information for numbers up to 9 that we can use for training and testing.</p>
+
+<p>To do this tutorial, you're going to need:</p>
+<blockquote><strong>Scikit-learn (sklearn)</strong>
+https://pypi.python.org/pypi/scikit-learn/0.15.2#downloads<br>
+requires: http://www.numpy.org/, http://www.scipy.org/</blockquote>
+&nbsp;
+<blockquote><strong>Matplotlib</strong>
+http://matplotlib.org</blockquote>
+
+<p>You can also most likely get by installing with pip. If you have an up-to-date version of Python 2 or Python 3, you have pip, and you should be able to run:</p>
+
+<pre class="prettyprint">
+pip install numpy
+pip install scipy
+pip install matplotlib
+pip install scikit-learn
+</pre>
+
+<p>Confused? Don't know what pip is? No problem, watch the <strong><a href="http://dev.pythonprogramming.net/using-pip-install-for-python-modules/" target="_blank">installing packages with pip tutorial</a></strong>. </p>
+<p>After watching the pip install video, and after trying yourself, if you still can't get it working, contact us using the contact us link in the footer of this page. </p>
+
+<p>Now, to begin:</p>
+
+<pre class="prettyprint">
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn import svm
+
+digits = datasets.load_digits()
+</pre>
+
+<p>Above, we've imported the necessary modules. Pyplot is used to actually plot a chart, datasets are used as a sample dataset, which contains one set that has number recognition data. Finally, we import svm, which is for the sklearn Support Vector Machine. </p>
+
+<p>Next, we're defining the digits variable, which is the loaded digit dataset. </p>
+
+<p>With this, you can reference the data's features and labels:</p>
+
+<pre class="prettyprint">
+print(digits.data)
+</pre>
+
+<p>digits.data is the actual data (features). </p>
+
+<pre class="prettyprint">
+print(digits.target)
+</pre>
+
+<p>digits.target is the actual label we've assigned to the digits data. </p>
+
+<p>Now that we've got the data ready, we're ready to do the machine learning. First, we specify the classifier:</p>
+
+<p>If you want, you can just leave parameters blank and use the defaults, like this:</p>
+
+<pre class="prettyprint">
+clf = svm.SVC()
+</pre>
+
+<p>Though you will get better results with:</p>
+
+<pre class="prettyprint">
+clf = svm.SVC(gamma=0.001, C=100)
+</pre>
+
+<p>This chooses the SVC, and we set gamma and C. For now, we're not going to get into the purpose of these values. They can either be determined by the scientist, or you can use another algorithm to determine the best number to choose based on your data. </p>
+
+<p>It is likely that using the defaults will yield inferior results, though it should still work fairly well in this example. </p>
+
+<p>With that done, now we're ready to train. It's best for clarity to go ahead and assign the value into X (uppercase) and y. </p>
+
+<pre class="prettyprint">
+X,y = digits.data[:-10], digits.target[:-10]
+</pre>
+
+<p>This loads in all but the last 10 data points, so we can use all of these for training. Then, we can use the last 10 data points for testing. To alleviate confusion, this X,y pairing is denoted with a capital X, because it is not really a conventional x coordinate. The X contains all of the "coordinates" and y is simply the "target" or "classification" of the data. Each bit of data pertains to a number. So X may contain a bunch of pixel data for the number 5, and the "y" would be 5.</p>
+
+<p>Next we train with:</p>
+
+<pre class="prettyprint">
+clf.fit(x,y)
+</pre>
+
+<p>That's it, we've now trained the machine. Let's test it!</p>
+
+<pre class="prettyprint">
+print(clf.predict(digits.data[-5]))
+</pre>
+
+<p>This will predict what the 5th from the last element is. For us, it would be useful to go ahead and visualize this, so we're going to do:</p>
+
+<pre class="prettyprint">
+plt.imshow(digits.images[-5], cmap=plt.cm.gray_r, interpolation='nearest')
+plt.show()
+</pre>
+
+<p>This just shows us an image of the number in question. Do not worry if you do not follow the imshow function, it is not necessary for this tutorial or this series. If you'd like to learn more about matplotlib specifically, I have many tutorial on it.</p> 
+
+<p>How were the results? Did the machine predict correctly?</p>
+
+<p>My output testing the [-5] example was:</p>
+
+
+
+<blockquote>prediction: [9]</blockquote>
+
+
+
+<p>The resulting image: </p>
+<img class="img-responsive" src="{{ url_for('static', filename='images/svm/machine-learning-with-image-recognition-in-python-and-scikit-learn.png') }}"/>
+<p>Feel free to play around with the code and test more samples. Adjust gamma a bit. You should notice speed goes up the larger gamma, but accuracy declines. You should notice the opposite if you decrease gamma (do this by factors of 10). </p>
+
+<p>So, something like:</p>
+
+<pre class="prettyprint">
+clf = svm.SVC(gamma=0.01, C=100)
+</pre>
+
+<p>This is likely to be inaccurate, or less accurate than before. </p>
+
+<pre class="prettyprint">
+clf = svm.SVC(gamma=0.0001, C=100)
+</pre>
+
+<p>The above here is likely to be more accurate, as it is basically "paying more attention to detail."</p>
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

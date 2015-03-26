@@ -1,0 +1,115 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">             width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['PyGame']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['PyGame']}}%;">
+				PyGame Progress:  {{completed_percentages['PyGame']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/pygame/pygame-displaying-images.png') }}" alt="pygame displaying image" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/ZFo4mtLJEWs?list=PLQVvvaa0QuDdLkP8MrOXLe_rKuf6r80KO" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+	  
+<p>In this PyGame tutorial, we cover how to display custom-created game images to the screen. You can also draw objects to the screen using coordinates, which we will cover later. Here, we've created some award-winning graphics that we definitely want in our game, so we want to know how to get it to show up.</p>
+
+
+<pre class="prettyprint">import pygame
+
+
+pygame.init()
+
+
+display_width = 800
+display_height = 600
+
+gameDisplay = pygame.display.set_mode((display_width,display_height))
+pygame.display.set_caption('A bit Racey')
+
+black = (0,0,0)
+white = (255,255,255)
+
+clock = pygame.time.Clock()
+crashed = False
+carImg = pygame.image.load('racecar.png')
+
+def car(x,y):
+    gameDisplay.blit(carImg, (x,y))
+
+x =  (display_width * 0.45)
+y = (display_height * 0.8)
+
+while not crashed:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            crashed = True
+
+    gameDisplay.fill(white)
+    car(x,y)
+
+        
+    pygame.display.update()
+    clock.tick(60)
+
+pygame.quit()
+quit()
+</pre>
+<p>So, here we've gone ahead and embedded the new code in our existing script. First, we use:</p>
+<pre class="prettyprint">display_width = 800
+display_height = 600
+
+gameDisplay = pygame.display.set_mode((display_width,display_height))
+</pre>
+<p>The functioning here is the same as before, but this time we're not hard coding the resolution. We want to use this method so that we can reference the variables. We're going to see how useful that can be already in this script, but even more later on.</p>
+
+<p>Then, here:</p>
+<pre class="prettyprint">black = (0,0,0)
+white = (255,255,255)
+</pre>
+<p>We're defining our colors, using RGB formatting. If you want to know a bit more about RGB, check out the video.</p>
+
+<p>Next up:</p>
+<pre class="prettyprint">carImg = pygame.image.load('racecar.png')
+</pre>
+<p>Here, we load the racecar.png image to our carImg variable. racecar.png is an image that I have personally created. See the video for some tips to create an image, pull one from Google Images, or make your own. Chances are, you will do better than I did!</p>
+<pre class="prettyprint">def car(x,y):
+    gameDisplay.blit(carImg, (x,y))
+</pre>
+<p>Now, we define our car function, which really just places the car to the display. "Blit" basically just draws the image to the screen, but we still have yet to fully show it to the display. In graphics, generally, there is a lot done in the background, and only when every update is done is when the screen is visually updated.</p>
+<pre class="prettyprint">x =  (display_width * 0.45)
+y = (display_height * 0.8)
+</pre>
+<p>Here, we've defined the starting points for our car. See how we used out previously-defined variables? We're already seeing how this could be useful, especially if we EVER want to change our resolution. A lot of people start out writing programs, thinking that some of the variables will just never be changed. I've done it a few times. Always wrong and regretful.</p>
+
+Now, within our while loop, we see the addition of:
+<pre class="prettyprint">    gameDisplay.fill(white)
+    car(x,y)
+</pre>
+<p>Here, we've filled our display with a color, white. What this does is cover everything in white. Paint the game white, so-to-speak. This will cover over any existing stuff. After that, we run our car function to draw the car to the screen. Always keep in mind the order here. If you drew the car first, then called the gameDisplay.fill function, you would have just covered your car and it would not show up.</p>
+
+<p>Also, if you'd like the same image I used:</p>
+<img class="img-responsive" src="{{ url_for('static', filename='images/pygame/racecar.png') }}" alt="pygame racecar image" />
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

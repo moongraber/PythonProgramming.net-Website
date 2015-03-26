@@ -1,0 +1,82 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['MySQL']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['MySQL']}}%;">
+				MySQL Progress:  {{completed_percentages['MySQL']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/lhU2OZCKXhQ?list=PLQVvvaa0QuDcppfxEowvKiMYyILwOQIHF" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>This tutorial covers MySQL, which is one of the most popular choices for databases. MySQL is a version of SQL, which is actually a programming language of its own. Don't worry though, it's not too difficult, it should seem no different than learning any other Python module. MySQL syntax remains the same across programming languages, so you should have no trouble finding documentation for just about anything you want to do with it.</p>
+	  <p>The only stipulation I will add is that, while the MySQL syntax remains the same across languages, things like the insertion of variables do not. Static (no variables) strings for MySQL are identical, but how you will insert variable data will change from programming language to programming language.</p>
+	  <p>This tutorial series is going to make use of <a href="https://www.pythonanywhere.com/" target="blank">PythonAnywhere.com</a>. If you are not familiar with them, they are a host that deals almost entirely with Python. Whether you want to host a simple Python website, or you want to run Python consoles in the cloud, this website is a worthy choice.</p>
+	  <p>The reason why we are going to be using it is to avoid the massive headaches that can come with installing a local MySQL server. This is mainly a problem with Windows machines, but can be a challenge on any personal computer. </p>
+	  <p>If you have a local version of MySQL, or you have your own web server with MySQL, you can still follow along with this tutorial, I will do my best to bring up any differences between the two methods. We're mainly using PythonAnywhere for everyone else who doesn't have a MySQL instance somewhere. </p>
+		<div class="border-row" style="width:100%; margin-bottom: 35px; margin-top: 35px;"> </div>
+		<div class="row">
+		<div class="col-md-6">
+		<p><strong>PythonAnywhere:</strong></p>
+		<p>Sign up for a free account with PythonAnywhere.com, then head to the dashboard. At this point, you now have your "server" and you already have MySQL.<p> 
+		
+		<p>Click on Databases, then set your password.</p>
+		<p>To access the MySQL console, you just need to click on "MySQL" in the "other" category near the top.</p>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/mysql/pythonanywhere-mysql.png') }}" alt="text to screen" />
+		<p>You can also access your database by clicking on bash, then:</p>
+		<pre>mysql --user=root -p</pre>
+		<p>"root" will be replaced with your username, or root if you're using root, and you will need to enter your MySQL DB password that you put in when you set up the server.</p>
+		
+		
+		
+		</div>
+		<div class="col-md-6">
+		<p><strong>Via your own Server:</strong></p>
+		<p>If you have not already, you need to install MySQL. Here's my usual cookbook recipe for Ubuntu servers:</p>
+		<pre>sudo apt-get install apache2 mysql-client mysql-server</pre>
+		<p>Now, whenever we click on "MySQL" to access the shell in PythonAnywhere, your command should be something like:</p>
+		<pre>mysql --user=root -p</pre>
+		<p>"root" will be replaced with your username, or root if you're using root, and you will need to enter your MySQL DB password that you put in when you set up the server.</p>
+		<p>Within the MySQL console, type the following, replacing dbname with your database name.</p>
+		<pre>mysql> CREATE DATABASE dbname;</pre>
+		
+		</div></div>
+		<div class="border-row" style="width:100%; margin-bottom: 35px; margin-top: 35px;"> </div>
+		
+		
+		
+	  
+	  
+	  
+	  
+	  <p>Now that you have a database, and assuming you are in the root directory (as in your have not selected any database or table) of MySQL, let's show some basic queries.</p>
+	  <pre>SHOW DATABASES;</pre>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/show-databases-mysql-python-tutorial.png') }}" alt="mysql database tutorial" />
+	  <p>Coming from Python, it's probably going to be hard at first to remember your semi colons at the end, but you'll need those. This command will list out all of your current Databases. You should have just created a database, and you should see that database name in the list. You should also see "information_schema."</p>
+	  <p>Notice the "all caps" for MySQL commands? This is just done in the name of best practice. The commands do not need to be in all caps, but it helps people to differentiate what is a MySQL command or term, and what is the actual variable data.</p>
+	  <pre>SHOW PROCESSLIST;</pre>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-tutorial-python-show-processlist.png') }}" alt="mysql database tutorial" />
+	  <p>Showing the processlist can be one of the first steps to debugging a high memory/cpu intensive problem with your database. Here, you can see what processes are currently running in MySQL, their ID, their state, their commmand, and some info.</p>
+
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

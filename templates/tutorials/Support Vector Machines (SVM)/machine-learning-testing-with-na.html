@@ -1,0 +1,137 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Support Vector Machines (SVM)']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Support Vector Machines (SVM)']}}%;">
+				Support Vector Machines (SVM) Progress:  {{completed_percentages['Support Vector Machines (SVM)']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/1dk9NO2M41E?list=PLQVvvaa0QuDd0flgGphKCej-9jp-QdzZ3" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>Now we're ready to test the efficacy of our algorithm. Now would be a good time to reiterate that, with our example, and with many examples of predictive algorithms, accuracy is only one of the measurements. The world of accuracy with say two options only leaves us with being correct or incorrect.</p>
+	  <p>The world of investing, however, cares about performance. How accurate, or how inaccurate, were we? I would argue it's actually more of a spectrum. So we're hoping to have a number here that is higher than 50% accuracy, but we need to further test later to find out our "degree" of accuracy and "how right" or "how wrong" we are about the companies that we make positions with.</p>
+	  <p>Also, in the world of investing, the companies that we didn't make investments in really do not matter to us. It would have been great if we had chosen companies that performed well, but our performance measurement can only come from the companies that we actually made positions with. Because of this, the accuracy percentage is actually only carries a fraction of overall performance.</p>
+	  <p>With trading and investing, most of the time, there's going to be an actual "back test," or a simulation of trading being done under the strategy against historical events. We'll do that after this.</p>
+	  
+	  <p>Now it is time to back-test our strategy. The only major consideration at this point is what to do with "N/A," or not available, data.</p>
+	  <p>Most of the time, you're not going to get a pristine data set. It'd be great if you did, but there's almost always missing data. If the amount of missing data is low, you can choose to just ignore data that has missing points, but this, to a large degree, will affect your accuracy.</p>
+	  <p>Depending on the algorithm you're using, what you do with N/A data may vary. If you have pre-propressed your data and it is mostly ranging from -1 to 1, some people may suggest that you value the N/A data at -999 or 999, since your machine learning algorithm may just ignore it as an outlier.</p>
+
+
+
+	  
+		
+
+		<pre  class="prettyprint">
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import svm, preprocessing
+import pandas as pd
+from matplotlib import style
+style.use("ggplot")
+
+
+FEATURES =  ['DE Ratio',
+             'Trailing P/E',
+             'Price/Sales',
+             'Price/Book',
+             'Profit Margin',
+             'Operating Margin',
+             'Return on Assets',
+             'Return on Equity',
+             'Revenue Per Share',
+             'Market Cap',
+             'Enterprise Value',
+             'Forward P/E',
+             'PEG Ratio',
+             'Enterprise Value/Revenue',
+             'Enterprise Value/EBITDA',
+             'Revenue',
+             'Gross Profit',
+             'EBITDA',
+             'Net Income Avl to Common ',
+             'Diluted EPS',
+             'Earnings Growth',
+             'Revenue Growth',
+             'Total Cash',
+             'Total Cash Per Share',
+             'Total Debt',
+             'Current Ratio',
+             'Book Value Per Share',
+             'Cash Flow',
+             'Beta',
+             'Held by Insiders',
+             'Held by Institutions',
+             'Shares Short (as of',
+             'Short Ratio',
+             'Short % of Float',
+             'Shares Short (prior ']
+
+
+def Build_Data_Set():
+    data_df = pd.DataFrame.from_csv("key_stats_acc_perf_WITH_NA.csv")
+
+    #data_df = data_df[:100]
+    data_df = data_df.reindex(np.random.permutation(data_df.index))
+    data_df = data_df.replace("NaN",0).replace("N/A",0)
+    
+
+    X = np.array(data_df[FEATURES].values)#.tolist())
+
+    y = (data_df["Status"]
+         .replace("underperform",0)
+         .replace("outperform",1)
+         .values.tolist())
+
+    X = preprocessing.scale(X)
+
+
+    return X,y
+
+
+def Analysis():
+
+    test_size = 1000
+    X, y = Build_Data_Set()
+    print(len(X))
+
+    
+    clf = svm.SVC(kernel="linear", C= 1.0)
+    clf.fit(X[:-test_size],y[:-test_size])
+
+    correct_count = 0
+
+    for x in range(1, test_size+1):
+        if clf.predict(X[-x])[0] == y[-x]:
+            correct_count += 1
+
+    print("Accuracy:", (correct_count/test_size) * 100.00)
+    
+
+Analysis()
+
+		</pre>
+
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

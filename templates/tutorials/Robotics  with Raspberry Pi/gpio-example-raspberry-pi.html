@@ -1,0 +1,199 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Robotics with the Raspberry Pi']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Robotics with the Raspberry Pi']}}%;">
+				Robotics with the Raspberry Pi Progress:  {{completed_percentages['Robotics with the Raspberry Pi']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423"   src="https://www.youtube.com/embed/t0uuwHJQob4?list=PLQVvvaa0QuDdnpgDr1YZF9dI_4G334od6" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>Now that you hopefully have the required supplies (Raspberry Pi, male-female jumper wires, bread-board, resistor and LED light), you're ready to tackle a basic example of using GPIO (General Purpose Input Output).</p>
+	  <p>Because we're using multiple devices here, it may be a bit confusing with how we're communicating with the Raspberry Pi at times. There are many options here, though you will be required to eventually be comfortable with using <kbd data-toggle="collapse" data-target="#ssh" aria-expanded="false" aria-controls="ssh">SSH (Secure Shell)/the terminal</kbd> or at the very least a <kbd data-toggle="collapse" data-target="#XRDP" aria-expanded="false" aria-controls="XRDP">remote desktop application like XRDP</kbd>. Click on either if you're confused.</p>
+	  
+	  <div class="collapse" id="XRDP">
+		  <div class="well">
+		  <p>XRDP is a remote-desktop application that you can use with your Raspberry Pi and the remote desktop functionality of operating systems like Windows.</p>
+			<div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423"   src="https://www.youtube.com/embed/Y5SHRazACBE?list=PLQVvvaa0QuDeazo-AqrVk8BGUej9NCHrQ" frameborder="0" allowfullscreen></iframe></div><br>
+		  </div>
+		</div>
+		
+		
+		<div class="collapse" id="ssh">
+		  <div class="well">
+		  <p>SSH, or Secure Shell, is a method for connecting to a device's "terminal." SSH is a protocol, and the terminal is the command prompt equivalent of a linux machine. This is known as interacting with the machine "headless," meaning without a GUI. There are many basic commands to learn for this, but I will just put a few below: </p>
+		  <pre class="prettyprint"> 
+		  # make a directory:
+		  mkdir newdirname
+		  
+		  # change directory:
+		  cd whatdir
+		  
+		  # list items in dir
+		  ls
+		  
+		  #create or open a file:
+		  nano filename
+		  
+		  # Root dir symbol, you can use this to cd to the root dir quickly with something like: cd ~
+		  ~ 
+		  </pre>
+		  
+		  <p>You can either interact with the terminal remotely with the Raspberry Pi using something like XRDP (remote desktop), which still gives you the GUI, or you can also use SSH. A popular program for SSH is called <a href="http://www.putty.org/" target="blank">Putty</a>. You use this to connect remotely to the Raspberry Pi. To do it, you will just need the IP address for your Raspberry Pi, usually this is just the local IP Address. Something like 192.168.X.X is what it will look like. You can find your Raspberry Pi's IP address by typing "ifconfig" in the terminal. You will be asked for a username and password to connect. Default username: pi, default password: raspberry.</p>
+		  
+		  </div>
+		</div>
+		
+		
+	  
+	  
+	  <p>This video assumes, initially, you are using XRDP or you are connected with a mouse, keyboard and monitor to the Raspberry Pi.</p>
+	  <p>First, to use GPIO, you will need to make sure you have the packages necessary on your Raspberry Pi. Via the Pi terminal, type:</p>
+	  <code>sudo apt-get install python-rpi.gpio</code>
+	  <p>Once you have that, you're ready to code with GPIO.</p>
+	  <p>Now, open up a Python script from the desktop.</p>
+	  <p>Our first program is going to act like a door with a password. The idea is that, if the LED light is "on," then the door is locked. In order to get the light to turn off and the "lock" to unlock, we need to enter a correct password.</p>
+	  
+	  <div class="border-row" style="width:100%; margin-bottom: 10px;"> </div>
+	  
+	 		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+import RPi.GPIO as gpio
+import time
+		</pre></div>
+		<div class="col-md-6">
+<p>First, we just import RPi.GPIO as gpio for some short-hand, then we import time so we can make the program sleep for a moment.</p></div></div> 
+  
+	  <div class="border-row" style="width:100%; margin-bottom: 10px;"> </div>
+	  
+	 		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+gpio.setmode(gpio.BCM)
+gpio.setup(18, gpio.OUT)
+		</pre></div>
+		<div class="col-md-6">
+<p>Here we are setting the mode to BCM, which is the naming convention for the GPIO pins. You can either address the pins by their actual physical pin number, or their "name" assigned to them. In order to be as careful as possible, it's best to explicitly check which you are doing.</p></div></div> 
+
+<div class="border-row" style="width:100%; margin-bottom: 10px;"> </div>
+
+	 		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+while True:
+    gpio.output(18, gpio.HIGH)
+	passcode = raw_input("What is pi?: ")
+		</pre></div>
+		<div class="col-md-6">
+<p>while True is an infinite loop that will just always run, we are setting the output in to high, and then asking the user to input the password.</p></div></div> 	  
+
+<p>GPIO pins have "HIGH" or "LOW," which can be thought of as a 1 or a 0 value. On or off. They can also either be input or output. Input pins will "read" either a high or low value, and then output pins will actually push out a high or low signal.</p>
+	  
+<div class="border-row" style="width:100%; margin-bottom: 10px;"> </div>
+
+
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+	if passcode == "Awesome":
+	    gpio.output(18, gpio.LOW)
+		time.sleep(4)
+		</pre></div>
+		<div class="col-md-6">
+<p>We're assuming here the password is "Awesome." If that is what the user enters, then we set the output pin to low, which will turn off the LED light for 4 seconds.</p></div></div>
+
+
+
+
+<div class="border-row" style="width:100%; margin-bottom: 10px;"> </div>
+
+
+
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+	else:
+	    gpio.output(18, gpio.HIGH)
+		print("Wrong Password!")
+		</pre></div>
+		<div class="col-md-6">
+<p>If the password is not "Awesome," then the console will output that the password is wrong and continue the high signal.</p></div></div>
+
+<div class="border-row" style="width:100%; margin-bottom: 10px;"> </div>
+
+<p>The entire script is:</p>
+
+<pre class="prettyprint">
+import RPi.GPIO as gpio
+import time
+
+gpio.setmode(gpio.BCM)
+gpio.setup(18, gpio.OUT)
+
+while True:
+    gpio.output(18, gpio.HIGH)
+	passcode = raw_input("What is pi?: ")
+	
+	if passcode == "Awesome":
+	    gpio.output(18, gpio.LOW)
+		time.sleep(4)
+	
+	else:
+	    gpio.output(18, gpio.HIGH)
+		print("Wrong Password!")	
+</pre>
+
+<p>Now that we have the program, let's cover actually implementing it with the Raspberry Pi. Save the file to /home/pi/gpioexample.py</p>
+
+
+
+
+
+
+	  
+	  <!--
+	  
+	  
+	  <kbd data-toggle="collapse" data-target="#consoleinfo" aria-expanded="false" aria-controls="consoleinfo">console</kbd>
+	  
+		<div class="collapse" id="consoleinfo">
+		  <div class="well">
+			<p>When someone refers to "the console," they are referring to where information from your program is ouput. You will see an example of "output to console" below. If you want this message to go away, just click again on the "console" button that you originally clicked on.</p>
+		  </div>
+		</div>
+		
+		
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+CODE HERE
+		</pre></div>
+		<div class="col-md-6">
+<p>EXPLANATION</p></div></div>
+	  
+	-->	
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

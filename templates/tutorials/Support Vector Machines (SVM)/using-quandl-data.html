@@ -1,0 +1,75 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Support Vector Machines (SVM)']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Support Vector Machines (SVM)']}}%;">
+				Support Vector Machines (SVM) Progress:  {{completed_percentages['Support Vector Machines (SVM)']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/zZs2UE-yEMo?list=PLQVvvaa0QuDd0flgGphKCej-9jp-QdzZ3" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+
+
+<p>In this machine learning tutorial, we're going to discuss using Quandl for acquiring better data. Up to this point, we've been taking the current stock's performance and comparing it to its current key statistics. The problem here is that, while we can perform machine learning on this, we cannot actually invest based on our findings. </p>
+
+<p>Instead, we need to pull the key statistics, and then check what the stock price was at that time, and then what the price is a year from then. This will tell us better what key statistics lead to out performance. </p>
+
+<p>We've covered downloading the csv manually from Quandl, but now we've got a pretty large order of stocks, so we want to do this with our program. </p>
+
+<p>First, you're going to need the quandl package. This isn't totally necessary, as pulling from the API is quite simple with or without the package, but it does make it a bit easier and knocks out a few steps. <a href="https://github.com/quandl/Python" title="Quandl module for data analysis" target="_blank">The Quandl package is here.</a> </p>
+
+<p>In order to install this for Python 3, modify the setup.py file's print statements (they are 2.7 syntax). </p>
+
+<p>If setup.py doesn't work for you, then just manually move the package right in. So, when you've downloaded Quandl and extracted it, you should have a "Quandl" directory from the download. </p>
+
+<p>Next, what you'll do is move that Quandl directory into C:/Python34/Lib/Site-Packages/</p>
+
+<p>Then try to import Quandl. If you're having trouble, check the video and/or leave a comment and I will try to help. </p>
+
+<p>Now, when you want a data set, you will just need to use the tag. To get that, look to the right bar and then click on "python." That will give you the "tag." In the case of the video, we see clicking the tag gives us: Quandl.get("WIKI/AAPL") so we see the official tag here is "WIKI/AAPL."</p>
+
+<p>We have that, and then we're ready to pull. With Quandl, you can actually pull multiple tickers at once, but the problem is we just want a single column, and we want to rename that column.</p>
+
+<p>To pull just one stock, for example, you'll do the following:</p>
+
+<pre class="prettyprint">
+import pandas as pd
+import os
+from Quandl import Quandl
+import time
+
+auth_tok = "yourauthhere"
+
+data = Quandl.get("WIKI/KO", trim_start = "2000-12-12", trim_end = "2014-12-30", authtoken=auth_tok)
+
+print(data)
+</pre>  
+
+<p>If you'll notice, we added some extra commands to this Quandl.get statement. First, we've added a trim start and end. We do this so we can just get a slice of the data that we want. </p>
+
+<p>Your auth token can be found by going into your Quandl account. You can pull something like 50 free pulls per IP address, but, if you make a free account, you can pull some massive amount of requests, so I suggest you just make an account with Quandl. </p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

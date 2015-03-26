@@ -1,0 +1,115 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['PyOpenGL']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['PyOpenGL']}}%;">
+				PyOpenGL Progress:  {{completed_percentages['PyOpenGL']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/pyopengl/PyOpenGL-cube-with-OpenGL-and-Python-programming.gif') }}" alt="text to screen" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/D57J48UAQCs" frameborder="0" allowfullscreen></iframe></div>
+	  
+
+
+<p>In this PyOpenGL tutorial series for OpenGL with Python 3, we're going to discuss how you can color things, specifically surfaces. The way we color surfaces in OpenGL is by first notifying OpenGL that is what we're going to do. After that, we inform OpenGL where this "surface" to be colored is. In our case, each surface is between the connection of four vertices. Other than that, and one new OpenGL function, you're done!</p>
+
+<p>So, first we need some colors to choose from. OpenGL wants you to specify colors in an RGB format, but OpenGL expects it to be between 0 and 1, where 1 is the "strongest." </p>
+
+<p>For example, a nice solid green would be: (0,1,0), which translates to 0 red, 1 green, 0 blue, or no red, full green, no blue. </p>
+
+<p>Now let's go ahead and define a tuple of color tuples:</p>
+<pre class="prettyprint">
+colors = (
+    (1,0,0),
+    (0,1,0),
+    (0,0,1),
+    (0,1,0),
+    (1,1,1),
+    (0,1,1),
+    (1,0,0),
+    (0,1,0),
+    (0,0,1),
+    (1,0,0),
+    (1,1,1),
+    (0,1,1),
+    )
+</pre>
+
+<p>We wont use all of these yet, and we'll modify these colors likely later. </p>
+
+<p>Next, we need to add the new coloring code into our Cube() function. </p>
+
+<p>The current Cube() function looks like:</p>
+<pre class="prettyprint">
+def Cube():
+    glBegin(GL_LINES)
+    for edge in edges:
+        for vertex in edge:
+            glVertex3fv(verticies[vertex])
+    glEnd()
+</pre>
+
+
+<p>Now, we want to add the following to this function:</p>
+<pre class="prettyprint">
+    glBegin(GL_QUADS)
+    for surface in surfaces:
+        x = 0
+        for vertex in surface:
+            x+=1
+            glColor3fv(colors[x])
+            glVertex3fv(verticies[vertex])
+    glEnd()
+</pre>
+
+<p>So here you see the typical glBegin, only this time we have (GL_QUADS) as the constant. Then, for each surface (a collection of vertices) in the surfaces tuple, then for each vertex in that list of four vertices, we want to us glColor3fv, which is what will color the object we're creating here, then we use glVertex3fv, just like we had before!</p>
+
+<p>The only other thing here is a crude counter, which adds 1 to the x value, which allows us to create a bit of a multi-colored cube. </p>
+
+<p>Now our Cube() function looks like this:</p>
+
+<pre class="prettyprint">
+def Cube():
+    glBegin(GL_QUADS)
+    for surface in surfaces:
+        x = 0
+        for vertex in surface:
+            x+=1
+            glColor3fv(colors[x])
+            glVertex3fv(verticies[vertex])
+    glEnd()
+
+    glBegin(GL_LINES)
+    for edge in edges:
+        for vertex in edge:
+            glVertex3fv(verticies[vertex])
+    glEnd()
+</pre>
+
+<p>Awesome, that's it. Now you have:</p>
+<img class="img-responsive" src="{{ url_for('static', filename='images/pyopengl/PyOpenGL-cube-with-OpenGL-and-Python-programming.gif') }}" alt="text to screen" />
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

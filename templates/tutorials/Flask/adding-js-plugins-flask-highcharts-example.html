@@ -1,0 +1,265 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Flask']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Flask']}}%;">
+				Flask Progress:  {{completed_percentages['Flask']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/flask/flask-highcharts-example.png') }}" alt="text to screen" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/9Ic79kOBj_M?list=PLQVvvaa0QuDcOS4l8RCWh0olq_je0OKaP" frameborder="0" allowfullscreen></iframe></div>
+	  
+<p>At this point, you have the basics to create a simple static website. Often, however, you may find that you want to incorporate some sort of javascript plugin. This could be a wide range of things, like adding chat boxes, adding WebGL, or, like we're going to do, adding fancy graphs. </p>
+
+<p>For this tutorial, we're going to use <a href="http://www.highcharts.com/">Highcharts</a>. I've used these for a few years now, and I have been very happy with them. They are still in active development as well. Just like Bootstrap, after you begin using these, you'll probably start to notice just how many people use this graphing application!</p>
+
+<p>For example, I will post two things. First is the example I found on the topic:</p>
+
+<p><a href="https://gist.github.com/vgoklani/5347161" target="_blank">https://gist.github.com/vgoklani/5347161</a>.</p>
+
+<p>For this specific tutorial, here are the files you will need:</p>
+
+<p>/static/graph.js:</p>
+
+<pre class="prettyprint">  
+$(document).ready(function() &#123;
+	$(chart_id).highcharts(&#123;
+		chart: chart,
+		title: title,
+		xAxis: xAxis,
+		yAxis: yAxis,
+		series: series
+	&#125;);
+&#125;);
+</pre>
+
+
+<p>Next, in your index.html, you just need to add the following lines (full page posted below)</p>
+
+<pre class="prettyprint">  
+&lt;div id=&#123;&#123; chartID|safe &#125;&#125; class="chart" style="height: 100px; width: 500px"&gt;&lt;/div&gt;
+&lt;script&gt;
+	var chart_id = &#123;&#123; chartID|safe &#125;&#125;
+	var series = &#123;&#123; series|safe &#125;&#125;
+	var title = &#123;&#123; title|safe &#125;&#125;
+	var xAxis = &#123;&#123; xAxis|safe &#125;&#125;
+	var yAxis = &#123;&#123; yAxis|safe &#125;&#125;
+	var chart = &#123;&#123; chart|safe &#125;&#125;
+&lt;/script&gt;
+	&lt;script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"&gt;&lt;/script&gt;
+	&lt;script src="http://code.highcharts.com/highcharts.js"&gt;&lt;/script&gt;
+	&lt;script src="../static/graph.js"&gt;&lt;/script&gt;
+			
+</pre>
+
+
+<p>index.html:</p>
+
+<pre class="prettyprint">  
+&lt;html&gt;
+&lt;link rel="stylesheet" media="screen" href = "&#123;&#123; url_for('static', filename='bootstrap.min.css') &#125;&#125;"&gt;
+&lt;meta name="viewport" content = "width=device-width, initial-scale=1.0"&gt;
+&lt;head&gt;
+&lt;/head&gt;
+
+&lt;body class = "body"&gt;
+&lt;nav class="navbar navbar-default" role="navigation"&gt;
+  &lt;div class="container-fluid"&gt;
+    &lt;!-- Brand and toggle get grouped for better mobile display --&gt;
+    &lt;div class="navbar-header"&gt;
+      &lt;button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"&gt;
+        &lt;span class="sr-only"&gt;Toggle navigation&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;a class="navbar-brand" href="#"&gt;Brand&lt;/a&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Collect the nav links, forms, and other content for toggling --&gt;
+    &lt;div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"&gt;
+      &lt;ul class="nav navbar-nav"&gt;
+        &lt;li class="active"&gt;&lt;a href="#"&gt;Link&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#"&gt;Link&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="dropdown"&gt;
+          &lt;a href="#" class="dropdown-toggle" data-toggle="dropdown"&gt;Dropdown &lt;span class="caret"&gt;&lt;/span&gt;&lt;/a&gt;
+          &lt;ul class="dropdown-menu" role="menu"&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Action&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Another action&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Something else here&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="divider"&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Separated link&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="divider"&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;One more separated link&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;form class="navbar-form navbar-left" role="search"&gt;
+        &lt;div class="form-group"&gt;
+          &lt;input type="text" class="form-control" placeholder="Search"&gt;
+        &lt;/div&gt;
+        &lt;button type="submit" class="btn btn-default"&gt;Submit&lt;/button&gt;
+      &lt;/form&gt;
+      &lt;ul class="nav navbar-nav navbar-right"&gt;
+        &lt;li&gt;&lt;a href="#"&gt;Link&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="dropdown"&gt;
+          &lt;a href="#" class="dropdown-toggle" data-toggle="dropdown"&gt;Dropdown &lt;span class="caret"&gt;&lt;/span&gt;&lt;/a&gt;
+          &lt;ul class="dropdown-menu" role="menu"&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Action&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Another action&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Something else here&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="divider"&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Separated link&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;&lt;!-- /.navbar-collapse --&gt;
+  &lt;/div&gt;&lt;!-- /.container-fluid --&gt;
+&lt;/nav&gt;
+
+
+	&lt;body&gt;
+		&lt;h3&gt;&#123;&#123; title &#125;&#125;&lt;/h3&gt;
+		&#123;% for p in paragraph %&#125;
+		&lt;p&gt;&#123;&#123; p &#125;&#125;&lt;/p&gt;
+		&#123;% endfor %&#125;
+		
+		&#123;% if pageType == 'about' %&#125;
+		&lt;p&gt;Contact box thing is here&lt;/p&gt;
+		&#123;% else %&#125;
+		&lt;p&gt;not about page&lt;/p&gt;
+		&#123;% endif %&#125;
+		
+		
+
+		
+
+		
+		&lt;div id=&#123;&#123; chartID|safe &#125;&#125; class="chart" style="height: 100px; width: 500px"&gt;&lt;/div&gt;
+		&lt;script&gt;
+			var chart_id = &#123;&#123; chartID|safe &#125;&#125;
+			var series = &#123;&#123; series|safe &#125;&#125;
+			var title = &#123;&#123; title|safe &#125;&#125;
+			var xAxis = &#123;&#123; xAxis|safe &#125;&#125;
+			var yAxis = &#123;&#123; yAxis|safe &#125;&#125;
+			var chart = &#123;&#123; chart|safe &#125;&#125;
+		&lt;/script&gt;
+			&lt;script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"&gt;&lt;/script&gt;
+			&lt;script src="http://code.highcharts.com/highcharts.js"&gt;&lt;/script&gt;
+			&lt;script src="../static/graph.js"&gt;&lt;/script&gt;
+
+	&lt;/body&gt;
+	
+	
+&lt;/body&gt;
+
+&lt;script type = "text/javascript" src = "/static/bootstrap.min.js"&gt;&lt;/script&gt;
+
+
+&lt;/html&gt;		
+</pre>
+
+<p>Then we need to add the following to our __init__.py:</p>
+
+<pre class="prettyprint">  
+			
+@app.route('/graph')
+def graph(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
+	chart = &#123;"renderTo": chartID, "type": chart_type, "height": chart_height,&#125;
+	series = [&#123;"name": 'Label1', "data": [1,2,3]&#125;, &#123;"name": 'Label2', "data": [4, 5, 6]&#125;]
+	title = &#123;"text": 'My Title'&#125;
+	xAxis = &#123;"categories": ['xAxis Data1', 'xAxis Data2', 'xAxis Data3']&#125;
+	yAxis = &#123;"title": &#123;"text": 'yAxis Label'&#125;&#125;
+	return render_template('index.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis)
+ 
+</pre>
+
+<p>So the full __init__.py file:</p>
+
+<pre class="prettyprint">  
+from flask import Flask, render_template
+ 
+app = Flask(__name__)
+
+@app.route('/')
+def homepage():
+
+    title = "Epic Tutorials"
+    paragraph = ["wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!","wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!"]
+
+    try:
+        return render_template("index.html", title = title, paragraph=paragraph)
+    except Exception, e:
+        return str(e)
+
+@app.route('/about')
+def aboutpage():
+
+    title = "About this site"
+    paragraph = ["blah blah blah memememememmeme blah blah memememe"]
+
+    pageType = 'about'
+
+    return render_template("index.html", title=title, paragraph=paragraph, pageType=pageType)
+
+
+@app.route('/about/contact')
+def contactPage():
+
+    title = "About this site"
+    paragraph = ["blah blah blah memememememmeme blah blah memememe"]
+
+    pageType = 'about'
+
+    return render_template("index.html", title=title, paragraph=paragraph, pageType=pageType)
+
+
+
+@app.route('/graph')
+def graph(chartID = 'chart_ID', chart_type = 'line', chart_height = 500):
+	chart = &#123;"renderTo": chartID, "type": chart_type, "height": chart_height,&#125;
+	series = [&#123;"name": 'Label1', "data": [1,2,3]&#125;, &#123;"name": 'Label2', "data": [4, 5, 6]&#125;]
+	title = &#123;"text": 'My Title'&#125;
+	xAxis = &#123;"categories": ['xAxis Data1', 'xAxis Data2', 'xAxis Data3']&#125;
+	yAxis = &#123;"title": &#123;"text": 'yAxis Label'&#125;&#125;
+	return render_template('index.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis)
+ 
+if __name__ == "__main__":
+	app.run(debug = True, host='0.0.0.0', port=8080, passthrough_errors=True)
+
+
+
+</pre>
+
+<p>Cool, so what's fundamentally happening here? First, we have the init file, where we're defining and passing through a bunch of variables, like we've covered in the past. These vars are being passed to index.html, so let's look at that. </p>
+
+<p>So, within our index.html, we can see exactly where these variables are being passed. They are actually being passed as definitions to more variables! This time, the variables are in a quick javascript block, where we define some of the necessary elements to our graph. So, finally, what happens next? We can see the included js files below that block, we're using jquery, then the highcharts script, then finally the graph.js. Let's look there again next.</p> 
+
+<p>We can then see that graph.js is very simple, and it just passes the variables that originated in the init file, then made their way to index.html, then are finally residing in the graph.js file, which is what actually generates our lovely graph. </p>
+
+<p>All of these things come together and voila, we have a pretty js plugin graph, which is being fed data and information by Python. Yay!</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

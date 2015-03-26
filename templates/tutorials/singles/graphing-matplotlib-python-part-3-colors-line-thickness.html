@@ -1,0 +1,58 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  <h2>Graphing Matplotlib Python Part 3: Colors and Line Thickness</h2>
+	  <h3>How to do some basic Matplotlib customization</h3>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/HOnTa8V_YM8?list=PLQVvvaa0QuDfpEcGUM6ogsbrlWtqpS5-1" frameborder="0" allowfullscreen></iframe></div><br>
+	  <p>Once you've got the basics down, you'll probably want to learn how to customize the charts a bit. By default, the Matplotlib charts are rather bland, but the creator of Matplotlib left the door wide open to customization. In this tutorial, we'll just do a simple change of color to the line, as well as adjust the thickness of the line.</p>
+	  <p>These are just two extremely basic customization options, there are many more for us to cover.</p>
+	  <p></p>
+
+
+	  <pre  class="prettyprint">
+import matplotlib.pyplot as plt
+
+x = []
+y = []
+
+fig = plt.figure()
+rect = fig.patch
+rect.set_facecolor('#31312e')
+
+readFile = open('SampleData.txt','r')
+sepFile = readFile.read().split('\n')
+readFile.close()
+
+for plotPair in sepFile:
+    xAndY = plotPair.split(',')
+    x.append(int(xAndY[0]))
+    y.append(int(xAndY[1]))
+
+ax1 = fig.add_subplot(1,1,1, axisbg='grey')
+ax1.plot(x, y, 'c', linewidth=3.3)
+
+plt.show()   
+	  </pre>
+
+
+		
+		<p>Fore more tutorials, head to the <a title="Python programming tutorials" href="/dashboard/"><button class="btn btn-primary">Dashboard</button></a></p>
+	  </div>
+	  
+	  
+	  
+	
+	
+
+	
+</body>
+
+
+{% endblock %}
+

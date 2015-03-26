@@ -1,0 +1,101 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Kivy']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Kivy']}}%;">
+				Kivy Progress:  {{completed_percentages['Kivy']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/kivy/simple-kivy-application-tutorial.png') }}" alt="Python Kivy Application Development" /><br>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/CYNWK2GpwgA?list=PLQVvvaa0QuDe_l6XiJ40yGTEqIKugAdTy" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>Welcome to the introduction to <a href="http://kivy.org/#home" target="_blank"><strong>Kivy</strong></a> tutorial. First off, what is Kivy? Kivy is a multi-platform application development kit, using Python.</p>
+	  <p>This means Kivy runs on iOS, Android, MacOS, Windows, and Linux! That's quite a bit! What's more is, not only does it run across the board like this, but you can also take advantage of multi-touch, which is common on mobile devices.</p>
+	  <p>With Kivy, you can also access mobile APIs, like the Android API to manipulate things like the camera on a phone, the gyro sensor, GPS, vibrator, and so on.</p>
+	  <p>I assume you already have Python. If you're new to Python, you should probably <a href="/introduction-to-python-programming/" target="blank"><kbd>learn the basics of Python</kbd></a> first.</p>
+	  <p>Convinced? Great, let's get Kivy!</p>
+	  <p>In order to use Kivy, you're going to also need PyGame, and likely Cython down the road, though we'll leave that out for now.</p>
+	  <p>Since PyGame is a dependency of Kivy, we'll grab that first. PyGame is one of the original packages for creating games in Python. There is a <a href="/pygame-python-3-part-1-intro/" target="_blank"><kbd>PyGame tutorial seriers</kbd></a> here on this website as well, if you are particularly interested in Game development.</p>
+	  <p>In order to get PyGame, and then Kivy, we're going to use pip. So long as you have a recent version of either Python 2 or Python 3, you already have pip on your system. This tutorial is done with Python 3, though you should be able to follow along with Python 2.</p>
+	  <p>Open bash or cmd.exe, and do:</p>
+	  <code>pip install pygame</code><br>
+	  <code>pip install kivy</code>
+	  <p>That should be it. Are you having trouble with pip? I have a more in-depth tutorial on how to use pip and how to handle various things like 64 bit requirements and if pip is not in your path:</p>
+	  <p>If you need help with pip, check out the <a href="/using-pip-install-for-python-modules/" target="blank"><kbd>pip tutorial</kbd></a>.</p>
+	  <p>Once you have Kivy installed successfully, you're ready to begin your first basic program!</p>
+		<p>Kivy handles a lot of the back-end requirements for you. For things like where the mouse is, how a button should react when clicked, or, even how to manage multiple screens, Kivy has your back!</p>
+	
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+from kivy.app import App
+kivy.require("1.8.0")
+
+from kivy.uix.label import Label
+		</pre></div>
+		<div class="col-md-6">
+<p>Kivy App import, followed by a requirement for a Kivy version. This isn't required, but necessary if you're using new features of Kivy. Finally, we pull Label from Kivy's UIX packages.</p></div></div>
+
+
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+class SimpleKivy(App):
+    def build(self):
+        return Label(text="Hello World!")
+		</pre></div>
+		<div class="col-md-6">
+<p>Now we create our main application, called SimpleKivy. We're inheriting from Kivy's App class. Our build method is an expected method for Kivy. Within our build, we're just returning a simple Label, which is just displaying "Hello World."</p></div></div>
+<p>Confused by "class" or Object Oriented Programming? OOP makes the most sense in most cases when creating things like interactive GUIs (graphical user interfaces) or Games. OOP can be a bit confusing, though it doesn't have to be! If you're confused about OOP, check out the <a href="/object-oriented-programming-crash-course-tkinter/" target="blank"><kbd>Object Oriented Programming Crash Course</kbd></a>.</p>
+
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+if __name__ == "__main__":
+    SimpleKivy().run()
+		</pre></div>
+		<div class="col-md-6">
+<p>Now we run the code. <a href="/frequently-asked-questions-python-3/" target="blank"><kbd>What does this if __name__ == "__main__" mean?</kbd></a></p></div></div>
+
+	<p>That's all there is to it. You should get the following when you run the application:</p>
+	<img class="img-responsive" src="{{ url_for('static', filename='images/kivy/simple-kivy-application-tutorial.png') }}" alt="Python Kivy Application Development" /><br>
+	<p>One of the things that makes Kivy a superb module is the documentation. Kivy offers <a href="http://kivy.org/docs/gettingstarted/intro.html"><strong>documentation</strong></a> on their website which is very well done, but Kivy also has extensive commenting within the actual Python module itself. It might be the most documentation that I've ever seen. If you want to know, for example, what you can do with this "Label," why not check it out in the module? To do this, do you know where to look?</p>
+	<p>Third-party modules are *usually* stored in the /Lib/site-packages/ directory of your Python installation. If you're having trouble finding it, however, you can usually get by doing something like:</p>
+	
+	<pre class="prettyprint">
+import kivy
+
+print(kivy.__file__)
+	</pre>
+	<p>That will give you the location of a module, which, for me, is:</p>
+	<code>C:\Python34\lib\site-packages\kivy\__init__.py</code>
+	<p>That's at least where the __init__.py is, but we're mostly interested in looking in the Kivy directory. Let's head there!</p>
+	<p>We see that we imported the "Label" from kivy.uix.label, so we can assume we'll find Label within kivy/uix/label.py.</p>
+	<p>Sure enough, there it is. Open it up to edit it, and just look at all those options...and all that commenting! Far more commenting than code. So, if you're interested in learning more about Kivy and the aspects of it, just browse your installation, or poke about their documentation!</p>
+	
+	<p>For us, we're now ready to move on!</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,90 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">             width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['PyGame']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['PyGame']}}%;">
+				PyGame Progress:  {{completed_percentages['PyGame']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/EY6ZCPxqEtM?list=PLQVvvaa0QuDdLkP8MrOXLe_rKuf6r80KO" frameborder="0" allowfullscreen></iframe></div>
+	  
+
+
+
+<p>In this PyGame with Python 3 programming tutorial, we cover how we can convert our PyGame into an executable, or an installer, which we can then share with people who do not have Python installed, or pygame... etc. We will do this using cx_Freeze, which is a very similar module to py2exe for those who are familiar. </p>
+
+<p>The reason why you may want to convert your game into an executable is so that you can share it with people who may not have PyGame or Python installed. </p>
+
+<p>In order to use cx_Freeze, you will need to download and install it. The official source is: <a href="http://cx-freeze.sourceforge.net/" target="_blank">cx_Freeze website/</a></p>
+
+<p>Some people have had problems with the official source, so you can use a patched version, found here instead: <a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#cx_freeze" target="_blank">http://www.lfd.uci.edu/~gohlke/pythonlibs/#cx_freeze</a></p>
+
+<p>Make sure you match the bit version (32 or 64 bit) with your bit version of Python. </p>
+
+<p>Once you have cx_Freeze installed, you're ready to convert your game to an executable or an installer. </p>
+
+<p>First, you will want to make a setup.py file with the following contents:</p>
+
+<pre class="prettyprint">
+import cx_Freeze
+
+executables = [cx_Freeze.Executable("pygameVideo15.py")]
+
+cx_Freeze.setup(
+    name="A bit Racey",
+    options={"build_exe": {"packages":["pygame"],
+                           "include_files":["racecar.png"]}},
+    executables = executables
+
+    )
+</pre>
+
+<p>The above is converting the python script contained under the file name: pygameVideo15.py</p>
+
+<p>From there, we specify the name of the application, then we explicitly notify cx_Freeze that we are using the pygame module, and we explicitly tell it that we have an included file, which is racecar.png. </p>
+
+<p>cx_Freeze can sometimes figure out modules that you're using, but sometimes not. Following with typical Pythonic precepts, explicit is better than implicit, so let's be clear!</p>
+
+<p>Once you've done that, you'll want to navigate to your terminal and make your way to the directory containing your Python game script and the setup.py script. </p>
+
+<p>Then, type:</p>
+<p>python setup.py build. </p>
+
+<p>If you get an error stating that Python is not in your path, then give the full path. For example, on Windows, with Python 3.4, you would do:</p> 
+
+<p>C:/Python34/python setup.py build</p>
+
+<p>From there, you should get a build directory, within it will be an executable that will run your script. </p>
+
+<p>You can also do something like:</p>
+
+<p>python setup.py bdist_msi</p>
+
+<p>That will generate a Windows installer. </p>
+
+<p>There are various errors and issues that you might run in to while using cx_Freeze. Check out the video for some of the possible issues. Google can also be a massive help,  and some times... just sometimes ... <a href="http://cx-freeze.readthedocs.org/en/latest/index.html" target="_blank">the documents</a> can help a ton!</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

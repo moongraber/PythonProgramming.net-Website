@@ -1,0 +1,228 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"  
+
+
+<img class="img-responsive" src="{{ url_for('static', filename='images/ibpy/Flas.png') }}" alt="Python with Interactive Brokers API ibpy tutorial" />
+
+  -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['IBpy']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['IBpy']}}%;">
+				IBpy Progress:  {{completed_percentages['IBpy']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/Bu0kpU-ozaw" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+
+
+<p>Interactive Brokers is a brokerage that appeals to both the institutional-minded trader as well as the individual traders, which makes them a fairly popular avenue for traders.</p>
+
+<p>They also allow for demo accounts, which is great. Interactive Brokers has a relatively simplistic API for programmers to utilize that allows them to write programs and algorithms to do automated trading among other things.</p>
+
+<p>To open an account, the minimum account size is $10,000, though you can use their demo account for free. The demo account can connect to the API and perform all of the tasks, with limited stock choices, but is still a great way to learn about the IB API, automated trading, and IBPy. You can acquire IBPy from: <strong>https://github.com/blampe/IbPy</strong> or <strong>https://code.google.com/p/ibpy/</strong></p>
+
+<p>If you're unfamiliar with setting up a package like this, what you'll do is download the files, unzip them, then open up your cmd.exe window, and then navigate to the ibpy directory that contains the setup.py file. From there, in your command window, type in "python setup.py install."</p>
+
+<p>If that says Python is not defined, then do something like "C:/Python27/python setup.py install"</p>
+
+<p>If that says no module named <strong><a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#setuptools" target="_blank">setuptools</a></strong>, then get <strong><a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#setuptools" target="_blank">setuptools</a></strong>!</p>
+
+<p>Once you have IBPy, the next thing you will need is to grab the IB demo. To do this, head to </p>
+<a title="Interactive Brokers stock trading API tutorial ibpy" href="https://www.interactivebrokers.com/ind/en/main.php" target="_blank"><span style="text-decoration: underline;"><strong>Interactive Brokers</strong></span></a>, then go to create an account:
+
+
+<img class="img-responsive" src="{{ url_for('static', filename='images/ibpy/ibpy-tutorial-open-an-account.png') }}" alt="Python with Interactive Brokers API ibpy tutorial" /><br>
+
+<p>Then go to individuals:</p>
+
+<img class="img-responsive" src="{{ url_for('static', filename='images/ibpy/ibpy-account-setup.png') }}" alt="Python with Interactive Brokers API ibpy tutorial" /><br>
+
+<p>Then you'll choose "platform demo":</p> <img class="img-responsive" src="{{ url_for('static', filename='images/ibpy/interactive-brokers-account-setup.png') }}" alt="Python with Interactive Brokers API ibpy tutorial" />
+
+<p>Then you will choose "try individual demo"</p>
+<img class="img-responsive" src="{{ url_for('static', filename='images/ibpy/trader-workstation-demo-tutorial.png') }}" alt="Python with Interactive Brokers API ibpy tutorial" /><br>
+
+<p>That will download a file, you may need to choose to "keep" it. Once that's done downloading, open it up. You may be asked if you want to use the old look or the new look. I use the mosaic look in the video tutorial, so you may want to choose that option first.</p>
+
+<p>Once you're done with the settings, you should find yourself at the IB platform.</p>
+
+<img class="img-responsive" src="{{ url_for('static', filename='images/ibpy/trader-workstation-example.png') }}" alt="Python with Interactive Brokers API ibpy tutorial" /><br>
+
+<p>So this is the Trader's Work Station, or TWS. If you are watching the video, I mention how it appears that there are random orders and such in the account. I thought this was random, but actually it is just the case that the demo account is a shared account for people using the demo. This means you are seeing what other people are doing as well, so take this into account!</p>
+
+<p>If you have an actual account with Interactive Brokers, there is paper trading available, and then it will be just you and your trades.</p>
+
+<p>The next thing to do is to go to the menu, choose File, then choose "global configuration." Next, choose API on the left hand side, then go to "settings." In the settings screen, make sure "enable ActiveX and Socket Clients" is enabled, and note the port. In my case it is 7496, which is probably the same for you. Finally, fill in an arbitrary number for Master API client ID. I do "999." Here's a picture of my settings used with this tutorial:</p>
+
+<img class="img-responsive" src="{{ url_for('static', filename='images/ibpy/trader-work-station-API-setup-ibpy.png') }}" alt="Python with Interactive Brokers API ibpy tutorial" /><br>
+
+<p>The other thing you might want to check is under API, precautions, and make sure "Bypass Order Precautions for API Orders" is checked.</p>
+
+<p>Some things may change over time, some settings might disappear and some organization may change. If you happen to notice something that has changed, yet needs to be included, please comment below or on the video so others can be helped.</p>
+
+<p>Now let's get started. Keep in mind that you should not call your Python file ibpy.py, or ib.py. It is a common mistake to call your Python file the same name as the module you are learning about, I've done it quite often myself even... but this causes obvious problems right out of the gate with importing that you do, or importing that the modules you import do! We're going to start with some imports:</p>
+<pre class="prettyprint">from ib.opt import Connection, message
+</pre>
+<p>Connection is associated with connecting to the API.</p>
+<p>Message is used for retrieving messages back from the server for debugging or general information.</p>
+
+<p>Now for some more imports:</p>
+<pre class="prettyprint">from ib.ext.Contract import Contract
+from ib.ext.Order import Order
+</pre>
+<p>In order to make an order through Interactive Brokers API, you first create the contract, then you execute that contract through an actual order.</p>
+
+<p>We're going to go ahead and create our code that follows that, so first let's make our contract function:</p>
+<pre class="prettyprint">def make_contract(symbol, sec_type, exch, prim_exchange, curr):
+    Contract.m_symbol = symbol
+    Contract.m_secType = sec_type
+    Contract.m_exchange = exch
+    Contract.m_primaryExch = prim_exch
+    Contract.m_currency = curr
+    return Contract
+</pre>
+<p>Here, we've got our contract function with parameters that ask for the symbol (stock symbol), security type (forex, options, stock...etc), what exchange, what primary exchange, and then what currency it is all in.</p>
+
+<p>From there, we need to set some object values. What this function will do is actually return a contract object, as per the IBPy code. That's all we're doing in the rest of this function, really, just setting all of the object values to the parameter values.</p>
+
+<p>For the curious among us, you can probably best understand this by navigating to Contract script. So, on Windows with Python 2.7: C:/Python27/Lib/site-packages/ib/ext/Contract.py</p>
+
+<p>Now that we've got our contract function, now we need the order function.</p>
+
+<p>The way order works, it allows us to make various types of orders. For simplicity, we'll consider only limit or market orders.</p>
+<pre class="prettyprint">def make_order(action,quantity, price = None):
+</pre>
+<p>So, above, we've got the beginning of our function with parameters of action (buy or sell), quantity (how much), and then price for how much we want to pay. If we choose to order via market, then the way we want to build or order is slightly different than if we want to build a limit order.</p>
+
+<p>For this reason, we're going to treat our function as a market order if price is not specified, which is why we've set a default value of None.</p>
+<pre class="prettyprint">    if price is not None:
+        order = Order()
+        order.m_orderType = 'LMT'
+        order.m_totalQuantity = quantity
+        order.m_action = action
+        order.m_lmtPrice = price
+</pre>
+<p>Above, price was not none, so we set up the order as a limit order. Next we'll handle the simpler market order:</p>
+<pre class="prettyprint">    else:
+        order = Order()
+        order.m_orderType = 'MKT'
+        order.m_totalQuantity = quantity
+        order.m_action = action
+
+    return order
+</pre>
+<p>Next, we're ready to create our main loop, which uses our functions above.</p>
+<pre class="prettyprint">def main():
+    conn = Connection.create(port=7496, clientId=999)
+    conn.connect()
+</pre>
+<p>This initiates our connection to the API. When we run this script at the end, you will get a popup on the Traders Work Station, which will confirm the connection, and you must accept.</p>
+
+<p>Here, the port is that port from earlier that I told you to remember, and then clientID is what you chose, I just chose 999, but it needs to match whatever you filled in during the settings setup.</p>
+
+<p>Next, we need an order ID, and this order ID needs to be unique each time, so just make sure you increment it in your script if you use this automatically.</p>
+<pre class="prettyprint">    oid = cid
+</pre>
+<p>Next, we're ready to rumble. Again, the process is to first build the contract, then we actually place the order with the contract.</p>
+
+<p>So, first, let's do the contract:</p>
+<pre class="prettyprint">    cont = make_contract('TSLA', 'STK', 'SMART', 'SMART', 'USD')
+</pre>
+<p>Here, "TSLA" is the stock, it's security type is "STK," which is short for stock. Next we have used "SMART" for the exchange and primary exchange. What this is, is Interactive Broker's "smart" routing system. The SMART system is a system that helps find the best exchange to execute the trade on based on price and liquidity. The final value is currency, which we've chosen to be USD.</p>
+
+<p>Next, we need to make the order.</p>
+<pre class="prettyprint">    offer = make_order('BUY', 1, 200)
+</pre>
+<p>So the above offer has a third parameter, so we know this is a limit offer. We're buying, it is one share, and our price, which we already noted as being in USD, is 200. At the time of the video, a limit order for Tesla at 200 is an offer that would not fill, so we would see it show up.</p>
+
+<p>Next, we're going to place the order with:</p>
+<pre class="prettyprint">    conn.placeOrder(oid, cont, offer)
+</pre>
+<p>The parameters there are order idea, the contract, and then the order.</p>
+
+<p>Finally, you will need a:</p>
+<pre class="prettyprint">    conn.disconnect()
+
+main()
+</pre>
+<p>Now we're ready to run it! Remember, you are playing in the sandbox with others, so you may need to execute your order a few times, and you may need to ignore offers you did not place.</p>
+
+<p>Once you've run this, you should get a window like this in your TWS application:</p>
+<img class="img-responsive" src="{{ url_for('static', filename='images/ibpy/connecting-to-trader-work-station-interactive-brokers.png') }}" alt="Python with Interactive Brokers API ibpy tutorial" /><br>
+
+<p>Hit OK, and the trade should execute. If you're watching the video, you should see I have some trouble getting a trade to execute, not sure why that occurs.</p>
+
+<p>Just in case the chopped up code was maybe confusing, here's the full code: </p>
+
+<pre class="prettyprint">
+from ib.opt import Connection, message
+from ib.ext.Contract import Contract
+from ib.ext.Order import Order
+
+def make_contract(symbol, sec_type, exch, prim_exch, curr):
+
+    Contract.m_symbol = symbol
+    Contract.m_secType = sec_type
+    Contract.m_exchange = exch
+    Contract.m_primaryExch = prim_exch
+    Contract.m_currency = curr
+    return Contract
+
+
+
+def make_order(action,quantity, price = None):
+
+    if price is not None:
+        order = Order()
+        order.m_orderType = 'LMT'
+        order.m_totalQuantity = quantity
+        order.m_action = action
+        order.m_lmtPrice = price
+
+    else:
+        order = Order()
+        order.m_orderType = 'MKT'
+        order.m_totalQuantity = quantity
+        order.m_action = action
+
+        
+    return order
+
+
+cid = 303
+
+while __name__ == "__main__":
+
+    conn = Connection.create(port=7496, clientId=999)
+    conn.connect()
+    oid = cid
+    cont = make_contract('TSLA', 'STK', 'SMART', 'SMART', 'USD')
+    offer = make_order('BUY', 1, 200)
+    conn.placeOrder(oid, cont, offer)
+    conn.disconnect()
+    x = raw_input('enter to resend')
+    cid += 1
+
+</pre>
+	  
+		
+		<p>For more tutorials, head to the <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

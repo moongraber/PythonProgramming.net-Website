@@ -1,0 +1,66 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Robotics with the Raspberry Pi']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Robotics with the Raspberry Pi']}}%;">
+				Robotics with the Raspberry Pi Progress:  {{completed_percentages['Robotics with the Raspberry Pi']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}} with the Raspberry Pi</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423"   src="https://www.youtube.com/embed/pbCdNh0TiUo?list=PLQVvvaa0QuDeJlgD1RX9_49tMLUxvIxF4" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  
+	  <p></p>
+
+		
+		
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+import RPi.GPIO as gpio
+import time
+
+gpio.setmode(gpio.BOARD)
+
+gpio.setup(7, gpio.OUT)
+gpio.setup(11, gpio.OUT)
+gpio.setup(13, gpio.OUT)
+gpio.setup(15, gpio.OUT)
+
+gpio.output(7, True)
+gpio.output(11, True)
+gpio.output(13, True)
+gpio.output(15, False)
+time.sleep(0.5)
+
+gpio.cleanup()
+		</pre></div>
+		<div class="col-md-6"><p>Check out the video for connecting the motors to the L298n H-Bridge. </p> 
+<p>Here's some simple code that will run one of the motors for 0.5 seconds. Notice the use of gpio.BOARD for the gpio naming conventions.</p><p>Save this script as robot1.py, then, when everything is hooked up and you're ready to roll (get it!?!?!?), do <code>sudo python robot1.py</code></p><p>Try swapping around the True and False statements in the outputs, see what changes it makes.</p></div></div>
+
+<p>Now that we've got one motor working, let's work on adding the other three, and figuring out how to get them to work together!</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

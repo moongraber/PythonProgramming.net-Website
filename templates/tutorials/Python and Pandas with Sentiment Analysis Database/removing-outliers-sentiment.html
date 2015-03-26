@@ -1,0 +1,84 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Python and Pandas with Sentiment Analysis Database']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Python and Pandas with Sentiment Analysis Database']}}%;">
+				Python and Pandas with Sentiment Analysis Database Progress:  {{completed_percentages['Python and Pandas with Sentiment Analysis Database']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/qAHiLrpAUOQ?list=PLQVvvaa0QuDdktuSQRsofoGxC2PTSdsi7" frameborder="0" allowfullscreen></iframe></div>
+	  
+	  <p>It is bad practice to remove outliers that actually belong to the data, though you may find your data-set actually has bad data, and you want to be able to find and remove it.</p>
+	  <p>We're going to utilize standard deviation to find bad plots.</p>
+	  
+
+		<pre  class="prettyprint">
+def outlier_fixing(stock_name,ma1=100,ma2=250,ma3=500,ma4=5000):
+
+
+    df = pd.read_csv('X:/stocks_sentdex_dates_short.csv',
+                     index_col='time', parse_dates=True)
+    print df.head()
+
+    df = df[df.type == stock_name.lower()]
+
+    std = pd.rolling_std(df['close'], 25, min_periods=1)
+    print std
+
+    df['std'] = pd.rolling_std(df['close'], 25, min_periods=1)
+
+    # so now we want to find a way to clearly identify the problems. To me,
+    # it looks like anything above 20 is definitely a glitch, and
+    # anything below is legit. So let's work with that.
+
+    df = df[df['std'] < 17]
+
+    MA1 = pd.rolling_mean(df['value'], ma1)
+    MA2 = pd.rolling_mean(df['value'], ma2)
+    MA3 = pd.rolling_mean(df['value'], ma3)
+    MA4 = pd.rolling_mean(df['value'], ma4)
+    
+    ax1 = plt.subplot(3, 1, 1)
+    df['close'].plot(label='Price')
+    
+    ax2 = plt.subplot(3, 1, 2, sharex = ax1)
+    MA1.plot(label=(str(ma1)+'MA'))
+    MA2.plot(label=(str(ma2)+'MA'))
+    MA3.plot(label=(str(ma3)+'MA'))
+    MA4.plot(label=(str(ma4)+'MA'))
+
+    #change here...
+    ax3 = plt.subplot(3, 1, 3, sharex = ax1)
+    df['std'].plot(label='Deviation')
+
+    plt.legend()
+    plt.show()
+
+
+outlier_fixing('btcusd',ma1=100,ma2=2500,ma3=5000,ma4=50000)
+		</pre>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

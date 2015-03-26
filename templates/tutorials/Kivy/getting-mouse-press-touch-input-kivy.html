@@ -1,0 +1,79 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Kivy']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Kivy']}}%;">
+				Kivy Progress:  {{completed_percentages['Kivy']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/1wBtgQW74WE?list=PLQVvvaa0QuDe_l6XiJ40yGTEqIKugAdTy" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>Next on our agenda is how to acquire mouse / finger input. In Kivy, these events are just simply called a "touch." For now, we're just going to cover a simple touch, where a touch is just a single touch. That said, Kivy also supports multi-touch operations like "zoom" and "spin" motions that you might be familiar with doing on your phone or tablet.</p>
+	  <p>Let's hop into the code now:</p>
+
+
+		
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+from kivy.app import App
+from kivy.uix.widget import Widget
+
+class TouchInput(Widget):
+
+    def on_touch_down(self, touch):
+        print(touch)
+    def on_touch_move(self, touch):
+        print(touch)
+    def on_touch_up(self, touch):
+        print("RELEASED!",touch)
+
+class SimpleKivy4(App):
+
+    def build(self):
+        return TouchInput()
+
+if __name__ == "__main__":
+    SimpleKivy4().run()
+		</pre></div>
+		<div class="col-md-6">
+<p>Now we've defined a new class, called TouchInput, which inherits from Widget.</p>
+<p>We have three methods in here, on_touch_down (the initial press), on_touch_move (movement following and while there is a press) and on_touch_up (the "release" of a press). We're then printing out these events.</p>
+<p>Next, within our root class, we're returning this TouchInput class.</p>
+<p>Since we're only concerned about mouse / touch input in this tutorial, we're not really worried about the .kv file here. It is still being loaded, but, since none of the elements are being called to be shown, we don't see anything of the .kv file here.</p>
+<p></p></div></div>
+
+<p>Upon running, you can test the code by clicking and dragging on the screen. You should see the print out of your mouse's location for all the movement and pressing you do.</p>
+<p>An example of the output you might see is somethign like:</p>
+<code>&lt;MouseMotionEvent spos=(0.665, 0.3533333333333334) pos=(532.0, 212.00000000000003)></code>
+
+<p>Here, we can see two forms of output position. "spos" is more of a relative location. Remember the float layout? 0 is 0, and 1 is "full." So, if the mouse is at 0.5, 0.5, it is right in the middle of the screen.</p>
+<p>We also have the actual coordinate location (pos) as well.</p>
+<p>These are both useful though you're probably going to be using spos more if you're planning on having your application being able to run full screen on many devices and types of devices.</p>
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,70 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  <h2>Matplotlib Reading information from a file and plotting</h2>
+	  <h3>How to read and plot from a file in Python</h3>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/elKeseU03Aw?list=PLQVvvaa0QuDfpEcGUM6ogsbrlWtqpS5-1" frameborder="0" allowfullscreen></iframe></div><br>
+	  <p>Now that you have learned how simple it is to plot a simple graph, you might be wanting to plot from a file. The following method of plotting from a file is not the most efficient, but it is simple and easy to understand. If you already know more advanced I/O methods, feel free to use them instead of thee simple ones used here.</p>
+	  <p>Let us just use some simple data like:</p>
+	  <p>Save this as SampleData.txt in the same directory as your current Python script.</p>
+	  <pre  class="prettyprint">
+1,5
+2,2
+3,7
+4,9
+5,3
+6,2
+7,8
+8,4
+9,1   
+	  </pre>
+
+	  <p>Now, we can do the following:</p>
+	  <p></p>
+	 
+
+	  <pre  class="prettyprint">
+import matplotlib.pyplot as plt
+
+x = []
+y = []
+
+readFile = open('SampleData.txt','r')
+sepFile = readFile.read().split('\n')
+readFile.close()
+
+for plotPair in sepFile:
+    xAndY = plotPair.split(',')
+    x.append(int(xAndY[0]))
+    y.append(int(xAndY[1]))
+
+plt.plot(x,y)
+plt.title('Matplotlib Graph')
+plt.xlabel('x axis label')
+plt.ylabel('y axis label')
+
+plt.show()   
+	  </pre>
+
+
+		
+		<p>Fore more tutorials, head to the <a title="Python programming tutorials" href="/dashboard/"><button class="btn btn-primary">Dashboard</button></a></p>
+	  </div>
+	  
+	  
+	  
+	
+	
+
+	
+</body>
+
+
+{% endblock %}
+

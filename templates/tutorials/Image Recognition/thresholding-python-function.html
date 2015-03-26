@@ -1,0 +1,120 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Image Recognition']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Image Recognition']}}%;">
+				Image Recognition Progress:  {{completed_percentages['Image Recognition']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423"  src="https://www.youtube.com/embed/cJKuhgReeW8?list=PLQVvvaa0QuDffXBfcH9ZJuvctJV3OtB8A" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>Now what we want to do is create a function that will take the images we feed it, and threshold it. The way we're going to do this is by taking the "average" color value, and then thresholding any pixel as black if it is any darker or white if it is lighter.</p>
+	  <p>To start, let's delete everything but the imports, leaving:</p>
+	  
+	  <pre class="prettyprint">
+from PIL import Image
+import numpy as np
+
+import matplotlib.pyplot as plt
+import time
+	  </pre>
+	  <p>Then we'll begin our threshold function:</p>
+<pre class="prettyprint">
+def threshold(imageArray):
+    balanceAr = []
+    newAr = imageArray
+</pre>	  
+	<p>Above, we define the function, and we specify that we're expecting a parameter, the imageArray. This will be that array that we've been seeing with the pixel values.</p>
+	<p>Next, we define the balanceAr as an empty list, and the newAr, for now, is the imageArray. We cannot modify the actual iar without NumPy throwing a fit, so we do this. Balance array, at the end, will be averaged, to find our threshold.</p>
+	
+	  
+	  
+	  <p>Now we begin a for loop. Within this for loop we have some code that is not compatible between Python versions. I will just put a Python 2 and Python 3 version here.</p>
+	  
+		<div class="row">
+		<div class="col-md-6">
+		<p><strong>Python 2:</strong></p>
+<pre  class="prettyprint">
+
+    for eachRow in imageArray:
+        for eachPix in eachRow:
+            avgNum = reduce(lambda x, y: x + y, eachPix[:3]) / len(eachPix[:3])
+            balanceAr.append(avgNum)
+</pre>
+
+</div>
+		<div class="col-md-6">
+		<p><strong>Python 3:</strong></p>
+<pre  class="prettyprint">    
+    from statistics import mean
+    for eachRow in imageArray:
+        for eachPix in eachRow:
+            avgNum = mean(eachPix[:3])
+            balanceAr.append(avgNum)
+</pre>
+			
+			
+			</div></div>
+			
+			
+			
+	<p>Next, our goal is to apply this function to some images, so let's add some images here:</p>
+	 <pre class="prettyprint">
+i = Image.open('images/numbers/0.1.png')
+iar = np.array(i)
+i2 = Image.open('images/numbers/y0.4.png')
+iar2 = np.array(i2)
+i3 = Image.open('images/numbers/y0.5.png')
+iar3 = np.array(i3)
+i4 = Image.open('images/sentdex.png')
+iar4 = np.array(i4)
+
+
+fig = plt.figure()
+ax1 = plt.subplot2grid((8,6),(0,0), rowspan=4, colspan=3)
+ax2 = plt.subplot2grid((8,6),(4,0), rowspan=4, colspan=3)
+ax3 = plt.subplot2grid((8,6),(0,3), rowspan=4, colspan=3)
+ax4 = plt.subplot2grid((8,6),(4,3), rowspan=4, colspan=3)
+
+ax1.imshow(iar)
+ax2.imshow(iar2)
+ax3.imshow(iar3)
+ax4.imshow(iar4)
+
+
+plt.show()
+	 </pre>
+	 
+	 <p>Run the script and you should see:</p>
+	 
+	 <img class="img-responsive" src="{{ url_for('static', filename='images/image-recognition/images-to-threshold-python-image-recognition.png') }}"/>
+	 
+	 <p>Now what we want to do is threshold the images, so then we'll see that the zeros look all the same, and then you'll see it work in an image with more than two colors.</p>
+	 
+	 
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

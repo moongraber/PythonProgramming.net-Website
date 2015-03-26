@@ -1,0 +1,74 @@
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+	  <h2>Plotting From an SQL Database in Python and Matplotlib</h2>
+	  <h3>How to plot data from SQLite database in Python</h3>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/gSy9Sla8Fz0?list=PLQVvvaa0QuDfpEcGUM6ogsbrlWtqpS5-1" frameborder="0" allowfullscreen></iframe></div><br>
+	  <p>Now that we know how to do things like creating databases, make tables, insert data, and read data from an SQL database in Python, the next thing we will want to cover in this tutorial series is how to actually plot data from a database that we are reading from. As usual, this is just some simple code. It is not the most efficient, but it should be easy to follow and understand what is happening.</p>
+
+	 
+
+	  <pre  class="prettyprint">
+import sqlite3
+import time
+import datetime
+
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
+
+
+conn = sqlite3.connect('tutorial.db')
+c = conn.cursor()
+wordUsed = 'Python Sentiment'
+sql = "SELECT * FROM stuffToPlot WHERE keyword =?"
+
+graphArray = []
+
+
+
+for row in c.execute(sql, [(wordUsed)]):
+    startingInfo = str(row).replace(')','').replace('(','').replace('u\'','').replace("'","")
+    splitInfo = startingInfo.split(',')
+    graphArrayAppend = splitInfo[2]+','+splitInfo[4]
+    graphArray.append(graphArrayAppend)
+
+datestamp, value = np.loadtxt(graphArray,delimiter=',', unpack=True,
+                              converters={ 0: mdates.strpdate2num(' %Y-%m-%d %H:%M:%S')})
+
+fig = plt.figure()
+
+rect = fig.patch
+
+ax1 = fig.add_subplot(1,1,1, axisbg='white')
+plt.plot_date(x=datestamp, y=value, fmt='b-', label = 'value', linewidth=2)
+plt.show()   
+	  </pre>
+
+	  
+	  <p>In the above code, we first establish our connection to the database. From there, we select everything (noted with the *), where the keyword is equal to what we set. Once we have the data, we split it up by comma, and then take the data we want to plot and append it to graphArray.</p>
+	  <p>After doing that, we use Numpy's loadtxt functionality to load the Python list, as well as convert the data times into a format that matplotlib can understand. There are many ways of plotting dates and having the X-axis show them, this is just one method.</p>
+
+
+		
+		<p>Fore more tutorials, head to the <a title="Python programming tutorials" href="/dashboard/"><button class="btn btn-primary">Dashboard</button></a></p>
+	  </div>
+	  
+	  
+	  
+	
+	
+
+	
+</body>
+
+
+{% endblock %}
+

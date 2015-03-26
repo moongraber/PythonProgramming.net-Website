@@ -1,0 +1,320 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Python and Pandas with Sentiment Analysis Database']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Python and Pandas with Sentiment Analysis Database']}}%;">
+				Python and Pandas with Sentiment Analysis Database Progress:  {{completed_percentages['Python and Pandas with Sentiment Analysis Database']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/R5ut78P6-GQ?list=PLQVvvaa0QuDdktuSQRsofoGxC2PTSdsi7" frameborder="0" allowfullscreen></iframe></div>
+	  
+
+		<pre  class="prettyprint">
+import datetime
+import pandas as pd
+import pandas.io.data
+from pandas import Series, DataFrame
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import matplotlib.ticker as mticker
+import matplotlib.dates as mdates
+from matplotlib import style
+import numpy as np
+import time
+import math
+import zipline as zp
+from zipline.finance.slippage import FixedSlippage
+
+
+style.use('ggplot')
+
+def outlier_fixing(stock_name,ma1=100,ma2=250,ma3=500,ma4=5000):
+
+    df = pd.read_csv('X:/stocks_sentdex_dates_short.csv', index_col='time', parse_dates=True)
+    print df.head()
+
+    df = df[df.type == stock_name.lower()]
+
+    std = pd.rolling_std(df['close'], 25, min_periods=1)
+    print std
+
+    df['std'] = pd.rolling_std(df['close'], 25, min_periods=1)
+
+    df = df[df['std'] < 17]
+    
+    MA1 = pd.rolling_mean(df['value'], ma1)
+    MA2 = pd.rolling_mean(df['value'], ma2)
+    MA3 = pd.rolling_mean(df['value'], ma3)
+    MA4 = pd.rolling_mean(df['value'], ma4)
+    
+    ax1 = plt.subplot(3, 1, 1)
+    df['close'].plot(label='Price')
+    
+    ax2 = plt.subplot(3, 1, 2, sharex = ax1)
+    MA1.plot(label=(str(ma1)+'MA'))
+    MA2.plot(label=(str(ma2)+'MA'))
+    MA3.plot(label=(str(ma3)+'MA'))
+    MA4.plot(label=(str(ma4)+'MA'))
+
+    ax3 = plt.subplot(3, 1, 3, sharex = ax1)
+    df['std'].plot(label='Deviation')
+
+    plt.legend()
+    plt.show()
+    
+
+def single_stock(stock_name,ma1=100,ma2=250,ma3=500,ma4=5000):
+
+    df = pd.read_csv('X:/stocks_sentdex_dates_full.csv', index_col='time', parse_dates=True)
+    print df.head()
+
+    df = df[df.type == stock_name.lower()]
+
+    MA1 = pd.rolling_mean(df['value'], ma1)
+    MA2 = pd.rolling_mean(df['value'], ma2)
+    MA3 = pd.rolling_mean(df['value'], ma3)
+    MA4 = pd.rolling_mean(df['value'], ma4)
+    
+
+    ax1 = plt.subplot(2, 1, 1)
+    df['close'].plot(label='Price')
+    
+    ax2 = plt.subplot(2, 1, 2, sharex = ax1)
+    MA1.plot(label=(str(ma1)+'MA'))
+    MA2.plot(label=(str(ma2)+'MA'))
+    MA3.plot(label=(str(ma3)+'MA'))
+    MA4.plot(label=(str(ma4)+'MA'))
+
+    plt.legend()
+    plt.show()
+
+
+# new function
+
+def calc_position(ma1, ma2, ma3, ma4):
+    
+    if ma4 > ma1 > ma2 > ma3:
+        return 1
+    elif ma4 > ma1 > ma3 > ma2:
+        return 1
+    elif ma4 > ma2 > ma1> ma3:
+        return 2
+    elif ma1 > ma4 > ma3 > ma2:
+        return 2
+    elif ma1 > ma2 > ma4 > ma3:
+        return 3
+    elif ma1 > ma2 > ma3 > ma4:
+        return 4
+    elif ma2 > ma1 > ma3 > ma4:
+        return 4
+    elif ma1 > ma3 > ma2 > ma4:
+        return 4
+    elif ma1 < ma2 < ma3 < ma4:
+        return -4
+    elif ma4 > ma2 > ma3 > ma1:
+        return -4
+    elif ma1 < ma2 < ma4 < ma3:
+        return -3
+    elif ma4 > ma3 > ma1 > ma2:
+        return -3
+    elif ma1 < ma4 < ma2 < ma3:
+        return - 2
+    elif ma2 > ma3 > ma1 > ma4:
+        return - 2
+    elif ma3 > ma1 > ma4 > ma2:
+        return - 2
+    elif ma1 > ma3 > ma4 > ma2:
+        return - 2
+    elif ma4 < ma1 < ma2 < ma3:
+        return -1
+    elif ma2 > ma3 > ma4 > ma1:
+        return -1
+    elif ma3 > ma4 > ma1 > ma2:
+        return -1
+    elif ma1 > ma4 > ma2 > ma3:
+        return 0
+    else:
+        return None
+
+######## UPDATE IN THIS FUNCTION #########
+def single_stock_auto_MA(stock_name, div1=275, div2=110, div3=55, div4=5.5):
+    '''
+
+    '''
+
+    df = pd.read_csv('X:/stocks_sentdex_dates_full.csv', index_col='time', parse_dates=True)
+    
+    df = df[df.type == stock_name.lower()]
+    count = df['type'].value_counts()
+    count = int(count[stock_name])
+
+    MA1 = pd.rolling_mean(df['value'], (count/div1))
+    MA2 = pd.rolling_mean(df['value'], (count/div2))
+    MA3 = pd.rolling_mean(df['value'], (count/div3))
+    MA4 = pd.rolling_mean(df['value'], (count/div4))
+
+    SP = int(math.ceil(count/div4))
+
+    df['MA1'] = MA1
+    df['MA2'] = MA2
+    df['MA3'] = MA3
+    df['MA4'] = MA4
+
+    df = df[SP:]
+    del df['MA100']
+    del df['MA250']
+    del df['MA500']
+    del df['MA5000']
+
+    df['Pos'] = map(calc_position, df['MA1'],df['MA2'],df['MA3'],df['MA4'])
+
+    df['Change'] = df['Pos'].diff()
+
+    #MAJOR NECESSARY CHANGE THAT WE ONLY DISCOVERED LATER.
+    df.sort_index(inplace=True)
+
+    return df
+
+strat = []
+bh = []
+
+
+def backTest(datas, closei, changei):
+    stockHoldings = 0
+    startingCapital = datas['close'][0] * 25
+    
+    funds = startingCapital
+    currentValuation = funds
+
+    ##########################
+    name = datas['type'][0]
+
+
+    perf_array = []
+    date_array = []
+    perc_change = []
+    ######################
+    
+    for row in datas.iterrows():
+        try:
+            index, data = row
+            rowData = data.tolist()
+            price = rowData[closei]
+            change = int(rowData[changei])
+            
+            if isinstance(change, (int, long)) and change != 0:
+                if change > 0:
+                    if (change * price) < funds:
+                        funds -= (change * price)
+                        stockHoldings += change
+                    else:
+                        #pass
+                        print 'Awwww...Wanted to buy, but ran out of funds!!!!!!!!!!'
+                # if we are thinking of selling
+                elif change < 0:
+                    change = abs(change)
+
+                    if (stockHoldings - change) < 0:
+                        change = stockHoldings
+                    if stockHoldings == 0:
+                        pass
+                    else:
+                        funds += (change * price)
+                        stockHoldings -= change
+
+            # probably dont have to add this since we covered already....   
+            #currentValuation = funds + (stockHoldings * price)
+
+            currentPercentChange = round(((currentValuation - startingCapital)/startingCapital*100), 4)
+
+
+
+            ### BUTTTT.... gotta add this before the exception.
+            perc_change.append(currentPercentChange)
+            perf_array.append(currentValuation)
+            date_array.append(index)
+
+
+      
+        except Exception, e:
+            pass
+            #print str(e)
+
+
+    
+    currentValuation = funds + (stockHoldings * price)
+    print 'Holdings:',stockHoldings
+    print 'Funds:',funds
+    print 'Current Valuation:',currentValuation
+    print 'Strategy Percent growth:', ((currentValuation - startingCapital)/startingCapital*100)
+    print 'Buy and Hold percent growth:', ((endingPrice - startingPrice)/startingPrice * 100)
+
+
+    # add bascially... everything from here til the end. ##
+    strat.append((currentValuation - startingCapital)/startingCapital*100)
+    bh.append((endingPrice - startingPrice)/startingPrice * 100)
+
+
+    #print len(perf_array)
+    #print len(date_array)
+
+    x = 0
+    for eachP in perf_array:
+        saveData = open('performance_data_sp500ish.csv','a')
+        # timestamp object
+        line = str(date_array[x])+','+name+','+str(eachP)+','+str(perc_change[x])+'\n'
+        saveData.write(line)
+        x+=1
+
+    saveData.close()
+     
+
+stock_list = ['a','aa','aapl','abbv','abc','abt','ace','aci','acn','act','adbe','adi','adm','adp','adsk','adt','aee','aeo','aep','aes','aet','afl','agn','aig','aiv','aiz','akam','all','altr','alxn','amat','amd','amgn','amp','amt','amzn','an','anf','ann','aon','apa','apc','apd','aph','apol','arg','arna','aro','ati','atvi','avb','avp','avy','axp','azo','ba','bac','bax','bbby','bbry','bbt','bby','bcr','bdx','beam','ben','bf-b','bhi','big','biib','bk','bks','blk','bll','bms','bmy','brcm','brk-b','bsx','btu','bwa','bxp','c','ca','cab','cag','cah','cam','cat','cb','cbg','cbs','cce','cci','ccl','celg','cern','cf','cfn','chk','chrw','ci','cim','cinf','cl','clf','clx','cma','cmcsa','cme','cmg','cmi','cms','cnp','cnx','cof','cog','coh','col','cop','cost','cov','cpb','crm','csc','csco','csx','ctas','ctl','ctsh','ctxs','cvc','cvs','cvx','d','dal','dd','dds','de','df','dfs','dg','dgx','dhi','dhr','dis','disca','dks','dlph','dltr','dlx','dnb','dnr','do','dov','dow','dps','dri','dsw','dte','dtv','duk','dva','dvn','ea','ebay','ecl','ed','efx','eix','el','emc','emn','emr','eog','eqr','eqt','esrx','esv','etfc','etn','etr','ew','exc','expd','expe','expr','f','fast','fb','fcx','fdo','fdx','fe','ffiv','fhn','fis','fisv','fitb','fl','flir','flr','fls','flws','fmc','fosl','frx','fslr','fti','ftr','gas','gci','gd','ge','ges','gild','gis','glw','gm','gmcr','gme','gnw','goog','gpc','gps','grmn','grpn','gs','gt','gww','hal','har','has','hban','hcbk','hcn','hcp','hd','hes','hig','hog','hon','hot','hov','hp','hpq','hrb','hrl','hrs','hsp','hst','hsy','hum','ibm','ice','iff','igt','intc','intu','ip','ipg','ir','irm','isrg','itw','ivz','jbl','jci','jcp','jdsu','jec','jnj','jnpr','josb','joy','jpm','jwn','k','key','kim','klac','kmb','kmi','kmx','ko','kr','krft','kss','ksu','l','leg','len','lh','life','lll','lltc','lly','lm','lmt','lnc','lo','low','lrcx','lsi','ltd','luk','luv','lyb','m','ma','mac','mar','mas','mat','mcd','mchp','mck','mco','mcp','mdlz','mdt','met','mgm','mhfi','mjn','mkc','mmc','mmm','mnst','mo','molx','mon','mos','mpc','mrk','mro','ms','msft','msi','mtb','mu','mur','mwv','myl','nbl','nbr','ndaq','ne','nee','nem','nflx','nfx','ni','nile','nke','nly','noc','nok','nov','nrg','nsc','ntap','ntri','ntrs','nu','nue','nvda','nwl','nwsa','nyx','oi','oke','omc','orcl','orly','oxy','p','payx','pbct','pbi','pcar','pcg','pcl','pcln','pcp','pdco','peg','pep','petm','pets','pfe','pfg','pg','pgr','ph','phm','pki','pld','pll','pm','pnc','pnr','pnw','pom','ppg','ppl','prgo','pru','psa','psx','pwr','px','pxd','qcom','qep','r','rai','rdc','rf','rhi','rht','rl','rok','rop','rost','rrc','rsg','rsh','rtn','s','sai','sbux','scg','schl','schw','sd','se','see','sfly','shld','shw','sial','siri','sjm','sks','slb','slm','sna','sndk','sne','sni','so','spg','spls','srcl','sre','sti','stj','stt','stx','stz','swk','swn','swy','syk','symc','syy','t','tap','tdc','te','teg','tel','ter','tgt','thc','tibx','tif','tjx','tm','tmk','tmo','trip','trow','trv','tsla','tsn','tso','tss','twc','twx','txn','txt','tyc','ua','unh','unm','unp','ups','urbn','usb','utx','v','vale','var','vfc','viab','vitc','vlo','vmc','vno','vprt','vrsn','vtr','vz','wag','wat','wdc','wec','wfc','wfm','whr','win','wlp','wm','wmb','wmt','wpx','wtw','wu','wy','wyn','wynn','x','xel','xl','xlnx','xom','xray','xrx','xyl','yhoo','yum','zion','zlc','zmh','znga','camp','cldx','ecyt','gtn','htz','nus','pvtb','qdel','snts','wgo','wwww','amrn','unxl','fnma','lulu','mnkd','scty','ddd','qcor','kors','spy','lnkd','fmcc']
+
+for eachStock in stock_list:
+    try:
+        print '======================'
+        print 'Working on',eachStock
+        data = single_stock_auto_MA(eachStock)
+
+        backTest(data, closei=3, changei=11)
+        
+        stratperc = reduce(lambda x, y: x + y, strat) / len(strat)
+        bhperc = reduce(lambda x, y: x + y, bh) / len(bh)
+
+        print '###############################################'
+        print 'average strat percent:',stratperc
+        print 'average buy and hold percent:',bhperc
+        print '###############################################'
+    except Exception, e:
+        print str(e)
+
+
+print 'done'
+
+		</pre>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

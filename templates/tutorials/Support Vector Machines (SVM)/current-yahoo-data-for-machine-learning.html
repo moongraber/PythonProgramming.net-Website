@@ -1,0 +1,78 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Support Vector Machines (SVM)']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Support Vector Machines (SVM)']}}%;">
+				Support Vector Machines (SVM) Progress:  {{completed_percentages['Support Vector Machines (SVM)']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/ocgvXbv2iHs?list=PLQVvvaa0QuDd0flgGphKCej-9jp-QdzZ3" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>So now that we've discovered that it appears as though our strategy does pretty darn well, it is likely that the next step is to actually find current investment suggestions.</p>
+	  <p>Before we get into that, we'll need to cover a few problems with this strategy.</p>
+	  <p>Also, as a disclaimer: This tutorial is purely for educational purposes. I am not responsible for how you use this.</p>
+	  <p>It should be noted here that we were not accounting for trade costs in the back test. We're also making a pretty size-able mistake regarding the pool of training and testing companies. That mistake is that this research was done using a list of S&P 500 companies from the year 2013.</p>
+	  <p>From the year 2013, we collected ~10 years of historical performance for these companies. Now, what is missing from this list of 2013 companies compared to the list of, say, 2005 S&P 500 companies?</p>
+	  <p>...Every company that went private, lost enough market cap to be kicked out of the S&P 500, or, worse, went bankrupt. As such, this 2013 list is already slightly biased in the form of performance. Our "market performance" valuation is not biased in this sense, as these companies that exited did indeed weigh down the S&P 500. Our actual machine learning testing, however, is affected by not including these dropouts. General performance is already better, even if we remove all other elements, since we're only including companies that performed well enough to either enter the S&P 500 by 2013, or stay in it.</p>
+	  <p>With that in mind, let's go ahead and move forward to seeing how we might pull current companies from Yahoo Finance, assess their current fundamentals, and then see if we can find any companies to invest in.</p>
+
+	  
+	  
+
+		
+		
+
+		<pre  class="prettyprint">
+import urllib.request
+import os
+import time
+
+path = "X:/Backups/intraQuarter"
+
+def Check_Yahoo():
+    statspath = path+"/_KeyStats"
+    stock_list = [x[0] for x in os.walk(statspath)]
+
+    for e in stock_list[1:]:
+        try:
+            e = e.replace("X:/Backups/intraQuarter/_KeyStats\\","")
+            link = "http://finance.yahoo.com/q/ks?s="+e.upper()+"+Key+Statistics"
+            resp = urllib.request.urlopen(link).read()
+
+            save = "forward/"+str(e)+".html"
+            store = open(save,"w")
+            store.write(str(resp))
+            store.close()
+
+        except Exception as e:
+            print(str(e))
+            time.sleep(2)
+
+
+Check_Yahoo()   
+		</pre>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

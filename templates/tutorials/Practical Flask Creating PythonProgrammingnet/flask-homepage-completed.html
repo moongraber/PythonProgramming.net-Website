@@ -1,0 +1,179 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Practical Flask Creating PythonProgrammingnet']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Practical Flask Creating PythonProgrammingnet']}}%;">
+				Practical Flask Creating PythonProgrammingnet Progress:  {{completed_percentages['Practical Flask Creating PythonProgrammingnet']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="853" height="480" src="https://www.youtube.com/embed/hLR71ZJBUFU?list=PLQVvvaa0QuDc_owjTbIY4rbgXOFkUYOUB" frameborder="0" allowfullscreen></iframe></div>
+	  
+	  <p>In this tutorial, we wrap up our home page, discussing a few odds and ends. The code for the home page up to this point is:</p>
+	  <pre>
+&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;head>
+	&lt;meta charset="utf-8">
+	&lt;title>Python Programming Tutorials&lt;/title>
+	&lt;meta name="viewport" content="width=device-width, initial-scale=1">
+	&lt;link href="&#123;&#123; url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+	&lt;link rel="shortcut icon" href="&#123;&#123; url_for('static', filename='favicon.ico') }}">
+&lt;/head>
+
+&lt;header>
+	&lt;div class="navbar-header">
+      &lt;a class="navbar-brand" href="/">
+	  &lt;img style="max-width:120px; margin-top: -7px;" src="&#123;&#123; url_for('static', filename='images/mainlogo.png') }}">
+	  &lt;/a>
+    &lt;/div>
+	
+	
+	&lt;div class = "container-fluid">
+
+		&lt;a href="/dashboard/">&lt;button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top: 5px; margin-bottom: 5px; height: 44px; margin-right: 15px">
+		  &lt;span class="glyphicon glyphicon-off" aria-hidden="true">&lt;/span> Start Learning
+		&lt;/button>&lt;/a>
+
+
+	
+	&lt;ul class="nav navbar-nav navbar-right">
+		  
+		  &lt;div style="margin-right: 10px; margin-left: 15px; margin-top: 5px; margin-bottom: 5px;"  class="container-fluid">
+			&lt;h5>
+
+			&lt;a href="/support-donate/"> &lt;span class="glyphicon glyphicon-heart">&lt;/span> Support&nbsp;&nbsp;&nbsp;&lt;/a>
+			
+			&lt;a role="presentation" data-toggle="modal" data-target="#exampleModal" href="#">&lt;span class="glyphicon glyphicon-log-in">&lt;/span> Login&nbsp;&nbsp;&nbsp;&lt;/a>
+			
+			&lt;div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  &lt;div class="modal-dialog">
+				&lt;div class="modal-content">
+				  &lt;div class="modal-header">
+					&lt;button type="button" class="close" data-dismiss="modal" aria-label="Close">&lt;span aria-hidden="true">&times;&lt;/span>&lt;/button>
+					&lt;h4 class="modal-title" id="exampleModalLabel">Login&lt;/h4>
+				  &lt;/div>
+				  &lt;div class="modal-body">
+					  &lt;div class="container-fluid">
+						  &lt;form action="" class="form-inline" method="post">
+							&lt;input type="text" class="form-control" placeholder="Username" name="username" value="">
+							 &lt;input type="password" class="form-control" placeholder="Password" name="password" value="">
+							&lt;input class="btn btn-primary" type="submit" value="Login">
+						  &lt;/form>
+						  
+							&lt;div class="container">
+							&lt;br>
+						   &lt;p>No account? &lt;a href='/register'>Register here&lt;/a>.&lt;/p>
+						   &lt;br>
+							
+						  &lt;/div>
+					&lt;/div>
+				  &lt;/div>
+
+				&lt;/div>
+			  &lt;/div>
+			&lt;/div>
+
+		&lt;a role="presentation" class="active" data-toggle="modal" data-target="#register" href="#">&lt;span class="glyphicon glyphicon-pencil">&lt;/span> Sign up&lt;/a>&lt;h5>
+		&lt;div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  &lt;div class="modal-dialog">
+			&lt;div class="modal-content">
+			  &lt;div class="modal-header">
+				&lt;button type="button" class="close" data-dismiss="modal" aria-label="Close">&lt;span aria-hidden="true">&times;&lt;/span>&lt;/button>
+				&lt;h4 class="modal-title" id="exampleModalLabel">Register&lt;/h4>
+			  &lt;/div>
+			  &lt;div class="modal-body">
+				  &lt;div class="container">
+					  
+						&lt;form method=post action="/register">
+						  &lt;dl>
+							
+  &lt;dt>&lt;label for="username">Username&lt;/label>
+  &lt;dd>&lt;input id="username" name="username" type="text" value="">
+  
+  &lt;/dd>
+
+							
+  &lt;dt>&lt;label for="email">Email Address&lt;/label>
+  &lt;dd>&lt;input id="email" name="email" type="text" value="">
+  
+  &lt;/dd>
+
+							
+  &lt;dt>&lt;label for="password">New Password&lt;/label>
+  &lt;dd>&lt;input id="password" name="password" type="password" value="">
+  
+  &lt;/dd>
+
+							
+  &lt;dt>&lt;label for="confirm">Repeat Password&lt;/label>
+  &lt;dd>&lt;input id="confirm" name="confirm" type="password" value="">
+  
+  &lt;/dd>
+
+							
+  &lt;dt>&lt;label for="accept_tos">I accept the &lt;a href="/about/tos" target="blank">Terms of Service&lt;/a> and &lt;a href="/about/privacy-policy" target="blank">Privacy Notice&lt;/a> (updated Jan 22, 2015)&lt;/label>
+  &lt;dd>&lt;input id="accept_tos" name="accept_tos" type="checkbox" value="y">
+  
+  &lt;/dd>
+
+						  &lt;/dl>
+						  &lt;p>&lt;input type=submit value=Register>
+						&lt;/form>
+					  
+				&lt;/div>
+			  &lt;/div>
+
+			&lt;/div>
+		  &lt;/div>
+		&lt;/div>
+	  &lt;/div>
+	  
+      &lt;/ul>
+
+	&lt;/ul>
+	
+	&lt;/div>
+	
+&lt;/header>
+
+&lt;body>
+
+&lt;!-- -->
+		&lt;a href="/dashboard/">
+		&lt;video autoplay="autoplay" muted="muted" poster="/static/videos/python-programming-tutorials-main.png" style="width:100%; max-height:80%" >
+		&lt;source src="/static/videos/python-programming-tutorials-main.mp4" type="video/mp4" type="video/mp4">
+		&lt;source src="/static/videos/python-programming-tutorials-main.webm" type="video/webm">
+		&lt;/video>
+		&lt;/a>
+
+	&lt;script src="//code.jquery.com/jquery-1.11.1.min.js">&lt;/script>
+	&lt;script type="text/javascript" src="&#123;&#123; url_for('static', filename='js/bootstrap.min.js') }}">&lt;/script>
+
+&lt;/body>
+
+&lt;/html>	  
+	  </pre>
+	  <p></p>
+	  <p></p>
+
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

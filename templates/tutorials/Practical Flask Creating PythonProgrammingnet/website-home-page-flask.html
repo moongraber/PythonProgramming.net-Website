@@ -1,0 +1,81 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Practical Flask Creating PythonProgrammingnet']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Practical Flask Creating PythonProgrammingnet']}}%;">
+				Practical Flask Creating PythonProgrammingnet Progress:  {{completed_percentages['Practical Flask Creating PythonProgrammingnet']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="853" height="480" src="https://www.youtube.com/embed/C30xMkLNoUI?list=PLQVvvaa0QuDc_owjTbIY4rbgXOFkUYOUB" frameborder="0" allowfullscreen></iframe></div>
+	  
+	  <p>The home page! This is almost always the most important page on your website. This is where most viewers will first meet your website. The web average is that ~60% of website visitors leave on the first page they visit. This is what is known as "bounce rate." Because of this, I feel that it is pretty important that you have a very specific home page, and that it is highly likely that you will have a totally separate home page compared to the rest of the website. Depending on your website, this goal may vary. For example, on my personal website, HKinsley.com, I don't even really have a specific home page. There's not much point. I am not trying to keep users engaged, this website is just a simple informative website about me.</p>
+	  <p>Here, we will have a separate home page, and this will be the only page that doesn't "extend" any sort of header stuff, like most pages will. Where do you start with creating a web page though? Do you need a web designer? Probably not! Luckily for you, Bootstrap pretty much handles all of the graphics stuff for you. You just need to choose where things go, but all of the styling is done for you. It's actually a lot of help too. When we're done, try commenting out our style sheet inclusion... see how ugly things get!</p>
+	  <p>In order to make use of Bootstrap, you will obviously need to implement it within your site, which we did in the last tutorial, but then we need to browse through the documents to see what's available. I usually just scroll through fairly fast until I see something appealing. </p>
+	  <p>Mostly you're going to be interested in the <a href="http://getbootstrap.com/components/" target="blank">components</a> or <a href="http://getbootstrap.com/javascript/" target="blank">javascript</a> pages. Everything shown has the code that generated below it. Note here that the components stuff should all work with a simple copy and paste to your page. The javascript will require you to include the script. If you don't know what that means, see the videos. In short, you just need to include the required javascript file at the end of your body tags in the HTML (this means you actually first call the javascript functions *above* where you include the javascript function in the script tags).</p>
+	  <p>Here's the file we end up creating:</p>
+	  <code>File: main.html, server location: /var/www/PythonProgramming/PythonProgramming/templates/main.html</code>
+	  <pre>
+&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;head>
+	&lt;meta charset="utf-8">
+	&lt;title>Python Programming Tutorials&lt;/title>
+	&lt;meta name="viewport" content="width=device-width, initial-scale=1">
+	&lt;link href="&#123;&#123; url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+	&lt;link rel="shortcut icon" href="&#123;&#123; url_for('static', filename='favicon.ico') }}">
+&lt;/head>
+
+&lt;header>
+	&lt;div class="navbar-header">
+      &lt;a class="navbar-brand" href="/">
+	  &lt;img style="max-width:120px; margin-top: -7px;" src="&#123;&#123; url_for('static', filename='images/mainlogo.png') }}">
+	  &lt;/a>
+    &lt;/div>
+
+	&lt;div class = "container-fluid">
+		&lt;a href="/dashboard/">&lt;button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top: 5px; margin-bottom: 5px; height: 44px; margin-right: 15px">
+		  &lt;span class="glyphicon glyphicon-off" aria-hidden="true">&lt;/span> Start Learning
+		&lt;/button>&lt;/a>
+		&lt;div style="margin-right: 10px; margin-left: 15px; margin-top: 5px; margin-bottom: 5px;"  class="container-fluid">	
+		&lt;/div>
+	&lt;/div>
+&lt;/header>
+
+&lt;body>
+
+	&lt;script src="//code.jquery.com/jquery-1.11.1.min.js">&lt;/script>
+	&lt;script type="text/javascript" src="&#123;&#123; url_for('static', filename='js/bootstrap.min.js') }}">&lt;/script>
+	
+&lt;/body>
+
+&lt;/html>
+	  </pre>
+	  <p>For more information on exactly what we're doing here, see the video. If you're understanding all of the above, then you're ready to move on to the next tutorial!</p>
+
+	  
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

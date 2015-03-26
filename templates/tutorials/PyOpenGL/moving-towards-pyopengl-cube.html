@@ -1,0 +1,141 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['PyOpenGL']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['PyOpenGL']}}%;">
+				PyOpenGL Progress:  {{completed_percentages['PyOpenGL']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/SYz74jPK7H0?list=PLQVvvaa0QuDdfGpqjkEJSeWKGCP31__wD" frameborder="0" allowfullscreen></iframe></div>
+
+
+<p>Since we're trying to make a 3D PyOpenGL version of our previous game, we want the cube to just start coming at us. We of course will soon want many cubes, but let's just start with one for now.</p>
+
+<p>This tutorial is fairly simplistic, we just need to make the cube come at us, and we need to be able to know where we are in reference to the camera.</p>
+
+<p>Now the beginning of our main function should look like this (Note the commented areas as areas of change that you might not notice)</p>
+
+<pre class="prettyprint">
+def main():
+    pygame.init()
+    display = (800,600)
+    pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
+
+
+    
+    
+    gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
+
+
+    #start further back
+    glTranslatef(random.randrange(-5,5),0, -30)
+
+
+    # no more rotate
+    #glRotatef(25, 2, 1, 0)
+
+
+    object_passed = False
+
+</pre>
+
+<p>So we've commented out the rotation, and we've started back a bit further. We also have set a variable to false that asks if the object has passed us yet. </p>
+
+<p>Next:</p>
+
+<pre class="prettyprint">
+while not object_passed:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    glTranslatef(-0.5,0,0)
+                if event.key == pygame.K_RIGHT:
+                    glTranslatef(0.5,0,0)
+
+                if event.key == pygame.K_UP:
+                    glTranslatef(0,1,0)
+                if event.key == pygame.K_DOWN:
+                    glTranslatef(0,-1,0)
+            '''
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 4:
+                    glTranslatef(0,0,1.0)
+
+                if event.button == 5:
+                    glTranslatef(0,0,-1.0)
+            '''
+                    
+                    
+</pre>
+
+<p>Note that we've commented out the zooming ability, since that's not quite what we want, though we could allow the user later to speed up/slow down slightly. This would make a lot of sense is coverage space and time is somehow made important in our game.</p>
+
+<p>Also note that our movement according to key-presses has changed. </p>
+
+<p>That code basically handles our navigation, but we also know we want to know once the cube has passed us. To do this, we need to know where we are. We are the ones moving (remember my question? Did you get it right?). We can store where we have placed the cubes, now we want to know how to acquire our own location:</p>
+
+<pre class="prettyprint">
+        x = glGetDoublev(GL_MODELVIEW_MATRIX)
+</pre>
+
+This will give us our modelview matrix, which contains our X, Y, and Z coordinates!
+
+The following are our actual coordinates:
+
+<pre class="prettyprint">
+        camera_x = x[3][0]
+        camera_y = x[3][1]
+        camera_z = x[3][2]
+</pre>
+
+
+<p>Now, we can wrap up our code with:</p>
+
+<pre class="prettyprint">
+        glTranslatef(0,0,0.5)
+
+
+        
+        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+        Cube()
+        pygame.display.flip()
+
+
+        if camera_z <= 0:
+            object_passed = True
+            
+
+for x in range(10):
+    main()
+</pre>
+
+<p>Here, we're slowly moving with the glTranslate, and then performing the typical code, followed by a final if statement asking if we've passed the point of the cube. If we have, then we basically are just restarting the instance. </p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

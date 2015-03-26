@@ -1,0 +1,84 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Robotics with the Raspberry Pi']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Robotics with the Raspberry Pi']}}%;">
+				Robotics with the Raspberry Pi Progress:  {{completed_percentages['Robotics with the Raspberry Pi']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/robotics/raspberry-pi-motor-robotics-tutorial.png') }}" alt="robotics with the Raspberry Pi" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423"   src="https://www.youtube.com/embed/TtKUSFqtFmE?list=PLQVvvaa0QuDeJlgD1RX9_49tMLUxvIxF4" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  
+
+
+		
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+import RPi.GPIO as gpio
+import time
+
+
+def init():
+    gpio.setmode(gpio.BOARD)
+    gpio.setup(7, gpio.OUT)
+    gpio.setup(11, gpio.OUT)
+    gpio.setup(13, gpio.OUT)
+    gpio.setup(15, gpio.OUT)
+    gpio.output(7, True)
+    gpio.output(11, True)
+
+def forward(tf):
+    gpio.output(13, True)
+    gpio.output(15, False)
+    time.sleep(tf)
+
+def reverse(tf):
+    gpio.output(13, False)
+    gpio.output(15, True)
+    time.sleep(tf)
+
+
+init()
+forward(0.5)
+reverse(0.5)
+
+gpio.cleanup()
+		</pre></div>
+		<div class="col-md-6">
+<p>Here's our script with a bit more built up. First, we have an init() function, which stands for initialization.</p>
+<p>The init function sets up all of the pins that we are using.</p>
+<p>Next, we define our forward and reverse functions. What these functions are going to do is initiate the proper changes to make the wheels go either forward, or reverse, depending on our goals.</p>
+<p>Finally, after defining our functions, we call a quick init(), then ask the forward and reverse functions to run for 0.5 seconds. After this, we use gpio.cleanup() to cease the pins form being activated.</p>
+<p>We are saving this script as robot2.py</p>
+<p>To run:</p>
+<p><code>sudo python robot2.py</code></p></div></div>
+
+<p>That's all for forward and reverse, how about figuring out how to turn our car?</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

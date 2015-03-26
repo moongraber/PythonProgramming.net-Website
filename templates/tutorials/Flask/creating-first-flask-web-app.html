@@ -1,0 +1,194 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Flask']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Flask']}}%;">
+				Flask Progress:  {{completed_percentages['Flask']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/flask/basic-flask-application.png') }}" alt="text to screen" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/_80H2WIuA7w?list=PLQVvvaa0QuDcOS4l8RCWh0olq_je0OKaP" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+
+
+<p>Now that you've got your server and domain set up, it is time to set up Flask and get your very first web application up! There are many commands that we will need to run, but, have no fear, I will put all of the commands and code blocks here!</p>
+
+First, you'll need to run:</p>
+<blockquote>sudo apt-get install apache2 mysql-client mysql-server</blockquote>
+Once you do that, you'll get the start up page for MySQL, where you will need to set your root user for MySQL. This is the specific MySQL root user, not your server root user.
+
+<p>That setup should take about 20-30 seconds. After that, we need to get WSGI, so run the following:</p>
+
+<blockquote>sudo apt-get install libapache2-mod-wsgi</blockquote>
+<p>Once we have that, we need to make sure we've enabled WSGI with the following:</p>
+<blockquote>sudo a2enmod wsgi</blockquote>
+<p>It is probably already enabled from the installation, but it is a good idea to make sure.</p>
+
+<p>Next we are ready to set up our Flask environment.</p>
+
+<p>Run:</p>
+<blockquote>cd /var/www/</blockquote>
+<p>Now let's make our Flask environment directory:</p>
+<blockquote>sudo mkdir FlaskApp</blockquote>
+<p>Move into that directory:</p>
+<blockquote>cd FlaskApp</blockquote>
+<p>Now make the actual application directory:</p>
+<blockquote>sudo mkdir FlaskApp</blockquote>
+<p>Now let's go in there:</p>
+<blockquote>cd FlaskApp/</blockquote>
+<p>Now we're going to make two directories, static and template:</p>
+<blockquote>sudo mkdir static<br>
+
+sudo mkdir templates</blockquote>
+<p>Now we're ready to create the main file for your first Flask App:</p>
+<blockquote>sudo nano __init__.py</blockquote>
+<p>Here is where we have our initialization script for our Flask application. You can actually keep all of your main website code right here for simplicity's sake, and that's what we'll be doing. Within your __init__.py file, you will type:</p>
+		
+<pre class="prettyprint">from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def homepage():
+    return "Hi there, how ya doin?"
+
+
+if __name__ == "__main__":
+    app.run()
+
+</pre>	
+
+
+<p>Press control+x to save it, yes, enter.</p>
+
+<p>Now we should probably actually get Flask. Let's do that now.</p>
+
+<p>Since this is likely a new server for you, you will want to go ahead and run:</p>
+<blockquote>sudo apt-get update</blockquote>
+
+<blockquote>sudo apt-get upgrade</blockquote>
+
+
+<p>Hit control+c to get out of the running text, then type deactivate to stop the virtual environment running locally. This is only a local version, so you wont be able to type in anything to your browser to access it.</p>
+
+
+<p>To get Flask, we're going to use pip, so you will need to first get pip if you do not already have it:</p>
+<blockquote>sudo apt-get install python-pip</blockquote>
+
+
+<p>Now that we have pip, we also need virtualenv to create the virtual environment for Flask to run Python and your application in:</p>
+<blockquote>sudo pip install virtualenv</blockquote>
+
+
+<p>Now to set up the virtualenv directory:</p>
+
+<blockquote>sudo virtualenv venv</blockquote>
+<p>Activate the virtual environment:</p>
+<blockquote>source venv/bin/activate</blockquote>
+
+<p>Now install Flask within your virtual environment</p>
+<blockquote>sudo pip install Flask</blockquote>
+<p>Find out if everything worked out by going:</p>
+<blockquote>sudo python __init__.py</blockquote>
+<p>If you didn't get any major errors, congrats!</p>
+
+<p>Hit control+c to get out of the running text, then type deactivate to stop the virtual environment running locally. This is only a local version, so you wont be able to type in anything to your browser to access it.</p>
+
+<p>So now we need to set up our Flask configuration file:</p>
+<blockquote>sudo nano /etc/apache2/sites-available/FlaskApp.conf</blockquote>
+
+<p>This is where your Flask configuration goes, which will apply to your live web site. Here's the code that you need to include:</p>
+
+
+<pre class="prettyprint">                
+&lt;VirtualHost *:80&gt;
+                ServerName yourdomain.com
+                ServerAdmin youemail@email.com
+                WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
+                &lt;Directory /var/www/FlaskApp/FlaskApp/&gt;
+                        Order allow,deny
+                        Allow from all
+                &lt;/Directory&gt;
+                Alias /static /var/www/FlaskApp/FlaskApp/static
+                &lt;Directory /var/www/FlaskApp/FlaskApp/static/&gt;
+                        Order allow,deny
+                        Allow from all
+                &lt;/Directory&gt;
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                LogLevel warn
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;
+
+</pre>
+
+<p>For your notes, if you want to add more domains that point to the same Flask App, or a different app entirely, then you just copy and paste the above code and change the domain name. So, if you want www.yourapp.com and yourapp.com to both work, you will need two versions. There might be a superior method to this, like some sort of a list. If there is, I do not know it! If you know of a better way, please share and I will modify this to represent it.</p>
+
+<p>We are now ready to enable the server.</p>
+
+<p>Run:</p>
+<blockquote>sudo a2ensite FlaskApp</blockquote>
+
+<blockquote>service apache2 reload</blockquote>
+
+
+<p>Almost there... now we just need to configure our WSGI file. To do this:</p>
+<blockquote>cd /var/www/FlaskApp</blockquote>
+
+<blockquote>sudo nano flaskapp.wsgi</blockquote>
+<p>Within the wsgi file, enter:</p>
+
+
+<pre class="prettyprint">#!/usr/bin/python
+import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,"/var/www/FlaskApp/")
+
+from FlaskApp import app as application
+application.secret_key = 'your secret key. If you share your website, do NOT share it with this key.'
+</pre>
+<p>Save and exit.</p>
+
+
+<p>Once that is done, run:</p>
+<blockquote>service apache2 restart</blockquote>
+<p>Get used to running the above command. Flask is very finicky about your python file changes. Every .py file change you make to your webapp, you need to run this command.</p>
+
+<p>Once you have done all of this, you are ready to visit your domain name in your browser. You should see the "Hi there, how ya doin?" string that we output in your __init__.py file.</p>
+
+<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

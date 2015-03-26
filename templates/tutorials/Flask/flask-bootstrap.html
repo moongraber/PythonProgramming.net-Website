@@ -1,0 +1,157 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Flask']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Flask']}}%;">
+				Flask Progress:  {{completed_percentages['Flask']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/flask/Flask-bootstrap.png') }}" alt="text to screen" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="//www.youtube.com/embed/tPoSIfOke7w?list=PLQVvvaa0QuDcOS4l8RCWh0olq_je0OKaP" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+
+
+<p>In this Flask web development tutorial, we cover the inclusion of <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>. What is Bootstrap? Bootstrap is the Holy Grail for non-web-designers. Some people just love writing custom CSS/HTML and making things "just so." Others dread doing the design and spend their time hunting for examples on Google, copying and pasting, so they can get back to what they love, programming. This is who Bootstrap is for.</p>
+
+<p>Once you begin using it, and get familiar with Bootstrap, you'll see that you are not alone. You'll start seeing Bootstrap is used in an incredible number of websites. You'll recognize the navbars, buttons, pagebuttons...and more. </p>
+
+<p>To get Bootstrap, you just need to head over to <a href="http://getbootstrap.com/">http://getbootstrap.com/</a>. Once there, download the source, and move the files you want. If you're not sure, just move everything. If you're not sure where to put everything, see the video. </p>
+
+<p>Once you have the required CSS and javascript files on your website, you can begin to reference them. See the video for a more in-depth analysis, and here is the sample code: </p>
+
+<p>For our new index.html page, we just want to grab the entire example navbar from Bootstrap:</p>
+
+<pre class="prettyprint">  
+&lt;html&gt;
+&lt;link rel="stylesheet" media="screen" href = "&#123;&#123; url_for('static', filename='bootstrap.min.css') &#125;&#125;"&gt;
+&lt;meta name="viewport" content = "width=device-width, initial-scale=1.0"&gt;
+&lt;head&gt;
+&lt;/head&gt;
+
+&lt;body class = "body"&gt;
+&lt;nav class="navbar navbar-default" role="navigation"&gt;
+  &lt;div class="container-fluid"&gt;
+    &lt;!-- Brand and toggle get grouped for better mobile display --&gt;
+    &lt;div class="navbar-header"&gt;
+      &lt;button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"&gt;
+        &lt;span class="sr-only"&gt;Toggle navigation&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;a class="navbar-brand" href="#"&gt;Brand&lt;/a&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Collect the nav links, forms, and other content for toggling --&gt;
+    &lt;div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"&gt;
+      &lt;ul class="nav navbar-nav"&gt;
+        &lt;li class="active"&gt;&lt;a href="#"&gt;Link&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#"&gt;Link&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="dropdown"&gt;
+          &lt;a href="#" class="dropdown-toggle" data-toggle="dropdown"&gt;Dropdown &lt;span class="caret"&gt;&lt;/span&gt;&lt;/a&gt;
+          &lt;ul class="dropdown-menu" role="menu"&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Action&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Another action&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Something else here&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="divider"&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Separated link&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="divider"&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;One more separated link&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;form class="navbar-form navbar-left" role="search"&gt;
+        &lt;div class="form-group"&gt;
+          &lt;input type="text" class="form-control" placeholder="Search"&gt;
+        &lt;/div&gt;
+        &lt;button type="submit" class="btn btn-default"&gt;Submit&lt;/button&gt;
+      &lt;/form&gt;
+      &lt;ul class="nav navbar-nav navbar-right"&gt;
+        &lt;li&gt;&lt;a href="#"&gt;Link&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="dropdown"&gt;
+          &lt;a href="#" class="dropdown-toggle" data-toggle="dropdown"&gt;Dropdown &lt;span class="caret"&gt;&lt;/span&gt;&lt;/a&gt;
+          &lt;ul class="dropdown-menu" role="menu"&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Action&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Another action&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Something else here&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="divider"&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#"&gt;Separated link&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;&lt;!-- /.navbar-collapse --&gt;
+  &lt;/div&gt;&lt;!-- /.container-fluid --&gt;
+&lt;/nav&gt;
+</pre>
+
+
+<p>We don't really change the __init__.py file much, but here it is just in case:</p>
+
+<pre class="prettyprint">  
+
+from flask import Flask, render_template
+ 
+app = Flask(__name__)
+
+@app.route('/')
+def homepage():
+
+    title = "Epic Tutorials"
+    paragraph = ["wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!","wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!wow I am learning so much great stuff!"]
+
+    try:
+        return render_template("index.html", title = title, paragraph=paragraph)
+    except Exception, e:
+        return str(e)
+
+@app.route('/about')
+def aboutpage():
+
+    title = "About this site"
+    paragraph = ["blah blah blah memememememmeme blah blah memememe"]
+
+    pageType = 'about'
+
+    return render_template("index.html", title=title, paragraph=paragraph, pageType=pageType)
+
+
+@app.route('/about/contact')
+def contactPage():
+
+    title = "About this site"
+    paragraph = ["blah blah blah memememememmeme blah blah memememe"]
+
+    pageType = 'about'
+
+    return render_template("index.html", title=title, paragraph=paragraph, pageType=pageType)
+
+
+ 
+if __name__ == "__main__":
+	app.run(debug = True, host='0.0.0.0', port=8080, passthrough_errors=True)
+</pre>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

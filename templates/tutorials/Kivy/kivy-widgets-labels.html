@@ -1,0 +1,121 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Kivy']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Kivy']}}%;">
+				Kivy Progress:  {{completed_percentages['Kivy']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/kivy/kivy-login-page-example.png') }}" alt="Python Kivy Application Development" /><br>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/cJtdb-vPxBo?list=PLQVvvaa0QuDe_l6XiJ40yGTEqIKugAdTy" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>In this Kivy tutorial, we're going to be discussing the notion of "labels" and "widgets." The idea of widgets is to have a handful of various types of elements, and then we can put them together for an application. Think of a home page with a login. You might have a home page that has some text that says something like "username" and "password." Then you will also need some text fields for input. To do this with Kivy, we'll use Label to have the text, then we're going to use a text input widget for letting the user actually type something.</p>
+	  <p>Let's hop in!</p>
+	  <p></p>
+	  <p></p>
+	  
+
+		
+		
+		<p>KivyVideo2.py file:</p>
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+from kivy.app import App
+#kivy.require("1.8.0")
+from kivy.uix.label import Label
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.textinput import TextInput
+		</pre></div>
+		<div class="col-md-6">
+<p>Importing App as usual, and Label like before. Then we are importing the GridLayout, which is one of many types of layouts. Finally, we're grabbing the TextInput part of Kivy.</p></div></div>
+
+
+		<div class="row">
+		<div class="col-md-7">
+		<pre  class="prettyprint">
+class LoginScreen(GridLayout):
+    def __init__(self, **kwargs):
+        super(LoginScreen, self).__init__(**kwargs)
+        self.cols = 2
+		</pre></div>
+		<div class="col-md-5">
+<p>LoginScreen class, which will inherit from GridLayout. We use super to avoid needing to refer to the base class, as well as utilize multi-inheritance.</p></div></div>
+
+		<p>If you're confused about OOP, check out the <a href="/object-oriented-programming-crash-course-tkinter/" target="blank"><kbd>Object Oriented Programming Crash Course</kbd></a>.</p>
+
+
+
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+        self.add_widget(Label(text="Username:"))
+        self.username = TextInput(multiline=False)
+        self.add_widget(self.username)
+		</pre></div>
+		<div class="col-md-6">
+<p>Adding a Label widget with the text of username. Then we add a text input to save as a username, then we add that widget.</p></div></div>
+
+
+
+		<div class="row">
+		<div class="col-md-7">
+		<pre  class="prettyprint">
+        self.add_widget(Label(text="Password:"))
+        self.password = TextInput(multiline=False, password=True)
+        self.add_widget(self.password)
+
+        self.add_widget(Label(text="Two Factor Auth:"))
+        self.tfa = TextInput(multiline=False)
+        self.add_widget(self.tfa)
+		</pre></div>
+		<div class="col-md-5">
+<p>After seeing how to add the username Label and the username text input field, we then can use an identical structure to create a Password Label, then text-input. Then we do it one more time for another field, this time for two-factor-authentication as an example.</p></div></div>
+
+<p>Notice we also have another parameter in the password widget, which is this "password = True." Upon running, you will see that this parameter will convert the text input to asterisks, to mask the password to nosey-onlookers.</p>
+
+
+
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+class SimpleKivy(App):
+    def build(self):
+        return LoginScreen()
+
+if __name__ == "__main__":
+    SimpleKivy().run()
+		</pre></div>
+		<div class="col-md-6">
+<p>Now we just finish up the script with some familiar code, mainly changing the return of the SimpleKivy.build to be return LoginScreen (the class we just wrote)</p></div></div>
+
+		<p>That's it! Now you can run it, and you should see something like:</p>
+		
+		<img class="img-responsive" src="{{ url_for('static', filename='images/kivy/kivy-login-page-example.png') }}" alt="Python Kivy Application Development" /><br>
+		
+		<p>So far, we've coded everything in Python. You can actually code all of your Kivy application within Python, but you might be missing out by not using the Kivy language (.kv files).</p>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,84 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Image Recognition']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Image Recognition']}}%;">
+				Image Recognition Progress:  {{completed_percentages['Image Recognition']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423"  src="https://www.youtube.com/embed/qKc8gi1muH4?list=PLQVvvaa0QuDffXBfcH9ZJuvctJV3OtB8A" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>Next up, we're going to start using our example numbers data. We want to create image arrays out of our numbers data, saving them, so that we can reference them later for pattern recognition.</p>
+	  <p>For this, we're going to create a "createExamples" function:</p>
+	  
+<pre class="prettyprint">
+def createExamples():
+    numberArrayExamples = open('numArEx.txt','a')
+    numbersWeHave = range(1,10)
+    for eachNum in numbersWeHave:
+        #print eachNum
+        for furtherNum in numbersWeHave:
+            # you could also literally add it *.1 and have it create
+            # an actual float, but, since in the end we are going
+            # to use it as a string, this way will work.
+            print(str(eachNum)+'.'+str(furtherNum))
+            imgFilePath = 'images/numbers/'+str(eachNum)+'.'+str(furtherNum)+'.png'
+            ei = Image.open(imgFilePath)
+            eiar = np.array(ei)
+            eiarl = str(eiar.tolist())
+
+            print(eiarl)
+            lineToWrite = str(eachNum)+'::'+eiarl+'\n'
+            numberArrayExamples.write(lineToWrite)
+</pre>
+	  
+	  <p>I left a few comments in there, but you may also want to watch the video if you're finding yourself confused on this function. The purpose of this function is to literally just append the image's array to the file so we can reference it later.</p>
+	  <p>In this, we're just using a flat file as our database. This is fine for smaller data-sets, but you may want to look into working with databases, either <kbd data-toggle="collapse" data-target="#SQLite" aria-expanded="false" aria-controls="SQLite">SQLite</kbd> or <kbd data-toggle="collapse" data-target="#MySQL" aria-expanded="false" aria-controls="MySQL">MySQL</kbd> in the future.</p>
+	  
+
+	  
+		<div class="collapse" id="SQLite">
+		  <div class="well">
+			<p>SQLite is a "light" version of SQL. It is also a flat file, but is going to be a bit more efficient than using something like a .txt file.</p>
+			<p><strong><a href="/sql-database-python-part-1-inserting-database/" target="blank">SQLite tutorial here</a></strong></p>
+		  </div>
+		</div>
+		
+		
+		<div class="collapse" id="MySQL">
+		  <div class="well">
+			<p>MySQL is probably the most popular database type and api used for SQL with databases.</p>
+			<p><strong><a href="/mysql-intro/" target="blank">MySQL tutorial here</a></strong></p>
+		  </div>
+		</div>
+		
+		
+		
+		<p>Running the fucntion createExamples() should now create the numArEx.txt file and populat it with number arrays. With these, we can then take new numbers, threshold if necessary, then compare the current number array with our known number patterns, making an educated guess on what the number we're looking at is.</p>
+		
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

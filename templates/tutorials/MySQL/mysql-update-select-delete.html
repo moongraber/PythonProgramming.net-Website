@@ -1,0 +1,93 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['MySQL']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['MySQL']}}%;">
+				MySQL Progress:  {{completed_percentages['MySQL']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423" src="https://www.youtube.com/embed/1iHtAj85vcs?list=PLQVvvaa0QuDcppfxEowvKiMYyILwOQIHF" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>Now we're going to update existing data within the table. So this is where we want to "edit" an existing row of data. An example of this might be if you have a website with users, a user may desire to change their password. You need to have a way to update their row of data. Building off of our previous tutorials, let's run some updates:</p>
+	  <p>First, let's see where we are:</p>
+	  <pre>SELECT * FROM taula;</pre>
+	  <p>Next, run an update:</p>
+	  <pre>UPDATE taula SET username='Sentdex' WHERE username="sentdex";</pre>
+	  <p>Now let's look at our data again:</p>
+	  <pre>SELECT * FROM taula;</pre>
+	  
+	  <p>Here, we're UPDATE-ing our table named tuala, SETting the column named username equal to "Sentdex" WHERE the column of username is currently equal to "sentdex."</p>
+	  <p>You should have seen the following:</p>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-update-tutorial-python.png') }}" alt="mysql tutorials" />
+	  <p>The above query will do this to every instance where it is the case that the username is equal to "sentdex." Now, sometimes you just want to test the query. What if you're making a change that will affect a million rows, or what if you want to make sure your logic is correct and it wont affect a million rows?</p>
+	  <p>It is important to note, <strong>there is no "undo" in MySQL</strong>. What's done is done, and that can be rough.</p>
+	  <p>So, when updating databases, you want to be as careful as possible, same when deleting. At least with UPDATE, you can sort of fix the mistake sometimes by doing the exact opposite of the update, but this may not always be do-able for you.</p>
+	  <p>It's always a good idea to go ahead and backup the database as well before any major deletes or updates. It's also a very good idea to back up your databases, frequently. Databases can become corrupt through no fault of your own. Maybe a routine process is stopped mid-process due to your host dropping momentarily. Who knows, but bad things happen sometimes. I have never regretted taking the time to back up databases. Of the ~10-15 business-related databases that I have made, I have at least once needed backups in place. <strong>Don't make the mistake of thinking you wont make a mistake</strong>.</p>
+	  <p>Back on topic, however, how might we limit collateral damage to potentially harmful queries? You can append one more argument to the end of the query, called LIMIT. This will allow you to limit the number of "changes" that can be made with the query. Something like this:</p>
+	  <pre>UPDATE taula SET username='sentdex' WHERE username="Sentdex" LIMIT 1;</pre>
+	  <p>That should now set one of the usernames to a lowercase "sentdex," but just one of them, so something like:</p>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-tutorial-update.png') }}" alt="mysql tutorials" />
+	  <p>Now let's talk about deleting rows:</p>
+	  <pre>DELETE FROM taula WHERE username="sentdex" LIMIT 1;</pre>
+	  <p>Especially with deletes, it is an even better idea to limit them. Another thing you can do to find out exactly how many rows you're going to affect with delete statements or updates is to, instead of using DELETE or UPDATE, do a SELECT * to select all rows. This will then show you examples of the rows that you'd have otherwise updated or deleted, as well as tell you how many rows would have been affected, since you will see how many rows were selected.</p>
+	  <p>Now let's look at our table after that delete was run:</p>
+	  <pre>SELECT * FROM taula;</pre>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-tutorial-delete.png') }}" alt="mysql tutorials" />
+	  <p>So that's exactly what we expected, great. What will happen if we run that command again? In theory, there are no rows with a lower-case sentdex username anymore, so nothing will be deleted. Let's see.</p>
+	  <pre>DELETE FROM taula WHERE username="sentdex" LIMIT 1;</pre>
+	  <pre>SELECT * FROM taula;</pre>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-delete-tutorial-issue.png') }}" alt="mysql tutorials" />
+	  
+	  <p>In production, our hearts may sink a bit when we see how many rows were affected, because something was deleted when we didn't expect it to be.</p>
+	  <p>Thus, again <strong>there's no undo in MySQL</strong> and <strong>don't make the mistake of thinking you wont make a mistake</strong>.</p>
+	  <p>Let's put some of the data back in:</p>
+	  <pre>INSERT INTO taula VALUES (1385419971, "sentdex", "@BillGates, thanks Bill for the job offer as VP, but i wanna keep opts open");</pre>
+	  <pre>INSERT INTO taula VALUES (1385419969, "sentdex", "welcome to my tutorial");</pre>
+	  <p>Now, remember what I was saying earlier about using SELECT * in place of UPDATE or DELETE to make sure your query is affecting the amount and type of rows that you intend? Let's show an example now that we have those old rows back. You should have one upper-case "Sentdex" username and two lower-case "sentdex" usernames.</p>
+	  <pre>SELECT * FROM  taula WHERE username='sentdex';</pre>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-tutorial-checking-queries.png') }}" alt="mysql tutorials" />
+	  <p>Had we done this the first time around, we would have seen that "oh dear" we've selected rows that didn't fall under what we had intended to affect.</p>
+	  <p>Let's insert another row, this time with a lower time stamp, we'll just remove some numbers from the end:</p>
+	  <pre>INSERT INTO taula VALUES (13854, "sentdex", "put whatever you want in here");</pre>
+	  <p>Now, consider a scenario where you want to delete rows between certain times. How might this be done? Luckily for you, MySQL supports comparison operators like "<" and ">", as well as "AND." Let's see an example.</p>
+	  <pre>SELECT * FROM taula WHERE time > 13854 AND time < 1385419970; </pre>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-tutorial-comparison.png') }}" alt="mysql tutorials" />
+	  <p>Great, that's exactly what we expected, so now let's just replace the 'SELECT *' with a DELETE:</p>
+	  <pre>DELETE FROM taula WHERE time > 13854 AND time < 1385419970; </pre>
+	  
+	  
+	  <p>Then let's see what we have afterwards:</p>
+	  <pre>SELECT * FROM taula; </pre>
+	  
+	  <p>Now you should have something like:</p>
+	  <img class="img-responsive" src="{{ url_for('static', filename='images/mysql/mysql-tutorial-safely-delete.png') }}" alt="mysql tutorials" />  
+	  <br>
+	  
+	  <p>This methodology should be pretty useful for safely running UPDATE and DELETE queries. Say, for example, you have a forum, and your admins are able to delete posts, or even all posts from a specific user, like a spammer. You wouldn't want them to just hit delete and that immediately run the query. You should have some sort of popup that says "are you sure you want to delete "x" posts, or even show the posts that will be deleted. This way, if the pop up says: "Are you sure you want to delete 16,424 posts?" ... they might think twice before accepting and deleting your entire forum. </p>
+
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

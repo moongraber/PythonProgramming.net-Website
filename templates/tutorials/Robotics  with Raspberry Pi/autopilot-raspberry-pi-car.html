@@ -1,0 +1,155 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Robotics with the Raspberry Pi']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Robotics with the Raspberry Pi']}}%;">
+				Robotics with the Raspberry Pi Progress:  {{completed_percentages['Robotics with the Raspberry Pi']}}%
+			</div>
+		</div>
+		<img class="img-responsive" src="{{ url_for('static', filename='images/robotics/autopilot-raspberry-pi-rc-car.png') }}" alt="robotics with the Raspberry Pi" />
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423"   src="https://www.youtube.com/embed/Q2NSwicgT68?list=PLQVvvaa0QuDeJlgD1RX9_49tMLUxvIxF4" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p></p>
+	  <p></p>
+
+		
+		
+		
+		<div class="row">
+		<div class="col-md-6">
+		<pre  class="prettyprint">
+import RPi.GPIO as gpio
+import time
+import sys
+import Tkinter as tk
+from sensor import distance
+
+
+
+def init():
+    gpio.setmode(gpio.BOARD)
+    gpio.setup(7, gpio.OUT)
+    gpio.setup(11, gpio.OUT)
+    gpio.setup(13, gpio.OUT)
+    gpio.setup(15, gpio.OUT)
+
+def forward(tf):
+    gpio.output(7, False)
+    gpio.output(11, True)
+    gpio.output(13, True)
+    gpio.output(15, False)
+    time.sleep(tf)
+    gpio.cleanup()
+
+def reverse(tf):
+    gpio.output(7, True)
+    gpio.output(11, False)
+    gpio.output(13, False)
+    gpio.output(15, True)
+    time.sleep(tf)
+    gpio.cleanup()
+
+def turn_left(tf):
+    gpio.output(7, True)
+    gpio.output(11, True)
+    gpio.output(13, True)
+    gpio.output(15, False)
+    time.sleep(tf)
+    gpio.cleanup()
+
+def turn_right(tf):
+    gpio.output(7, False)
+    gpio.output(11, True)
+    gpio.output(13, False)
+    gpio.output(15, False)
+    time.sleep(tf)
+    gpio.cleanup()
+
+def pivot_left(tf):
+    gpio.output(7, True)
+    gpio.output(11, False)
+    gpio.output(13, True)
+    gpio.output(15, False)
+    time.sleep(tf)
+    gpio.cleanup()
+
+def pivot_right(tf):
+    gpio.output(7, False)
+    gpio.output(11, True)
+    gpio.output(13, False)
+    gpio.output(15, True)
+    time.sleep(tf)
+    gpio.cleanup()
+
+
+
+def key_input(event):
+    init()
+    print 'Key:', event.char
+    key_press = event.char
+    sleep_time = 0.030
+
+    if key_press.lower() == 'w':
+        forward(sleep_time)
+    elif key_press.lower() == 's':
+        reverse(sleep_time)
+    elif key_press.lower() == 'a':
+        turn_left(sleep_time)
+    elif key_press.lower() == 'd':
+        turn_right(sleep_time)
+    elif key_press.lower() == 'q':
+        pivot_left(sleep_time)
+    elif key_press.lower() == 'e':
+        pivot_right(sleep_time)
+    else:
+        pass
+
+    curDis = distance('cm')
+    print('curdis is',curDis)
+
+    if curDis < 20:
+        init()
+        reverse(2)
+
+
+
+
+command = tk.Tk()
+command.bind('<KeyPress>', key_input)
+command.mainloop()
+
+
+		</pre></div>
+		<div class="col-md-6">
+<p>Now that we understand the distance sensor, and we've got this neat little sensor module written up, let's incorporate it into our car</p>
+<p>First, let's use it as a sort of auto-pilot. Some cars today already will apply your brakes for you if they sense you are getting too close to another car, this is sort of like that.</p>
+<p>All we really need to do is do some distance checks within our tkinter key-logging loop. If the distance check yields a distance less than an acceptable distance, then stop. Easy enough!</p>
+<p>Not only will we stop here, but we're also going to apply an instantaneous reversal.</p>
+<p></p>
+<p></p>
+<p></p></div></div>
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+

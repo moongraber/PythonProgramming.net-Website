@@ -1,0 +1,100 @@
+
+{% extends "header.html" %}
+{% block body %}
+<!--       <pre class="prettyprint">              width="750" height="423"    -->
+<body class="body">
+
+
+      <div class="container" align="left" style="max-width:800px">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuenow="{{completed_percentages['Image Recognition']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{completed_percentages['Image Recognition']}}%;">
+				Image Recognition Progress:  {{completed_percentages['Image Recognition']}}%
+			</div>
+		</div>
+	  <h2>{{curTitle}}</h2>
+	  <br>
+	  
+	  <div class="embed-responsive embed-responsive-16by9"><iframe width="750" height="423"  src="https://www.youtube.com/embed/ry9AzwTMwJQ?list=PLQVvvaa0QuDffXBfcH9ZJuvctJV3OtB8A" frameborder="0" allowfullscreen></iframe></div><br>
+	  
+	  <p>Now that we have our sample data, we're ready to compare it. The method that we're going to use will be very simple, yet you'll be surprised how decent it works. </p>
+	  <p>We will simply go, pixel by pixel, comparing whether or not they are the same. Boom done.</p>
+<pre class="prettyprint">
+from PIL import Image
+import numpy as np
+
+import time
+from collections import Counter
+
+
+def whatNumIsThis(filePath):
+
+    matchedAr = []
+    loadExamps = open('numArEx.txt','r').read()
+    loadExamps = loadExamps.split('\n')
+    
+    i = Image.open(filePath)
+    iar = np.array(i)
+    iarl = iar.tolist()
+
+    inQuestion = str(iarl)
+
+    for eachExample in loadExamps:
+        try:
+            splitEx = eachExample.split('::')
+            currentNum = splitEx[0]
+            currentAr = splitEx[1]
+            
+            eachPixEx = currentAr.split('],')
+            eachPixInQ = inQuestion.split('],')
+
+            x = 0
+
+            while x < len(eachPixEx):
+                if eachPixEx[x] == eachPixInQ[x]:
+                    matchedAr.append(int(currentNum))
+
+                x+=1
+        except Exception as e:
+            print(str(e))
+                
+    print(matchedAr)
+    x = Counter(matchedAr)
+    print(x)
+    print(x[0])
+
+whatNumIsThis('images/test.png')
+</pre>
+	  <p>First we're running against the test image, which is an image of my hand-drawn 2, which is not included in the training set. Running the code, we get our counters list for matches:</p>
+	  
+	  <pre class="prettyprint">
+	  Counter({2: 461, 3: 389, 6: 374, 9: 366, 5: 365, 7: 364, 8: 361, 1: 325, 4: 321})
+	  </pre>
+	  
+	  
+	  <p>Thus, the prediction is a 2, as it is the highest match. So that was a success. You may point out that the next closest match, a 3, is 389. To this I would point out the least matched option was a 321, so you can see that the scale is not really something like 0-500. It is really probably best though of as a range from 400-500 or so. Anything under 400 is too loose of a match to be considered a confident match.</p>
+	  
+	  <p>If you're confused about the function, check out the video, it is explained line by line there.</p>
+	  <p>Next, we can also test this with some other hand-drawn numbers. In the video, I draw a number 3 for example, and get another success. In the next video, we'll take it a step further to visualize the results, and do some more tests.</p>
+	  
+	  
+	  
+	  
+	  
+
+	  
+		
+		
+		
+		<p>The next tutorial: <a title="{{nextTitle}}" href="{{nextLink}}?completed={{curLink}}"><button class="btn btn-primary">{{nextTitle}}</button></a></p>
+	  </div>
+
+
+	
+
+	
+</body>
+
+
+{% endblock %}
+
+
