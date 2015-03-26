@@ -6,7 +6,7 @@ For specific issues of direct interest, see the issues tab.
 
 #Here are some examples of contributions:
 
--Contribute to this github. I am still a github noob, not really knowing what I am doing. 
+-Contribute to this github. I am still a github noob, not really knowing what I am doing. Help improve the readme, contributing ... etc
 
 -General functionality concepts (handling users, CMS, improving the "one big file" init.py aspect)
 
